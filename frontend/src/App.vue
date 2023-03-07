@@ -19,9 +19,26 @@
         </div>
       </nav> -->
     </header>
-    <RouterView />
+    <div class="container-fluid">
+      <button class="btn btn-primary" @click="signOut">Sign out</button>
+      <RouterView />
+    </div>
   </div>
 </template>
+
+<script>
+  import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+  export default {
+    methods: {
+      signOut(){
+        const auth = getAuth()
+        signOut(auth).then(() => {
+          console.log('Sign out complete')
+        })
+      }
+    }
+  }
+</script>
 
 <style scoped>
 

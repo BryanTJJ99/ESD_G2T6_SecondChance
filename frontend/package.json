@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "bootstrap": "^5.2.3",
+    "firebase": "^9.17.2",
     "talkjs": "^0.15.6",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
