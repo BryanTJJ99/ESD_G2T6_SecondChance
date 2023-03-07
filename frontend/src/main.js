@@ -7,6 +7,7 @@ import './assets/main.css'
 import "../src/assets/fontawesome-free-6.3.0-web/css/fontawesome.css"
 import "../src/assets/fontawesome-free-6.3.0-web/css/brands.css"
 import "../src/assets/fontawesome-free-6.3.0-web/css/solid.css"
+import "./style.css"
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";

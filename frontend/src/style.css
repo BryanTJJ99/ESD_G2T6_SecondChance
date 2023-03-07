@@ -1,0 +1,367 @@
+/* *********************************************************
+Colors:
+
+Main
+#c5dad2
+
+Accent 1 (Darker)
+#5c7266
+
+Accent 2 (Lighter)
+#6e9190
+
+Grey
+#a3a0a0
+
+Green (validatin check)
+
+Red (validation check)
+
+Fonts:
+font-family: 'Source Code Pro', monospace; (for logo)
+font-family: 'Montserrat', sans-serif;
+********************************************************* */
+/* *********************************************************
+Formatting
+********************************************************* */
+body {
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, p{
+    margin: 0
+}
+
+.logo {
+    font-family: 'Source Code Pro', monospace;
+    font-style: italic;
+    color:#6e9190
+}
+
+h1, h2, h3, h4, p, small, label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+h1, h3 {
+    color: #5C7266
+}
+
+h2, h4 {
+    color: #6e9190
+}
+
+small {
+    color: #a3a0a0
+}
+
+/* *********************************************************
+Buttons
+********************************************************* */
+.btn {
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+.btn-light {
+    background-color: #c5dad2;
+    color:#5C7266;
+    border: none;
+}
+
+.btn-light:hover {
+    color: white;
+    background-color:#5C7266;
+    border: none;
+    font-style: italic;
+}
+
+.btn-dark {
+    background-color: #6e9190;
+    color: #c5dad2;
+    border: none;
+}
+
+.btn-dark:hover {
+    color: white;
+    background-color:#5C7266;
+    border: none;
+    font-style: italic;
+}
+
+.btn-none {
+    border: none;
+}
+
+.btn-none:hover {
+    color: white;
+    background-color: #a3a0a0;
+    border: none;
+    font-style: italic;
+}
+  
+.btn span {
+cursor: pointer;
+display: inline-block;
+position: relative;
+transition: 0.5s;
+}
+
+.btn span:after {
+content: '\00bb';
+position: absolute;
+opacity: 0;
+top: 0;
+right: -20px;
+transition: 0.5s;
+}
+
+.btn:hover span {
+padding-right: 25px;
+}
+
+.btn:hover span:after {
+opacity: 1;
+right: 0;
+}
+
+
+/* *********************************************************
+Marketplace Search Button
+********************************************************* */
+
+.growing-search {
+    padding: 5px 5px 5px 7px;
+    border-radius: 5px;
+    background: #fff;
+  }
+  
+  .growing-search div {
+    display: inline-block;
+    font-size: 13px;
+  }
+  
+  .growing-search .input input {
+    margin-right: 0;
+    border: none;
+    transition: width 200ms;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    width: 100px;
+    border-bottom: 1px solid #c5dad2;
+  }
+  
+  .growing-search .input input:focus {
+    width: 60vh;
+  }
+  
+  .growing-search .submit button {
+    margin-left: 0;
+    border: none;
+    font-size: 1.15em;
+    color: #aaa;
+    background-color: #fff;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    transition: color 200ms;
+  }
+  
+  .growing-search .input input:hover, .growing-search .submit button:hover {
+    cursor: pointer;
+  }
+  
+  .growing-search .input input:focus, .growing-search .submit button:focus {
+    outline: none;
+  }
+  
+  .growing-search .submit button:hover {
+    color: #6e9190;
+    -webkit-animation: rubberBand .8s 1;
+    -moz-animation: rubberBand .8s 1;
+    -o-animation: rubberBand .8s 1;
+    animation: rubberBand .8s 1;
+  }
+
+ul#growing-search-freebie { display: table; list-style: none; padding: 0; }
+ul#growing-search-freebie > li { float: left; margin-right: 20px; margin-bottom: 20px; padding: 10px 10px; }
+ul#growing-search-freebie > li:last-child { margin-right: 0; }
+ul#growing-search-freebie > li > span { margin-bottom: 10px; }
+
+@-webkit-keyframes rubberBand {
+    0% {
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+
+    30% {
+        -webkit-transform: scale3d(1.15, 0.9, 1);
+        transform: scale3d(1.15, 0.9, 1);
+    }
+
+    40% {
+        -webkit-transform: scale3d(0.8, 1.15, 1);
+        transform: scale3d(0.8, 1.15, 1);
+    }
+
+    50% {
+        -webkit-transform: scale3d(1.15, 0.85, 1);
+        transform: scale3d(1.15, 0.85, 1);
+    }
+
+    65% {
+        -webkit-transform: scale3d(.95, 1.05, 1);
+        transform: scale3d(.95, 1.05, 1);
+    }
+
+    75% {
+        -webkit-transform: scale3d(1.05, .95, 1);
+        transform: scale3d(1.05, .95, 1);
+    }
+
+    100% {
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+@keyframes rubberBand {
+    0% {
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+
+    30% {
+        -webkit-transform: scale3d(1.15, 0.9, 1);
+        transform: scale3d(1.15, 0.9, 1);
+    }
+
+    40% {
+        -webkit-transform: scale3d(0.8, 1.15, 1);
+        transform: scale3d(0.8, 1.15, 1);
+    }
+
+    50% {
+        -webkit-transform: scale3d(1.15, 0.85, 1);
+        transform: scale3d(1.15, 0.85, 1);
+    }
+
+    65% {
+        -webkit-transform: scale3d(.95, 1.05, 1);
+        transform: scale3d(.95, 1.05, 1);
+    }
+
+    75% {
+        -webkit-transform: scale3d(1.05, .95, 1);
+        transform: scale3d(1.05, .95, 1);
+    }
+
+    100% {
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+.rubberBand {
+    -webkit-animation-name: rubberBand;
+    animation-name: rubberBand;
+}
+
+/* *********************************************************
+Form Inputs
+********************************************************* */
+
+.group        { 
+    position:relative; 
+    margin-bottom:30px; 
+  }
+  input         {
+    padding:10px 10px 10px 5px;
+    display:block;
+    width:300px;
+    border:none;
+    border-bottom:1px solid #757575;
+  }
+  input:focus     { outline:none; }
+  
+  /* LABEL ======================================= */
+  label          {
+    color:#999; 
+    font-weight:normal;
+    position:absolute;
+    pointer-events:none;
+    left:5px;
+    top:10px;
+    transition:0.2s ease all; 
+    -moz-transition:0.2s ease all; 
+    -webkit-transition:0.2s ease all;
+  }
+  
+  /* active state */
+  input:focus ~ label, input:valid ~ label    {
+    top:-20px;
+    font-size:12px;
+    color:#6e9190;
+  }
+  
+  /* BOTTOM BARS ================================= */
+  .bar  { position:relative; display:block; width:300px; }
+  .bar:before, .bar:after   {
+    content:'';
+    height:2px; 
+    width:0;
+    bottom:1px; 
+    position:absolute;
+    background:#6e9190; 
+    transition:0.2s ease all; 
+    -moz-transition:0.2s ease all; 
+    -webkit-transition:0.2s ease all;
+  }
+  .bar:before {
+    left:50%;
+  }
+  .bar:after {
+    right:50%; 
+  }
+  
+  /* active state */
+  input:focus ~ .bar:before, input:focus ~ .bar:after {
+    width:50%;
+  }
+  
+  /* HIGHLIGHTER ================================== */
+  .highlight {
+    position:absolute;
+    height:60%; 
+    width:100px; 
+    top:25%; 
+    left:0;
+    pointer-events:none;
+    opacity:0.5;
+  }
+  
+  /* active state */
+  input:focus ~ .highlight {
+    -webkit-animation:inputHighlighter 0.3s ease;
+    -moz-animation:inputHighlighter 0.3s ease;
+    animation:inputHighlighter 0.3s ease;
+  }
+  
+  /* ANIMATIONS ================ */
+  @-webkit-keyframes inputHighlighter {
+    from { background:#6e9190; }
+    to  { width:0; background:transparent; }
+  }
+  @-moz-keyframes inputHighlighter {
+    from { background:#6e9190; }
+    to  { width:0; background:transparent; }
+  }
+  @keyframes inputHighlighter {
+    from { background:#6e9190; }
+    to  { width:0; background:transparent; }
+  }
