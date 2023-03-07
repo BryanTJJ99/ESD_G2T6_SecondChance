@@ -1,13 +1,51 @@
-<script setup>
-
-</script>
-
 <template>
-  <div>
-      <h1>Chat</h1>
-  </div>
+    <div ref="talkjs" style="width: 1000px; margin: 30px; height: 500px">
+        <i>Loading chat...</i>
+        <ActionMenu class="action-menu"> 
+            <Icon type="horizontalDots" /> 
+        </ActionMenu>
+    </div>
 </template>
 
-<style scoped>
+<script>
+    import Talk from 'talkjs';
+    export default {
+        async mounted() {
+          await Talk.ready
+          const me = new Talk.User({
+            id: 1,
+            name: 'Tan Aloysius',
+            email: 'aloysius@test.com',
+          })
+                
+          const talkSession = new Talk.Session({
+            appId: 'tiPNIXv3',
+            me: me,
+          });
 
-</style>
+          const other = new Talk.User({
+            id: '654321',
+            name: 'Sebastian',
+            email: 'Sebastian@example.com',
+          });
+
+          const other2 = new Talk.User({
+            id: 2,
+            name: 'Analisa',
+            email: 'Jesus@example.com',
+          });
+
+          const conversation2 = talkSession.getOrCreateConversation(
+            Talk.oneOnOneId(me, other2)
+          );
+          
+          conversation2.setParticipant(me)
+          conversation2.setParticipant(other2)
+
+          const inbox = talkSession.createInbox();
+          inbox.select(conversation2)
+          inbox.mount(this.$refs.talkjs);
+  
+        }
+    }
+</script>

@@ -8,9 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.3.0",
-    "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "bootstrap": "^5.2.3",
+    "talkjs": "^0.15.6",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
