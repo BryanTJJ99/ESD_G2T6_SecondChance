@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import Chat from '../views/Chat.vue'
-import Register from '../views/Register.vue'
-import Login from '../views/Login.vue'
+import Home from '@/views/Home.vue'
+import Chat from '@/views/Chat.vue'
+import Register from '@/views/Register.vue'
+import Login from '@/views/Login.vue'
+import Css from '@/views/Css.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/css',
+      name: 'css',
+      component: Css
     }
   ]
 })
