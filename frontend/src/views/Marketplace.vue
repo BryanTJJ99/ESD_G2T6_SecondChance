@@ -2,7 +2,7 @@
     <TopNavbar/>
     <Sidebar/>
     <div class="container-flex" style="margin-left:4.5rem">
-        <div class="row">
+        <div class="row px-3 py-2">
             <div class="col-lg-2">
                 <h3 class="pt-3 ps-3 mt-2">Marketplace, <span><h4>Furniture</h4></span></h3>
             </div>
@@ -22,7 +22,7 @@
                         </li>
                     </ul>
                     <div class="form-check form-switch">
-                        <div class="">
+                        <div>
                             <input class="form-check-input" type="checkbox" role="switch">
                             <small>Include other organisations</small>
                         </div>
@@ -33,19 +33,13 @@
 
         </div>
 
-        <div class="row mt-3 pb-0">
-            <div class="col-2 d-flex align-items-center">
-                <small class="ps-3">Categories:</small>
-            </div>
-            <div class="col-10" style="overflow: scroll;">
-                <div class="d-flex justify-content-center">
-                    <button v-for="category of categories" class="btn btn-none">{{category}}</button>
-                </div>
-
+        <div class="mt-3 pb-0 ps-3" style="overflow: scroll;">
+            <div class="d-flex justify-content-start">
+                <small class=" d-flex align-self-center pe-2 ps-3">Categories:</small>
+                <button v-for="category of categories" class="btn btn-none">{{category}}</button>
             </div>
         </div>
         <hr class="my-0">
-
         <div class="row">
             <ListingCard></ListingCard>
             <ListingCard></ListingCard>
