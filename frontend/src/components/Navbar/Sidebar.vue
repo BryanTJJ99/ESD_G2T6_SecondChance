@@ -14,9 +14,9 @@
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link py-3 " title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Dashboard">
+            <router-link to="/marketplace" class="nav-link py-3" >
                 <i class="fa-solid fa-store" style="color:black" ></i>
-            </a>
+            </router-link>
         </li>
         <li>
             <a href="#" class="nav-link py-3 " title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Orders">

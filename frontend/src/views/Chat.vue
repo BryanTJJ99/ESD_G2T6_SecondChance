@@ -1,4 +1,6 @@
 <template>
+  <TopNavbar/>
+  <Sidebar/>
     <div ref="talkjs" style="width: 1000px; margin: 30px; height: 500px">
         <i>Loading chat...</i>
         <ActionMenu class="action-menu"> 
@@ -9,7 +11,14 @@
 
 <script>
     import Talk from 'talkjs';
+    import TopNavbar from "@/components/Navbar/TopNavbar.vue";
+    import Sidebar from "@/components/Navbar/Sidebar.vue"
+
     export default {
+        components: {
+            TopNavbar,
+            Sidebar
+        },
         async mounted() {
           await Talk.ready
           const me = new Talk.User({
