@@ -2,7 +2,7 @@
     <nav class="navbar navbar-light bg-light d-flex justify-content-between" style="position: sticky; top: 0;">
         <div class="d-flex align-items-center">
                 <img class="ms-4 me-1" src="../../assets/logo.png" style="height:20px;">
-                <router-link to="/home" class="nav-link text-dark m-0 p-0" >
+                <router-link to="/" class="nav-link text-dark m-0 p-0" >
                     <p class="logo ">SecondChance</p>
                 </router-link>
         </div>
