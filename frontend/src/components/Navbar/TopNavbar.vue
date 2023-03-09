@@ -1,15 +1,13 @@
 <template>
     <nav class="navbar navbar-light bg-light d-flex justify-content-between">
-        <div class="d-flex justify-content-start">
-            <img src="../../assets/logo.png" style="height:20px;opacity:70%">
-            <div>
-                <router-link to="/home" class="nav-link text-dark p-2 mx-3" >
-                    <p class="logo">SecondChance</p>
+        <div class="d-flex align-items-center">
+                <img class="ms-4 me-1" src="../../assets/logo.png" style="height:20px;">
+                <router-link to="/home" class="nav-link text-dark m-0 p-0" >
+                    <p class="logo ">SecondChance</p>
                 </router-link>
-            </div>
         </div>
         <div>
-            <button class="btn btn-none" @click="signOut">Sign out</button>
+            <button class="btn btn-none logo" @click="signOut">Sign out</button>
         </div>
         
     </nav>
