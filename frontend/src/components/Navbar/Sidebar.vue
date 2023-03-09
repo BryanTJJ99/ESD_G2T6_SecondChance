@@ -1,6 +1,8 @@
 
 <template>
-    <div class="d-flex flex-column flex-shrink-0 bg-light" style="width: 4.5rem; height: 90vh; position: fixed; left:0;">
+
+    <div class="d-flex flex-column flex-shrink-0 bg-light" style="width: 4.5rem; height: 93vh; position:fixed; top: 10; left: 0;">
+
         <!-- <a href="/" class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
         <svg class="bi" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
         <span class="visually-hidden">Icon-only</span>
@@ -46,3 +48,23 @@
         </div>
     </div>
 </template>
+
+<script>
+  import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+  export default {
+    data(){
+      return{
+            department : "Finance",
+            organization : "SMU",
+      }
+    },
+    methods: {
+      signOut(){
+        const auth = getAuth()
+        signOut(auth).then(() => {
+          console.log('Sign out complete')
+        })
+      }
+    }
+  }
+</script>

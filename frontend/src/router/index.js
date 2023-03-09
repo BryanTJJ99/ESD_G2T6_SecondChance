@@ -5,6 +5,7 @@ import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
 import Css from '@/views/Css.vue'
 import Marketplace from '@/views/Marketplace.vue'
+import Inventory from '@/views/Inventory.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,7 +39,13 @@ const router = createRouter({
       path: '/marketplace',
       name: 'marketplace',
       component: Marketplace
-    }
+    },
+    {
+      path: '/inventory',
+      name: 'inventory',
+      component: Inventory
+    },
+    
   ]
 })
 
