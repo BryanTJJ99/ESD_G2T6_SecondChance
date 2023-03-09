@@ -4,6 +4,7 @@ import Chat from '@/views/Chat.vue'
 import Register from '@/views/Register.vue'
 import Login from '@/views/Login.vue'
 import Css from '@/views/Css.vue'
+import Marketplace from '@/views/Marketplace.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/css',
       name: 'css',
       component: Css
+    },
+    {
+      path: '/marketplace',
+      name: 'marketplace',
+      component: Marketplace
     }
   ]
 })

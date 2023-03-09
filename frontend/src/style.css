@@ -26,6 +26,7 @@ Formatting
 ********************************************************* */
 body {
     min-height: 100vh;
+    margin: 0
 }
 
 h1, h2, h3, h4, p{
@@ -60,6 +61,7 @@ Buttons
 ********************************************************* */
 .btn {
     font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
     border-radius: 30px;
     padding-left: 30px;
     padding-right: 30px;
