@@ -22,9 +22,9 @@
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link py-3 " title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Products">
+            <router-link to="/chat" class="nav-link py-3" >
                 <i class="fa-solid fa-message" style="color:black"></i>
-            </a>
+            </router-link>
         </li>
         <li>
             <a href="#" class="nav-link py-3 " title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
