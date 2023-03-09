@@ -13,10 +13,12 @@
     import Sidebar from "@/components/Navbar/Sidebar.vue"
 
     export default {
+        data(){
+        },
         components: {
             TopNavbar,
             Sidebar
-        }
+        },
         
     }
 

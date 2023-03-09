@@ -46,3 +46,23 @@
         </div>
     </div>
 </template>
+
+<script>
+  import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+  export default {
+    data(){
+      return{
+            department : "Finance",
+            organization : "SMU",
+      }
+    },
+    methods: {
+      signOut(){
+        const auth = getAuth()
+        signOut(auth).then(() => {
+          console.log('Sign out complete')
+        })
+      }
+    }
+  }
+</script>

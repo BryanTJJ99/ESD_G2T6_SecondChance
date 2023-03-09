@@ -7,6 +7,7 @@
                 </router-link>
         </div>
         <div>
+          <small>{{ organization }}  |  {{ department }}</small>
             <button class="btn btn-none logo" @click="signOut">Sign out</button>
         </div>
         
@@ -16,6 +17,12 @@
 <script>
   import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
   export default {
+    data(){
+      return{
+            department : "Finance",
+            organization : "SMU",
+      }
+    },
     methods: {
       signOut(){
         const auth = getAuth()
