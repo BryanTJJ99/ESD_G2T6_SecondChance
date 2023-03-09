@@ -1,6 +1,6 @@
 <template>
     <div>
-        <TopNavbar/>
+        <TopNavbar :organization="organization" :department="department"/>
         <Sidebar/>
     </div>
 </template>
@@ -13,10 +13,16 @@
     import Sidebar from "@/components/Navbar/Sidebar.vue"
 
     export default {
+        data(){
+            return {
+                department : "Finance",
+                organization : "SMU",
+            }
+        },
         components: {
             TopNavbar,
             Sidebar
-        }
+        },
         
     }
 
