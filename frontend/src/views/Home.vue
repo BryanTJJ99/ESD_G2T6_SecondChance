@@ -1,6 +1,6 @@
 <template>
     <div>
-        <TopNavbar/>
+        <TopNavbar :organization="organization" :department="department"/>
         <Sidebar/>
     </div>
 </template>
@@ -14,6 +14,10 @@
 
     export default {
         data(){
+            return {
+                department : "Finance",
+                organization : "SMU",
+            }
         },
         components: {
             TopNavbar,
