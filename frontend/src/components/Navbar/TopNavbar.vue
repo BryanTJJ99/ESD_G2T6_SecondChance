@@ -8,7 +8,7 @@
 
 <template>
 
-    <nav class="navbar navbar-light d-flex justify-content-between topnav" style="position:sticky;top:0;">
+    <nav class="navbar navbar-light d-flex justify-content-between topnav" style="position:sticky;top:0;z-index:4">
         <div class="d-flex align-items-center">
                 <img class="ms-4 me-1" src="../../assets/logo.png" style="height:20px;">
                 <router-link to="/" class="nav-link text-dark m-0 p-0" >

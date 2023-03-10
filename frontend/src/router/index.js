@@ -6,6 +6,7 @@ import Login from '@/views/Login.vue'
 import Css from '@/views/Css.vue'
 import Marketplace from '@/views/Marketplace.vue'
 import Inventory from '@/views/Inventory.vue'
+import Listing from '@/views/Listing.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,11 @@ const router = createRouter({
       path: '/inventory',
       name: 'inventory',
       component: Inventory
+    },
+    {
+      path: '/listing',
+      name: 'listing',
+      component: Listing
     },
     
   ]

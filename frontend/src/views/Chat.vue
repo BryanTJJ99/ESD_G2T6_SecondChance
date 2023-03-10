@@ -1,12 +1,15 @@
 <template>
   <TopNavbar/>
   <Sidebar/>
-    <div ref="talkjs" style="width: 1000px; margin: 30px; height: 500px">
-        <i>Loading chat...</i>
-        <ActionMenu class="action-menu"> 
-            <Icon type="horizontalDots" /> 
-        </ActionMenu>
-    </div>
+  <div class="container-flex d-flex justify-content-center">
+    <div ref="talkjs" style="width: 1000px; height: 700px" class="mt-5">
+      <i>Loading chat...</i>
+      <ActionMenu class="action-menu"> 
+          <Icon type="horizontalDots" /> 
+      </ActionMenu>
+  </div>
+
+  </div>
 </template>
 
 <script>
