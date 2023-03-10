@@ -4,7 +4,7 @@
     <div class="container-flex" style="margin-left:4.5rem">
         <div class="row px-3 py-2">
             <div class="col-lg-2">
-                <h3 class="pt-3 ps-3 mt-2">Marketplace, <span><h4>Furniture</h4></span></h3>
+                <h3 class="pt-3 ps-3 mt-2">{{header}} <span><h4>{{category}}</h4></span></h3>
             </div>
             <div class="col-lg-10 d-flex justify-content-lg-end justify-content-start pe-lg-4 ps-4">
                 <div>
@@ -36,7 +36,7 @@
         <div class="mt-3 pb-0 ps-3" style="overflow: scroll;">
             <div class="d-flex justify-content-start">
                 <small class=" d-flex align-self-center pe-2 ps-3">Categories:</small>
-                <button v-for="category of categories" class="btn btn-none">{{category}}</button>
+                <button v-for="category of categories" class="btn btn-none" v-bind:value="category" v-on:click="setCategory()">{{category}}</button>
             </div>
         </div>
         <hr class="my-0">
@@ -65,14 +65,23 @@
         data(){
             return {
                 search: "",
+                header: "Marketplace",
                 categories: ["Furniture", "Office Supplies", "Equipment", "Electronics", "IT", 
-                            "Lightings", "Decor", "Kitchen", "Others"]
+                            "Lightings", "Decor", "Kitchen", "Others"],
+                category: ""
             }
         },
         components: {
             TopNavbar,
             Sidebar,
             ListingCard
+        },
+        methods: {
+            setCategory(){
+                console.log(event.target.value)
+                this.category = event.target.value
+                this.header = "Marketplace,"
+            }
         }
         
     }
