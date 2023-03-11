@@ -1,15 +1,27 @@
 <template>
-    <div ref="talkjs" style="width: 1000px; margin: 30px; height: 500px">
-        <i>Loading chat...</i>
-        <ActionMenu class="action-menu"> 
-            <Icon type="horizontalDots" /> 
-        </ActionMenu>
-    </div>
+  <TopNavbar/>
+  <Sidebar/>
+  <div class="container-flex d-flex justify-content-center">
+    <div ref="talkjs" style="width: 1000px; height: 700px" class="mt-5">
+      <i>Loading chat...</i>
+      <ActionMenu class="action-menu"> 
+          <Icon type="horizontalDots" /> 
+      </ActionMenu>
+  </div>
+
+  </div>
 </template>
 
 <script>
     import Talk from 'talkjs';
+    import TopNavbar from "@/components/Navbar/TopNavbar.vue";
+    import Sidebar from "@/components/Navbar/Sidebar.vue"
+
     export default {
+        components: {
+            TopNavbar,
+            Sidebar
+        },
         async mounted() {
           await Talk.ready
           const me = new Talk.User({
