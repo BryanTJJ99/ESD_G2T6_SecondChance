@@ -1,4 +1,0 @@
-1. download kafka
-2. in terminal, enter
-    a. bin/zookeeper-server-start.sh config/zookeeper.properties
-    a. bin/kafka-server-start.sh config/server.properties

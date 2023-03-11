@@ -1,6 +1,6 @@
 from kafka import KafkaConsumer
 from slack_bolt import App
-app = App(token="xoxb-4901815051863-4909773123750-mYHvblaKGxucXhAZiu3WptYj")
+app = App(token="xoxb-4901815051863-4909773123750-UWV8RvUdTyG6fDRFxAQhTBL4")
 
 TOPIC_NAME = 'slack'
 
