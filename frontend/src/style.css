@@ -39,7 +39,7 @@ h1, h2, h3, h4, p{
     color:#6e9190
 }
 
-h1, h2, h3, h4, p, small, label, span {
+h1, h2, h3, h4, h5, p, small, label, span {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
 }
@@ -49,7 +49,7 @@ h1, h3 {
     font-style: italic;
 }
 
-h2, h4 {
+h2, h4, h5 {
     color: #6e9190
 }
 
