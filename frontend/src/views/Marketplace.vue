@@ -64,6 +64,8 @@
     export default {
         data(){
             return {
+                company: "SMU",
+                department: "Finance",
                 search: "",
                 header: "Marketplace",
                 categories: ["Furniture", "Office Supplies", "Equipment", "Electronics", "IT", 

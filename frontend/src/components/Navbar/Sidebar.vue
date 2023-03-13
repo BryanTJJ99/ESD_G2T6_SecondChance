@@ -9,9 +9,9 @@
         </a> -->
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
         <li class="nav-item">
-            <a href="#" class="nav-link py-3 " aria-current="page" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+            <router-link to="/" class="nav-link py-3" >
                 <i class="fas fa-home" style="color:black"></i>
-            </a>
+            </router-link>
         </li>
         <li>
             <router-link to="/marketplace" class="nav-link py-3" >
@@ -19,9 +19,10 @@
             </router-link>
         </li>
         <li>
-            <a href="#" class="nav-link py-3 " title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Orders">
+            <router-link to="/inventory" class="nav-link py-3" >
                 <i class="fa-solid fa-list" style="color:black"></i>
-            </a>
+            </router-link>
+
         </li>
         <li>
             <router-link to="/chat" class="nav-link py-3" >
