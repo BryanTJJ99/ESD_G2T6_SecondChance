@@ -1,0 +1,5 @@
+1. download kafka from https://kafka.apache.org/downloads
+2. enter 'pip install kafka-python' into terminal
+3. in terminal, cd into kafka folder and enter (in 2 different terminals)
+    a. bin/zookeeper-server-start.sh config/zookeeper.properties
+    a. bin/kafka-server-start.sh config/server.properties
