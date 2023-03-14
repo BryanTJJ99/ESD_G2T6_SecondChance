@@ -22,7 +22,7 @@ def processError(errorMsg):
     except Exception as e:
         print("--INVALID JSON:", e)
         print("--DATA:", errorMsg)
-    print() # print a new line feed as a separator
+    print()
 
 
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')

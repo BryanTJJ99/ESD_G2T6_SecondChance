@@ -25,7 +25,7 @@ def receiveLog():
 def processLog(order):
     print("Recording a log:")
     print(order)
-    print() # print a new line feed as a separator
+    print()
 
 
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')
