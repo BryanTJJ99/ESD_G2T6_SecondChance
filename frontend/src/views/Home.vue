@@ -1,6 +1,6 @@
 <style>
 .shift{
-    margin-left: 5.5rem;
+    margin-left: 1.5rem;
     margin-top: 1rem;
 }
 
@@ -12,7 +12,7 @@
         <Sidebar/>
         <Footer/>
 
-        <v-container>
+        <div class="container-flex" style="margin-left:4.5rem">
             <!-- Welcome back -->
             <div class="shift">
                 <h3 class="mb-2"><i>Welcome back name,</i></h3>
@@ -51,9 +51,21 @@
                 <h3><strong><b><i>Your Listings</i></b></strong></h3>
                 <small><i>Listed by your department</i></small>
             </div>
+            <div class="row">
+                <ListingCard></ListingCard>
+                <ListingCard></ListingCard>
+                <ListingCard></ListingCard>
+                <ListingCard></ListingCard>
+                <ListingCard></ListingCard>
+                <ListingCard></ListingCard>
+                <ListingCard></ListingCard>
+                <ListingCard></ListingCard>
+                <ListingCard></ListingCard>
+                <ListingCard></ListingCard>
+            </div>
             
             
-        </v-container>
+        </div>>
     </div>
 
 
@@ -61,8 +73,9 @@
 
 <script>
     import TopNavbar from "@/components/Navbar/TopNavbar.vue";
-    import Sidebar from "@/components/Navbar/Sidebar.vue"
-    import Footer from "@/components/Footer.vue"
+    import Sidebar from "@/components/Navbar/Sidebar.vue";
+    import Footer from "@/components/Footer.vue";
+    import ListingCard from "@/components/ListingCard.vue";
 
     export default {
         data(){
@@ -74,7 +87,8 @@
         components: {
             TopNavbar,
             Sidebar,
-            Footer
+            Footer,
+            ListingCard
         },
         
     }
