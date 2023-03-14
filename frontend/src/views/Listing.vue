@@ -81,8 +81,8 @@
             <i class="fa-solid fa-building d-block mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{company}}, {{department}}</span></i>
             <hr>
 
-            <p style="font-style:italic;">Description:</p>
-            <div style="overflow:scroll; height: 400px;" class="pt-2">
+            <p style="font-style:italic;font-weight:bold;">Description:</p>
+            <div style="overflow:scroll; height: 400px;" class="mt-2">
                 <p>{{desc}} Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam cum quos repudiandae iure exercitationem repellat expedita quia facere? Beatae asperiores harum amet quae provident alias repellendus dolorem? Voluptatibus, nemo quos? Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sequi fugit nulla, aliquam necessitatibus pariatur in veritatis enim suscipit soluta optio, quas voluptas dolorem, nam sint dolore molestias incidunt facere. Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat modi maiores cum repellendus dolor, possimus temporibus tempore nam. Dolor sed magnam accusamus soluta beatae quas at. Fugiat, quidem architecto? Et. Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, rem. Enim nesciunt quam obcaecati dignissimos sapiente rerum, ipsa, magnam ipsum laborum, molestias est. Repellendus dicta provident cum velit modi ratione! Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, libero fuga. At magni similique quidem quod optio, culpa iure, a earum hic quasi excepturi delectus saepe ratione. Amet, numquam libero. Lorem ipsum, dolor sit amet consectetur adipisicing elit. At quisquam aspernatur, incidunt maiores fuga perferendis illo quis illum consequuntur laborum reiciendis minus saepe sint rem autem! Error blanditiis sapiente dolorum?</p>
             </div>
 
@@ -142,8 +142,8 @@ export default {
 
 <style>
 .carousel-item img {
-    height: 600px;
-    width: 600px;
+    height: 650px;
+    width: 650px;
     object-fit: cover;
 }
 </style>
