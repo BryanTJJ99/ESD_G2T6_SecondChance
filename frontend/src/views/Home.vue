@@ -3,6 +3,21 @@
     margin-left: 1.5rem;
     margin-top: 1rem;
 }
+table {
+    border-collapse:separate;
+    border:solid black 1px;
+    border-radius:6px;
+}
+
+td, th {
+    border-left:solid black 1px;
+    border-top:solid black 1px;
+}
+
+th {
+    background-color: blue;
+    border-top: none;
+}
 
 
 </style>
@@ -10,7 +25,6 @@
     <div>
         <TopNavbar :organization="organization" :department="department"/>
         <Sidebar/>
-        <Footer/>
 
         <div class="container-flex" style="margin-left:4.5rem">
             <!-- Welcome back -->
@@ -25,42 +39,42 @@
                         <spacer></spacer>
                         <!-- to insert link below -->
                         <small><a href="/" style="color:grey">View all</a></small> 
-                        <div class="container">
-                            <table class="table" style="border:1px solid green; margin-right:30px">
+                        <div style="margin-right:25px">
+                            <table class="table" style="border:1px solid green;text-align:center">
                                 <thead>
-                                  <tr>
+                                    <tr>
                                     <th scope="col"></th>
                                     <th scope="col"></th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Organisation</th>
                                     <th scope="col">Points</th>
-                                  </tr>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                  <tr>
+                                    <tr>
                                     <th scope="row">1</th>
                                     <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp" class="rounded-circle"
                                         height="36" alt="Avatar" loading="lazy" /></td>
                                     <td>Otto</td>
                                     <td>Facebook</td>
-                                    <td>3</td>
-                                  </tr>
-                                  <tr>
+                                    <td>38</td>
+                                    </tr>
+                                    <tr>
                                     <th scope="row">2</th>
                                     <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (25).webp" class="rounded-circle"
                                     height="36" alt="Avatar" loading="lazy" /></td>
                                     <td>Thornton</td>
                                     <td>Twitter</td>
                                     <td>23</td>
-                                  </tr>
-                                  <tr>
+                                    </tr>
+                                    <tr>
                                     <th scope="row">3</th>
                                     <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (12).webp" class="rounded-circle"
                                     height="36" alt="Avatar" loading="lazy" /></td>
                                     <td>Human</td>
                                     <td>Appler</td>
                                     <td>16</td>
-                                  </tr>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -84,19 +98,19 @@
                         <button type="button" class="btn btn-outline-success" style="border-radius:0px;padding-top:30px; padding-bottom:30px; padding-left:83px; padding-right:83px;margin:0px">
                         <i class="larger fas fa-truck-moving" style="color:black"></i>&nbsp;&nbsp;&nbsp;&nbsp;<lead>Add Asset</lead></button>
                     </div> -->
-                    <div class="col col-md-auto">
-                        <button type="button" class="btn btn-outline-success" style="border-radius:10px 0px 0px 10px;padding-top:30px; padding-bottom:30px; padding-left:30px; padding-right:30px;margin:0px">
-                            <i class="larger fas fa-home" style="color:black"></i>
+                    <div class="col col-sm-auto">
+                        <button type="button" class="btn btn-outline-success" style="border-radius:10px 0px 0px 10px;padding:0px; margin:0px">
+                            <img src="../assets/clipboard.png" height="82" style="margin:0px;padding:10px">
                         </button>
                         <button type="button" class="btn btn-outline-success" style="border-radius:0px 10px 10px 0px;padding-top:30px; padding-bottom:30px; padding-left:74px; padding-right:74px;margin:0px">
                         <lead>Add Listing</lead></button>
                     </div>
-                    <div class="col col-md-auto">
-                        <button type="button" class="btn btn-outline-success" style="border-radius:10px 0px 0px 10px;padding-top:30px; padding-bottom:30px; padding-left:30px; padding-right:30px;margin:0px">
-                            <i class="larger fas fa-home" style="color:black"></i>
+                    <div class="col col-sm-auto">
+                        <button type="button" class="btn btn-outline-success" style="border-radius:10px 0px 0px 10px;padding:0px; margin:0px">
+                            <img src="../assets/dchair.png" height="82" style="margin:0px;padding:10px">
                         </button>
                         <button type="button" class="btn btn-outline-success" style="border-radius:0px 10px 10px 0px;padding-top:30px; padding-bottom:30px; padding-left:74px; padding-right:74px;margin:0px">
-                        <lead>Add Asset</lead></button>
+                        <lead>&nbsp;Add Asset&nbsp;</lead></button>
                     </div>
                 </div>
             </div>
@@ -120,6 +134,7 @@
                 <ListingCard></ListingCard>
             </div>
         </div>
+        <Footer></Footer>
     </div>
 
 

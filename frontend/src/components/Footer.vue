@@ -4,9 +4,8 @@
   z-index:2;
   margin-left: 4.5rem;
   box-shadow:0 0 8px 8px rgba(208, 207, 207, 0.3);
-  position: fixed;
-  bottom: 0;
-  text-align: center;
+  margin-bottom: 0;
+  margin-top: 1.5rem;
   width: 100%;
   font-family: sans-serif;
 
