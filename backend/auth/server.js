@@ -14,10 +14,13 @@ var Schema = mongoose.Schema
 
 var UserSchema = new Schema({
     id: String,
-    firstName: String,
-    lastName: String,
-    departmentId: Number,
-    officeId: Number
+    email: String,
+    password: String,
+    deparmentId: Number,
+    postalCode: Number,
+    companyName: String,
+    departmentName: String,
+    totalCarbon: Number
 })
 
 var Users = mongoose.model('users', UserSchema)
