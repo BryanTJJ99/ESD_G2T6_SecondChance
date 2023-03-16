@@ -24,7 +24,7 @@
                 <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
             </div>
             <div class="list-group">
-                <button v-for="item in items" type="button" class="list-group-item list-group-item-action d-flex justify-content-between p-3">
+                <button v-for="item in items" :key="item.id" type="button" class="list-group-item list-group-item-action d-flex justify-content-between p-3">
                     <p>{{item['name']}}</p>
                     <span class="badge" style="background-color:#c5dad2; color: black; width: 100px;"> <p>Quantity : {{ item['Quantity'] }}</p></span>
                 </button>

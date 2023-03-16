@@ -9,28 +9,28 @@
         </a> -->
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
         <li class="nav-item">
-            <router-link to="/" class="nav-link py-3" >
+            <router-link to="/" class="nav-link py-4" >
                 <i class="fas fa-home" style="color:black"></i>
             </router-link>
         </li>
         <li>
-            <router-link to="/marketplace" class="nav-link py-3" >
+            <router-link to="/marketplace" class="nav-link py-4" >
                 <i class="fa-solid fa-store" style="color:black" ></i>
             </router-link>
         </li>
         <li>
-            <router-link to="/inventory" class="nav-link py-3" >
+            <router-link to="/inventory" class="nav-link py-4" >
                 <i class="fa-solid fa-list" style="color:black"></i>
             </router-link>
 
         </li>
         <li>
-            <router-link to="/chat" class="nav-link py-3" >
+            <router-link to="/chat" class="nav-link py-4" >
                 <i class="fa-solid fa-message" style="color:black"></i>
             </router-link>
         </li>
         <li>
-            <a href="#" class="nav-link py-3 " title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
+            <a href="#" class="nav-link py-4" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
                 <i class="fa-solid fa-gear" style="color:black"></i>
             </a>
         </li>
