@@ -10,13 +10,13 @@
 
     <nav class="navbar navbar-light d-flex justify-content-between topnav" style="position:sticky;top:0;z-index:4">
         <div class="d-flex align-items-center px-4">
-                <img class="ms-4 me-1" src="../../assets/logo.png" style="height:20px;">
+                <img class="ms-4 me-1" src="../../assets/logo.png" style="height:20px;opacity:50%;">
                 <router-link to="/" class="nav-link text-dark m-0 p-0" >
                     <p class="logo ">SecondChance</p>
                 </router-link>
         </div>
-        <div>
-          <small>{{ organization }}  |  {{ department }}</small>
+        <div class="d-flex align-items-center">
+          <small style="color:#5c7266;">{{ organization }}  |  {{ department }}</small>
             <button class="btn btn-none logo" @click="signOut">Sign out</button>
         </div>
     </nav>
