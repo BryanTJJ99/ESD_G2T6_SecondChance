@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="col-xl-3 col-md-6 pt-5 d-flex justify-content-center">
+  <div class="col-xl-3 col-md-6 pt-4 d-flex justify-content-center">
     <div class="card p-1">
         <img src="https://i.postimg.cc/1X8R7m8y/design.png"/>
         <div class="p-2">

@@ -8,7 +8,7 @@
 
             
             <div class="d-flex justify-content-between align-items-center ">
-                <div class="">
+                <div>
                     <h3>Inventory Management</h3>
                 </div>
                 <div class="">
@@ -16,7 +16,7 @@
                 </div>
             </div>
             
-            <div class="input-group mb-3">
+            <div class="input-group my-3">
                 <span class="input-group-text" style="background-color:#c5dad2;" id="inputGroup-sizing-default">
                     <p>Search</p>
                 </span>

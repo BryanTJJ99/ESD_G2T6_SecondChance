@@ -2,10 +2,10 @@
     <div>
         <TopNavbar/>
         <Sidebar/>
-        <div class="container-flex" style="margin-left:4.5rem">
+        <div class="container-flex p-3" style="margin-left:4.5rem">
             <div class="row px-3 py-2">
                 <div class="col-lg-2">
-                    <h3 class="pt-3 ps-3 mt-2">{{header}} <span><h4>{{category}}</h4></span></h3>
+                    <h3 class="">{{header}} <span><h4>{{category}}</h4></span></h3>
                 </div>
                 <div class="col-lg-10 d-flex justify-content-lg-end justify-content-start pe-lg-4 ps-4">
                     <div>
@@ -34,7 +34,7 @@
 
             </div>
             
-            <div class="mt-3 pb-0 ps-3" style="overflow: scroll;">
+            <div class="mt-3 pb-0" style="overflow: scroll;">
                 <div class="d-flex justify-content-start">
                     <small class=" d-flex align-self-center pe-2 ps-3">Categories:</small>
                     <button v-for="category of categories" class="btn btn-none" v-bind:value="category" :key="category.id" v-on:click="setCategory()">{{category}}</button>
