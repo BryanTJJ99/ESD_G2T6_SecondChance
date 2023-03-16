@@ -34,8 +34,8 @@
         </div>
 
         <div class="mt-3 pb-0 ps-3" style="overflow: scroll;">
-            <div class="d-flex justify-content-start">
-                <small class=" d-flex align-self-center pe-2 ps-3">Categories:</small>
+            <div class="d-flex justify-content-center">
+                <small class=" d-flex align-self-center pe-4 ps-3">Categories:</small>
                 <button v-for="category of categories" class="btn btn-none" v-bind:value="category" v-on:click="setCategory()">{{category}}</button>
             </div>
         </div>
@@ -68,8 +68,7 @@
                 department: "Finance",
                 search: "",
                 header: "Marketplace",
-                categories: ["Furniture", "Office Supplies", "Equipment", "Electronics", "IT", 
-                            "Lightings", "Decor", "Kitchen", "Others"],
+                categories: ["Furniture", "Office Supplies", "Equipment", "Electronics", "Others"],
                 category: ""
             }
         },
