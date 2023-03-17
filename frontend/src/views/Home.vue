@@ -30,7 +30,7 @@ td {
                     <spacer></spacer>
                     <!-- to insert link below -->
                     <small><a href="/" class="pt-3 ps-3 mt-2" style="color:grey">View all</a></small> 
-                    <div class="pt-3 ps-3" style="margin-right:25px">
+                    <div class="pt-1 ps-3" style="margin-right:25px">
                         <table class="table border rounded" style="text-align:center">
                             <thead>
                                 <tr>
@@ -96,18 +96,18 @@ td {
             <div class="shift d-flex-center ps-3">
                 <div class="row pt-3 ps-3 mt-2">
                     <div class="col col-sm-auto pb-4">
-                        <button type="button" class="btn btn-outline-success" style="border-radius:10px 0px 0px 10px;padding:0px; margin:0px">
+                        <button type="button" class="btn btn-dark" style="border-radius:10px 0px 0px 10px;padding:0px; margin:0px">
                             <img src="../assets/clipboard.png" height="81" style="margin:0px;padding:10px">
                         </button>
                         <button type="button" class="btn" style="border-radius:0px 10px 10px 0px;padding-top:30px; padding-bottom:30px;margin:0px;border-color:#c5dad2" disabled>
-                        <lead>Add New Listing</lead></button>
+                        <lead>Add a New Listing</lead></button>
                     </div>
                     <div class="col col-sm-auto">
-                        <button type="button" class="btn btn-outline-dark" style="border-radius:10px 0px 0px 10px;padding:0px; margin:0px">
+                        <button type="button" class="btn btn-dark" style="border-radius:10px 0px 0px 10px;padding:0px; margin:0px">
                             <img src="../assets/dchair.png" height="82" style="margin:0px;padding:10px">
                         </button>
                         <button type="button" class="btn" style="border-radius:0px 10px 10px 0px;padding-top:30px; padding-bottom:30px;margin:0px;border-color:#c5dad2" disabled>
-                        <lead>&nbsp;Add New Inventory&nbsp;</lead></button>
+                        <lead>&nbsp;Add a New Inventory&nbsp;</lead></button>
                     </div>
                 </div>
             </div>
