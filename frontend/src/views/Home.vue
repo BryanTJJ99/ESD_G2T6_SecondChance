@@ -6,14 +6,9 @@ table {
     border-radius:6px;
 }
 
-td, th {
-    border-left:solid black 1px;
-    border-top:solid black 1px;
-}
-
-th {
-    background-color: blue;
-    border-top: none;
+td {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 
@@ -23,7 +18,7 @@ th {
         <TopNavbar :organization="organization" :department="department"/>
         <Sidebar/>
 
-        <div class="container-flex" style="margin-left:4.5rem">
+        <div class="container-flex p-3" style="margin-left:4.5rem">
             <!-- Welcome back -->
             <div class="row px-3 py-2">
                 <div class="col-md-7 col-sm-auto">
@@ -37,12 +32,12 @@ th {
                     <!-- to insert link below -->
                     <small><a href="/" class="pt-3 ps-3 mt-2" style="color:grey">View all</a></small> 
                     <div class="pt-3 ps-3" style="margin-right:25px">
-                        <table class="table" style="border:1px solid green;text-align:center">
+                        <table class="table border rounded" style="text-align:center">
                             <thead>
                                 <tr>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
-                                <th scope="col">Name</th>
+                                <th scope="col">Department</th>
                                 <th scope="col">Organisation</th>
                                 <th scope="col">Points</th>
                                 </tr>
@@ -94,9 +89,9 @@ th {
             </div>
             <hr>
 
-            <!-- Explore -->
-            <div class="px-3 py-2">
-                <h3 class="pt-3 ps-3 mt-2"><strong><b><i>Explore</i></b></strong></h3>
+            <!-- Shortcuts -->
+            <div class="px-3 pt-2">
+                <h3 class="mb-2">Shortcuts</h3>
             </div>
             
             <div class="shift d-flex-center px-3 py-2">
@@ -105,15 +100,15 @@ th {
                         <button type="button" class="btn btn-outline-success" style="border-radius:10px 0px 0px 10px;padding:0px; margin:0px">
                             <img src="../assets/clipboard.png" height="81" style="margin:0px;padding:10px">
                         </button>
-                        <button type="button" class="btn btn-outline-success" style="border-radius:0px 10px 10px 0px;padding-top:30px; padding-bottom:30px; padding-left:74px; padding-right:74px;margin:0px">
-                        <lead>Add Listing</lead></button>
+                        <button type="button" class="btn" style="border-radius:0px 10px 10px 0px;padding-top:30px; padding-bottom:30px;margin:0px;border-color:#c5dad2" disabled>
+                        <lead>Add New Listing</lead></button>
                     </div>
                     <div class="col col-sm-auto">
-                        <button type="button" class="btn btn-outline-success" style="border-radius:10px 0px 0px 10px;padding:0px; margin:0px">
-                            <img src="../assets/dchair.png" height="81" style="margin:0px;padding:10px">
+                        <button type="button" class="btn btn-outline-dark" style="border-radius:10px 0px 0px 10px;padding:0px; margin:0px">
+                            <img src="../assets/dchair.png" height="82" style="margin:0px;padding:10px">
                         </button>
-                        <button type="button" class="btn btn-outline-success" style="border-radius:0px 10px 10px 0px;padding-top:30px; padding-bottom:30px; padding-left:74px; padding-right:74px;margin:0px">
-                        <lead>&nbsp;Add Asset&nbsp;</lead></button>
+                        <button type="button" class="btn" style="border-radius:0px 10px 10px 0px;padding-top:30px; padding-bottom:30px;margin:0px;border-color:#c5dad2" disabled>
+                        <lead>&nbsp;Add New Inventory&nbsp;</lead></button>
                     </div>
                 </div>
             </div>
@@ -125,12 +120,6 @@ th {
                 <small class="pt-3 ps-3 mt-2"><i>Listed by your department</i></small>
             </div>
             <div class="row">
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
