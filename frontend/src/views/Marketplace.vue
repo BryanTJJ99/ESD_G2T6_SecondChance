@@ -5,7 +5,7 @@
         <div class="container-flex p-3" style="margin-left:4.5rem">
             <div class="row px-3 py-2">
                 <div class="col-lg-2">
-                    <h3 class="">{{header}} <span><h4>{{category}}</h4></span></h3>
+                    <h3 class="pt-3 ps-3 mt-2">{{header}} <span><h4>{{category}}</h4></span></h3>
                 </div>
                 <div class="col-lg-10 d-flex justify-content-lg-end justify-content-start pe-lg-4 ps-4">
                     <div>
