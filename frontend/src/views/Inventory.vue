@@ -28,17 +28,18 @@
                     <button v-for="item in items" :key="item.id" type="button"
                         class="list-group-item list-group-item-action d-flex justify-content-between p-3 pt-3 ps-3">
 
-                        <p>{{ item['name'] }} &nbsp; 
-                            <span>
-                                <small> &nbsp;  {{ item['category'] }}</small>
-                            </span>
-                        </p>
+                        <p>{{ item['name'] }} &nbsp; </p>
 
                         <div class="align-items-center">
-                            <span class="badge" style="background-color:#c5dad2; color: black; width: 100px;">
-                            <p>Quantity : {{ item['Quantity'] }}</p></span>
-                            <i class="fa-regular fa-store mx-3" data-bs-toggle="modal"
-                            data-bs-target="#marketModal"></i>
+                            <small>{{ item['category'] }}</small>
+
+                            <!-- <span class="badge mx-3" style="background-color:#c5dad2; color: black; width: 100px;">
+                                <p>Quantity : {{ item['Quantity'] }}</p>
+                            </span> -->
+                            <small class="mx-3">Quantity : {{ item['Quantity'] }}</small>
+
+                            <i class="fa-regular fa-store mr-3" data-bs-toggle="modal"
+                            data-bs-target="#marketModal" style="color: grey;"></i>
                         </div>
                         
                     </button>
@@ -129,22 +130,22 @@ export default {
             items: [
                 {
                     "name": "Ikea Dalgon",
-                    "category": "Chair",
+                    "category": "Furniture",
                     "Quantity": 4
                 },
                 {
                     "name": "Swiss Candace",
-                    "category": "Chair",
+                    "category": "Furniture",
                     "Quantity": 10
                 },
                 {
                     "name": "Woo Jablomi",
-                    "category": "Chair",
+                    "category": "Equipment",
                     "Quantity": 5
                 },
                 {
                     "name": "Big ForceKin",
-                    "category": "Table",
+                    "category": "Electronics",
                     "Quantity": 10
                 },
                 {
