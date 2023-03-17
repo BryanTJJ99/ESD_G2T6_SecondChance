@@ -22,12 +22,11 @@ td {
             <!-- Welcome back -->
             <div class="row px-3 py-2">
                 <div class="col-md-7 col-sm-auto">
-                    <!-- <h3 class="mb-2"><i>Welcome back name,</i></h3> -->
-                    <h3 class="pt-3 ps-3 mt-2">Welcome back name,</h3>
+                    <h3 class="pt-3 ps-3">Welcome back,</h3>
                     <h5 class="pt-1 ps-3">&nbsp;what would you look like to do today?</h5>
                 </div>
                 <div class="col-md-5 col-sm-auto pt-3 ps-3">
-                    <h4 class="pt-3 ps-3">Leaderboard</h4>
+                    <h4 class="ps-3">Leaderboard</h4>
                     <spacer></spacer>
                     <!-- to insert link below -->
                     <small><a href="/" class="pt-3 ps-3 mt-2" style="color:grey">View all</a></small> 
@@ -91,10 +90,10 @@ td {
 
             <!-- Shortcuts -->
             <div class="px-3 pt-2">
-                <h3 class="mb-2">Shortcuts</h3>
+                <h3 class=" ps-3 mb-2">Shortcuts</h3>
             </div>
             
-            <div class="shift d-flex-center">
+            <div class="shift d-flex-center ps-3">
                 <div class="row pt-3 ps-3 mt-2">
                     <div class="col col-sm-auto pb-4">
                         <button type="button" class="btn btn-outline-success" style="border-radius:10px 0px 0px 10px;padding:0px; margin:0px">
@@ -116,7 +115,7 @@ td {
             
             <!-- Your listings -->
             <div class="px-3 py-2">
-                <h3 class="pt-3 ps-3 mt-2"><strong><b><i>Your Listings</i></b></strong></h3>
+                <h3 class="ps-3">Your Recent Listings</h3>
                 <small class="pt-3 ps-3 mt-2"><i>Listed by your department</i></small>
             </div>
             <div class="row">
