@@ -2,28 +2,28 @@
     <div>
         <TopNavbar :organization="organization" :department="department"/>
         <Sidebar/>
-        <div class="container p-3" style="width: 100%; margin-left: 4.5rem;">
+        <div class="container" style="width: 100%; margin-left: 4.5rem;">
             
-            <div class="d-flex justify-content-between p-0 align-items-center">
-                <div class="">
-                    <h3>Inventory Management</h3>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="row px-3 py-2">
+                    <h3 class="pt-3 ps-3 mt-2">Inventory Management</h3>
                 </div>
-                <div class="">
+                <div class="pt-4 ps-3 mt-2 px-3">
                     <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" >Add Item</button>
                 </div>
             </div>
         </div>
         <div class="container p-3" style="width: 100%; margin-left: 4.5rem;">
             
-            <div class="input-group mb-3">
-                <span class="input-group-text" style="background-color:#c5dad2;" id="inputGroup-sizing-default">
-                    <p>Search</p>
+            <div class="input-group mb-3 px-3 py-2">
+                <span class="input-group-text pt-3 ps-3 mt-2" style="background-color:#c5dad2;" id="inputGroup-sizing-default">
+                    <p class="mb-2">Search</p>
                 </span>
 
-                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                <input type="text" class="form-control pt-3 ps-3 mt-2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
             </div>
-            <div class="list-group">
-                <button v-for="item in items" :key="item.id" type="button" class="list-group-item list-group-item-action d-flex justify-content-between p-3">
+            <div class="list-group px-3">
+                <button v-for="item in items" :key="item.id" type="button" class="list-group-item list-group-item-action d-flex justify-content-between p-3 pt-3 ps-3 mt-2">
                     <p>{{item['name']}}</p>
                     <span class="badge" style="background-color:#c5dad2; color: black; width: 100px;"> <p>Quantity : {{ item['Quantity'] }}</p></span>
                 </button>

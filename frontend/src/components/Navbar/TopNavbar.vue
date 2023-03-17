@@ -9,10 +9,10 @@
 <template>
 
     <nav class="navbar navbar-light d-flex justify-content-between topnav" style="position:sticky;top:0;z-index:4">
-        <div class="d-flex align-items-center px-4">
-                <img class="ms-4 me-1" src="../../assets/logo.png" style="height:20px;">
+        <div class="d-flex align-items-center mx-1">
+                <img class="ms-4 me-1" src="../../assets/logo.png" style="height:35px;">
                 <router-link to="/" class="nav-link text-dark m-0 p-0" >
-                    <p class="logo ">SecondChance</p>
+                    <h5 class="logo ">SecondChance</h5>
                 </router-link>
         </div>
         <div>
