@@ -14,13 +14,9 @@ var Schema = mongoose.Schema
 
 var UserSchema = new Schema({
     id: String,
+    fullName: String,
     email: String,
-    password: String,
-    deparmentId: Number,
-    postalCode: Number,
-    companyName: String,
-    departmentName: String,
-    totalCarbon: Number
+    password: String
 })
 
 var Users = mongoose.model('users', UserSchema)
@@ -48,26 +44,18 @@ initialise.initializeApp(firebaseConfig)
 app.use(bodyParser.json({limit: '50mb'}))
 app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}))
 
-app.get("/", (req,res) => {
-    res.status(200).send("It works")
-})
-
 app.post("/register", async (req, res) => {
     const email = req.body.email
     const password = req.body.password
-    const firstName = req.body.firstName
-    const lastName = req.body.lastName
-    const departmentId = req.body.departmentId
-    const officeId = req.body.officeId
+    const fullName = req.body.fullName
     try {
         await firebase.createUserWithEmailAndPassword(firebase.getAuth(), email, password)
         const userId = await firebase.getAuth().currentUser.reloadUserInfo.localId
         await Users.create({
             id: userId,
-            firstName: firstName,
-            lastName: lastName,
-            departmentId: departmentId,
-            officeId: officeId
+            fullName: fullName,
+            email: email,
+            password: password
         })
         res.status(200).json("Registered")
     } catch (error) {
