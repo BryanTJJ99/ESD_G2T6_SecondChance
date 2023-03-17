@@ -94,8 +94,8 @@ td {
                 <h3 class="mb-2">Shortcuts</h3>
             </div>
             
-            <div class="shift d-flex-center px-3 py-2">
-                <div class="row  pt-3 ps-3 mt-2">
+            <div class="shift d-flex-center">
+                <div class="row pt-3 ps-3 mt-2">
                     <div class="col col-sm-auto pb-4">
                         <button type="button" class="btn btn-outline-success" style="border-radius:10px 0px 0px 10px;padding:0px; margin:0px">
                             <img src="../assets/clipboard.png" height="81" style="margin:0px;padding:10px">
