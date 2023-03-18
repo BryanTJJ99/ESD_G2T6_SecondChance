@@ -1,3 +1,4 @@
+
 <style>
 table {
     border-collapse: collapse;
@@ -28,15 +29,14 @@ table {
         <div class="container-flex p-3" style="margin-left:4.5rem">
             <!-- Welcome back -->
             <div class="row px-3 py-2">
-                <div class="col-md-7 col-sm-auto">
+                <div class="col-md-7 col-sm-auto" data-aos="fade-down">
                     <h3 class="pt-3 ps-3">Welcome back,</h3>
                     <h5 class="pt-1 ps-3">&nbsp;what would you look like to do today?</h5>
                 </div>
                 <div class="col-md-5 col-sm-auto pt-3">
-                    <h4>Leaderboard</h4>
-                    <spacer></spacer>
+                    <h4 data-aos="fade-down">Leaderboard</h4>
                     <!-- to insert link below -->
-                    <small><a href="/" class="pt-3 mt-2" style="color:grey">View all</a></small> 
+                    <small><a href="/" class="pt-3 mt-2" style="color:grey" data-aos="fade-down">View all</a></small> 
                     <div class="pt-1">
                         <table style="text-align:center">
                             <tr>
@@ -94,7 +94,7 @@ table {
 
             <!-- Shortcuts -->
             <div class="px-3 pt-2">
-                <h3 class=" ps-3 mb-2">Shortcuts</h3>
+                <h3 class=" ps-3 mb-2" data-aos="fade-down">Shortcuts</h3>
             </div>
             
             <div class="shift d-flex-center ps-3">
@@ -118,11 +118,11 @@ table {
             <hr>
             
             <!-- Your listings -->
-            <div class="px-3 py-2">
+            <div class="px-3 py-2" data-aos="fade-down">
                 <h3 class="ps-3">Your Recent Listings</h3>
                 <small class="pt-3 ps-3 mt-2"><i>Listed by your department</i></small>
             </div>
-            <div class="row">
+            <div class="row" data-aos="fade-up">
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
@@ -140,8 +140,18 @@ table {
     import Sidebar from "@/components/Navbar/Sidebar.vue";
     import Footer from "@/components/Footer.vue";
     import ListingCard from "@/components/ListingCard.vue";
+    // import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+    // import 'bootstrap/dist/css/bootstrap.css'
+    // import 'bootstrap-vue/dist/bootstrap-vue.css'
+    import AOS from 'aos'
+    import 'aos/dist/aos.css';
 
     export default {
+        mounted() {
+            AOS.init({
+                duration: 1300,
+            })
+        },
         data(){
             return {
                 department : "Finance",
@@ -152,7 +162,8 @@ table {
             TopNavbar,
             Sidebar,
             Footer,
-            ListingCard
+            ListingCard,
+            // BootstrapVue
         },
         
     }

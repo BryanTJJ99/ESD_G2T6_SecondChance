@@ -5,7 +5,7 @@
         <div class="container-flex p-3" style="margin-left:4.5rem">
             <div class="row px-3 py-2">
                 <div class="col-lg-2">
-                    <h3 class="pt-3 ps-3 ">{{header}} <span><h4>{{category}}</h4></span></h3>
+                    <h3 class="pt-3 ps-3" data-aos="fade-down">{{header}} <span><h4>{{category}}</h4></span></h3>
                 </div>
                 <div class="col-lg-10 d-flex justify-content-lg-end justify-content-start pe-lg-4 ps-4">
                     <div>
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <hr class="my-0">
-            <div class="row">
+            <div class="row" data-aos="fade-up">
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
@@ -62,8 +62,15 @@
     import TopNavbar from "@/components/Navbar/TopNavbar.vue";
     import Sidebar from "@/components/Navbar/Sidebar.vue"
     import ListingCard from "@/components/ListingCard.vue"
+    import AOS from 'aos'
+    import 'aos/dist/aos.css';
 
     export default {
+        mounted() {
+            AOS.init({
+                duration: 1300,
+            })
+        },
         data(){
             return {
                 company: "SMU",
