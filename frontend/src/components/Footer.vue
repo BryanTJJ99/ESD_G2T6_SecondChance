@@ -1,7 +1,4 @@
-
 <template>
-    <!-- Remove the container if you want to extend the Footer to full width. -->
-
       <!-- Footer -->
       <footer class="text-center text-white" style="background-color: #c5dad2; margin-left:4.5rem">
         <!-- Grid container -->
