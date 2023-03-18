@@ -8,8 +8,8 @@ from flask_cors import CORS
 # CORS(app)
 
 
-# Get scores
-# @app.route('/slack/<dept_id>', methods=['POST'])
+# Get item added
+# @app.route('/slack/<item_id>', methods=['POST'])
 # def getSlackMsg(item_id):
 #     if request.is_json:
 #         item = request.get_json()
@@ -31,30 +31,16 @@ KAFKA_SERVER = 'localhost:9092'
 
 producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER)
 
-producer.send(TOPIC_NAME, b' hi this is a test!!!!')
+# dummy data, data will come from item management
+dept_name = 'finance'
+img_url = 'https://picsum.photos/id/237/200/300'
+data = {'dept_name': dept_name, 'img_url':img_url}
+
+
+message = json.dumps(data).encode('utf-8')
+producer.send(TOPIC_NAME, message)
 producer.flush()
 
-# producer = KafkaProducer(value_serializer=lambda v: json.dumps(v).encode('utf-8'),bootstrap_servers=KAFKA_SERVER)
-# #data will come from item management
-# # department_name = getSlackMsg().departmentName
-# # image_url = getSlackMsg().isListing.itemPicture
-# department_name = 'finance'
-# image_URL = 'https://picsum.photos/id/237/200/300'
-
-# message = {
-#     "text": f"*{department_name}*",
-#     "attachments": [
-#         {
-#             "fallback": "New items added to the marketplace",
-#             "color": "#36a64f",
-#             "pretext": "New items added to the marketplace",
-#             "image_url": 'image_url'
-#         }
-#     ]
-# }
 
 
-# producer.send(TOPIC_NAME, message)
-
-# producer.flush()
 
