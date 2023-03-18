@@ -10,7 +10,7 @@
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
         <li class="nav-item">
             <router-link to="/" class="nav-link py-4" >
-                <i class="fas fa-home" style="color:black"></i>
+                <i class="fas fa-home"  style="color:black"></i>
             </router-link>
         </li>
         <li>
@@ -52,6 +52,7 @@
 
 <script>
   import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+
   export default {
     data(){
       return{
@@ -59,6 +60,7 @@
             organization : "SMU",
       }
     },
+    
     methods: {
       signOut(){
         const auth = getAuth()
