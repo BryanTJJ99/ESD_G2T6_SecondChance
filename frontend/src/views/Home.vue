@@ -1,16 +1,23 @@
 <style>
-
 table {
-    border-collapse:separate;
-    border:solid black 1px;
-    border-radius:6px;
-}
-
-td {
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 740px;
+    margin: 0 auto;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  th, td {
+    text-align: center;
+    padding: 10px;
+    background-color: #d6e4df;
+  }
+  
+  th {
+    background-color: #d6e4df;
+    font-weight: bold;
+  }
 
 </style>
 <template>
@@ -25,66 +32,63 @@ td {
                     <h3 class="pt-3 ps-3">Welcome back,</h3>
                     <h5 class="pt-1 ps-3">&nbsp;what would you look like to do today?</h5>
                 </div>
-                <div class="col-md-5 col-sm-auto pt-3 ps-3">
-                    <h4 class="ps-3">Leaderboard</h4>
+                <div class="col-md-5 col-sm-auto pt-3">
+                    <h4>Leaderboard</h4>
                     <spacer></spacer>
                     <!-- to insert link below -->
-                    <small><a href="/" class="pt-3 ps-3 mt-2" style="color:grey">View all</a></small> 
-                    <div class="pt-1 ps-3" style="margin-right:25px">
-                        <table class="table border rounded" style="text-align:center">
-                            <thead>
-                                <tr>
+                    <small><a href="/" class="pt-3 mt-2" style="color:grey">View all</a></small> 
+                    <div class="pt-1">
+                        <table style="text-align:center">
+                            <tr>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
                                 <th scope="col">Department</th>
                                 <th scope="col">Organisation</th>
                                 <th scope="col">Points</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                <th scope="row">1</th>
-                                <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp" class="rounded-circle"
-                                    height="36" alt="Avatar" loading="lazy" /></td>
-                                <td>Otto</td>
-                                <td>Facebook</td>
-                                <td>38</td>
-                                </tr>
-                                <tr>
-                                <th scope="row">2</th>
-                                <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (25).webp" class="rounded-circle"
+                            </tr>
+                            <tr>
+                            <th scope="row">1</th>
+                            <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp" class="rounded-circle"
                                 height="36" alt="Avatar" loading="lazy" /></td>
-                                <td>Thornton</td>
-                                <td>Twitter</td>
-                                <td>23</td>
-                                </tr>
-                                <tr>
-                                <th scope="row">3</th>
-                                <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (12).webp" class="rounded-circle"
-                                height="36" alt="Avatar" loading="lazy" /></td>
-                                <td>Human</td>
-                                <td>Apple</td>
-                                <td>16</td>
-                                </tr>
-                                <tr>
-                                <th scope="row">...</th>
-                                <td>...</td>
-                                <td>...</td>
-                                <td>...</td>
-                                <td>...</td>
-                                </tr>
-                                <tr>
-                                <th scope="row">42</th>
-                                <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (9).webp" class="rounded-circle"
-                                height="36" alt="Avatar" loading="lazy" /></td>
-                                <td>Doge&nbsp;<lead>(Me)</lead></td>
-                                <td>Apple</td>
-                                <td>4</td>
-                                </tr>
-                            </tbody>
+                            <td>Otto</td>
+                            <td>Facebook</td>
+                            <td>38</td>
+                            </tr>
+                            <tr>
+                            <th scope="row">2</th>
+                            <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (25).webp" class="rounded-circle"
+                            height="36" alt="Avatar" loading="lazy" /></td>
+                            <td>Thornton</td>
+                            <td>Twitter</td>
+                            <td>23</td>
+                            </tr>
+                            <tr>
+                            <th scope="row">3</th>
+                            <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (12).webp" class="rounded-circle"
+                            height="36" alt="Avatar" loading="lazy" /></td>
+                            <td>Human</td>
+                            <td>Apple</td>
+                            <td>16</td>
+                            </tr>
+                            <tr>
+                            <th scope="row">...</th>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            </tr>
+                            <tr>
+                            <th scope="row">42</th>
+                            <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (9).webp" class="rounded-circle"
+                            height="36" alt="Avatar" loading="lazy" /></td>
+                            <td>Doge&nbsp;<lead>(Me)</lead></td>
+                            <td>Apple</td>
+                            <td>4</td>
+                            </tr>
                         </table>
                     </div>
                 </div>
+                
             </div>
             <hr>
 
