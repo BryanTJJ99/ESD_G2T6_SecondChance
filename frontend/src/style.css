@@ -39,6 +39,19 @@ h1, h2, h3, h4, h5, p{
     color:#6e9190
 }
 
+.footer {
+  background-color:#c5dad2;
+  z-index:2;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 4.5rem;
+  box-shadow:0 0 8px 8px rgba(208, 207, 207, 0.3);
+  margin-bottom: 0;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
 h1, h2, h3, h4, h5, p, small, label, span {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
