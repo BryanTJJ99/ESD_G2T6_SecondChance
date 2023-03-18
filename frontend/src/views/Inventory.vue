@@ -2,7 +2,7 @@
     <div>
         <TopNavbar :organization="organization" :department="department" />
         <Sidebar />
-        <div class="container-flex d-flex justify-content-center p-3" style="margin-left: 4.5rem;">
+        <div class="container-flex d-flex justify-content-center p-3" style="margin-left: 4.5rem;height:100vh;">
 
             <div class="w-100 px-3 py-2">
 
@@ -111,7 +111,7 @@
                 </div>
             </div>
         </div>
-
+        <Footer style="margin-left:4.5rem;"></Footer>
     </div>
 </template>
 
@@ -119,6 +119,7 @@
 import TopNavbar from "@/components/Navbar/TopNavbar.vue";
 import Sidebar from "@/components/Navbar/Sidebar.vue";
 import Container from "@/components/Container.vue";
+import Footer from "@/components/Footer.vue";
 
 export default {
     data() {
@@ -158,7 +159,8 @@ export default {
     },
     components: {
         TopNavbar,
-        Sidebar
+        Sidebar,
+        Footer
     },
     methods: {
         addItem: function () {

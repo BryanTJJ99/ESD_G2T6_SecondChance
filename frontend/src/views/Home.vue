@@ -122,14 +122,14 @@ table {
                 <h3 class="ps-3">Your Recent Listings</h3>
                 <small class="pt-3 ps-3 mt-2"><i>Listed by your department</i></small>
             </div>
-            <div class="row">
+            <div class="row pb-4">
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
             </div>
         </div>
-        <Footer></Footer>
+        <Footer style="margin-left:4.5rem;"></Footer>
     </div>
 
 

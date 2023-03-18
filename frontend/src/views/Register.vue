@@ -21,7 +21,7 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
             </div>
             <div class="col-lg-5 col-12" style="background-color:white;border-radius: 0px 0px 0px 15px;">
                 <div class="text-center px-3" style="margin-top:15%;">
-                    <img src="../assets/logo.png" style="height:80px;opacity:50%;">
+                    <img src="../assets/logo.png" style="height:50px;opacity:50%;">
                     <h3 class="mt-1">SecondChance</h3>
                     <form class="mt-5 px-5">
                         <div class="group">
@@ -57,37 +57,14 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
                     </form>
                 </div>
 
-                <div class="my-5 pt-3">
+                <div class="my-5 pt-2">
                     <button class="btn btn-dark d-block mx-auto" style="width:250px;"><span>Register Now</span></button>
                 </div>
             </div>
         </div>
 
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <Footer></Footer>
 
 <!-- <div>
         <h1>Register</h1>
@@ -106,6 +83,8 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
 </template>
 
 <script>
+import Footer from "@/components/Footer.vue";
+
 export default {
     data() {
         return {
@@ -129,5 +108,8 @@ export default {
                 })
         }
     },
+    components: {
+        Footer
+    }
 }
 </script>

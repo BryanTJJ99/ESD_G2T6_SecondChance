@@ -9,7 +9,7 @@
         </a> -->
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
         <li class="nav-item">
-            <router-link to="/" class="nav-link py-4" >
+            <router-link to="/home" class="nav-link py-4" >
                 <i class="fas fa-home" style="color:black"></i>
             </router-link>
         </li>

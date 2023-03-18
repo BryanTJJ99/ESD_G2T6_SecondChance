@@ -7,9 +7,9 @@
                     Marketplace</span></i></router-link>
     </div>
 
-    <div class="row ps-3 py-4 pe-4" style="margin-left:4.5rem;">
+    <div class="row ps-5 py-4 pe-4" style="margin-left:4.5rem;">
 
-        <div class="col-xl-6">
+        <div class="col-xl-6 pb-5">
 
             <!-- Carousel wrapper -->
             <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel"
@@ -91,20 +91,16 @@
                 </i> &nbsp; Contact Seller</span></button>
             </div>
 
-
         </div>
-
-
-
-
-
     </div>
+    <Footer style="margin-left:4.5rem;"></Footer>
 </template>
 
 <script>
 import TopNavbar from "@/components/Navbar/TopNavbar.vue";
 import Sidebar from "@/components/Navbar/Sidebar.vue"
 import ListingCard from "@/components/ListingCard.vue"
+import Footer from "@/components/Footer.vue"
 
 export default {
     data() {
@@ -126,7 +122,8 @@ export default {
     components: {
         TopNavbar,
         Sidebar,
-        ListingCard
+        ListingCard,
+        Footer
     },
     methods: {
         setCategory() {
