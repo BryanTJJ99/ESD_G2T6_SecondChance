@@ -1,4 +1,3 @@
-from crypt import methods
 from bson import ObjectId
 from dotenv import load_dotenv
 from flask import Flask, request
@@ -13,7 +12,7 @@ load_dotenv()
 app = Flask(__name__)
 mongodb = os.getenv('MONGODB')
 client = pymongo.MongoClient(mongodb)
-db = client['test']
+db = client['ESDProject']
 itemCollection = db['items']
 userCollection = db['users']
 
