@@ -55,6 +55,7 @@
 
             </div>
         </div>
+        <scroll-to-top></scroll-to-top>
     </div>
 </template>
 
@@ -62,6 +63,7 @@
     import TopNavbar from "@/components/Navbar/TopNavbar.vue";
     import Sidebar from "@/components/Navbar/Sidebar.vue"
     import ListingCard from "@/components/ListingCard.vue"
+    import ScrollToTop from "@/components/ScrollToTop.vue"
     import AOS from 'aos'
     import 'aos/dist/aos.css';
 
@@ -84,7 +86,8 @@
         components: {
             TopNavbar,
             Sidebar,
-            ListingCard
+            ListingCard,
+            ScrollToTop
         },
         methods: {
             setCategory(){

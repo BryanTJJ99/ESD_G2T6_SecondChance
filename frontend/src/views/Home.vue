@@ -129,6 +129,7 @@ table {
                 <ListingCard></ListingCard>
             </div>
         </div>
+        <scroll-to-top></scroll-to-top>
         <Footer></Footer>
     </div>
 
@@ -140,11 +141,13 @@ table {
     import Sidebar from "@/components/Navbar/Sidebar.vue";
     import Footer from "@/components/Footer.vue";
     import ListingCard from "@/components/ListingCard.vue";
+    import ScrollToTop from "@/components/ScrollToTop.vue"
     // import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
     // import 'bootstrap/dist/css/bootstrap.css'
     // import 'bootstrap-vue/dist/bootstrap-vue.css'
     import AOS from 'aos'
     import 'aos/dist/aos.css';
+
 
     export default {
         mounted() {
@@ -163,6 +166,7 @@ table {
             Sidebar,
             Footer,
             ListingCard,
+            ScrollToTop
             // BootstrapVue
         },
         
