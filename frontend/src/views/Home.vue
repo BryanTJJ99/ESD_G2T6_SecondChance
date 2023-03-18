@@ -12,11 +12,11 @@ table {
   th, td {
     text-align: center;
     padding: 10px;
-    background-color: #d6e4df;
+    background-color: #f2f6f5f0;
   }
   
   th {
-    background-color: #d6e4df;
+    background-color: #f2f6f5f0;
     font-weight: bold;
   }
 
@@ -41,32 +41,25 @@ table {
                         <table style="text-align:center">
                             <tr>
                                 <th scope="col"></th>
-                                <th scope="col"></th>
                                 <th scope="col">Department</th>
                                 <th scope="col">Organisation</th>
                                 <th scope="col">Points</th>
                             </tr>
                             <tr>
                             <th scope="row">1</th>
-                            <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp" class="rounded-circle"
-                                height="36" alt="Avatar" loading="lazy" /></td>
-                            <td>Otto</td>
+                            <td>Finance</td>
                             <td>Facebook</td>
                             <td>38</td>
                             </tr>
                             <tr>
                             <th scope="row">2</th>
-                            <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (25).webp" class="rounded-circle"
-                            height="36" alt="Avatar" loading="lazy" /></td>
-                            <td>Thornton</td>
+                            <td>Marketing</td>
                             <td>Twitter</td>
                             <td>23</td>
                             </tr>
                             <tr>
                             <th scope="row">3</th>
-                            <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (12).webp" class="rounded-circle"
-                            height="36" alt="Avatar" loading="lazy" /></td>
-                            <td>Human</td>
+                            <td>Customer Service</td>
                             <td>Apple</td>
                             <td>16</td>
                             </tr>
@@ -75,13 +68,10 @@ table {
                             <td>...</td>
                             <td>...</td>
                             <td>...</td>
-                            <td>...</td>
                             </tr>
                             <tr>
                             <th scope="row">42</th>
-                            <td><img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (9).webp" class="rounded-circle"
-                            height="36" alt="Avatar" loading="lazy" /></td>
-                            <td>Doge&nbsp;<lead>(Me)</lead></td>
+                            <td>Finance&nbsp;<lead>(Me)</lead></td>
                             <td>Apple</td>
                             <td>4</td>
                             </tr>
