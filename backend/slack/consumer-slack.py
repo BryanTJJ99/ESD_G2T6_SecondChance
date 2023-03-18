@@ -1,6 +1,6 @@
 from kafka import KafkaConsumer
 from slack_bolt import App
-app = App(token="xoxb-4901815051863-4909773123750-UWV8RvUdTyG6fDRFxAQhTBL4")
+app = App(token="xoxb-4901815051863-4909773123750-lI9Ug63QZfBfPhJsL2KMArwk")
 
 TOPIC_NAME = 'slack'
 
@@ -21,9 +21,3 @@ for message in consumer:
     channel_id = "C04SYABL19Q"  # Replace with your channel ID
     message_text = message.value.decode('utf-8')
     send_message_to_channel(channel_id, message_text)
-
-
-
-
-
-
