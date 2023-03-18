@@ -52,6 +52,7 @@
 
 <script>
   import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+
   export default {
     data(){
       return{
@@ -59,6 +60,7 @@
             organization : "SMU",
       }
     },
+    
     methods: {
       signOut(){
         const auth = getAuth()

@@ -5,7 +5,7 @@
         <div class="container-flex p-3" style="margin-left:4.5rem;style:100vh;">
             <div class="row px-3 py-2">
                 <div class="col-lg-2">
-                    <h3 class="pt-3 ps-3 ">{{header}} <span><h4>{{category}}</h4></span></h3>
+                    <h3 class="pt-3 ps-3" data-aos="fade-down">{{header}} <span><h4>{{category}}</h4></span></h3>
                 </div>
                 <div class="col-lg-10 d-flex justify-content-lg-end justify-content-start pe-lg-4 ps-4">
                     <div>
@@ -41,7 +41,8 @@
                 </div>
             </div>
             <hr class="my-0">
-            <div class="row py-3">
+            <div class="row py-3" data-aos="fade-up">
+
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
@@ -55,7 +56,9 @@
 
             </div>
         </div>
+        <scroll-to-top></scroll-to-top>
         <Footer style="margin-left:4.5rem;"></Footer>
+        <scroll-to-top></scroll-to-top>
     </div>
 </template>
 
@@ -64,8 +67,16 @@
     import Sidebar from "@/components/Navbar/Sidebar.vue"
     import ListingCard from "@/components/ListingCard.vue"
     import Footer from "@/components/Footer.vue";
+    import ScrollToTop from "@/components/ScrollToTop.vue"
+    import AOS from 'aos'
+    import 'aos/dist/aos.css';
 
     export default {
+        mounted() {
+            AOS.init({
+                duration: 1300,
+            })
+        },
         data(){
             return {
                 company: "SMU",
@@ -80,7 +91,8 @@
             TopNavbar,
             Sidebar,
             ListingCard,
-            Footer
+            Footer,
+            ScrollToTop
         },
         methods: {
             setCategory(){
