@@ -112,15 +112,17 @@ table {
                 <h3 class="ps-3">Your Recent Listings</h3>
                 <small class="pt-3 ps-3 mt-2"><i>Listed by your department</i></small>
             </div>
-            <div class="row" data-aos="fade-up">
+            <div class="row pb-4" data-aos="fade-up">
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
             </div>
         </div>
+     
         <scroll-to-top></scroll-to-top>
-        <Footer></Footer>
+        <Footer style="margin-left:4.5rem;"></Footer>
+
     </div>
 
 

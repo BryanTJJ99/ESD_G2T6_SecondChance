@@ -2,7 +2,7 @@
     <div>
         <TopNavbar/>
         <Sidebar/>
-        <div class="container-flex p-3" style="margin-left:4.5rem">
+        <div class="container-flex p-3" style="margin-left:4.5rem;style:100vh;">
             <div class="row px-3 py-2">
                 <div class="col-lg-2">
                     <h3 class="pt-3 ps-3" data-aos="fade-down">{{header}} <span><h4>{{category}}</h4></span></h3>
@@ -10,7 +10,7 @@
                 <div class="col-lg-10 d-flex justify-content-lg-end justify-content-start pe-lg-4 ps-4">
                     <div>
                         <ul id="growing-search-freebie" class="pt-3 mt-2 mb-0">
-                            <li style="background-color:#c5dad2;" class="rounded-3 p-1 my-0">
+                            <li style="background-color:#a3a0a0;" class="rounded-3 p-1 my-0">
                             <div class="growing-search">
                                 <div class="input">
                                 <input type="text" placeholder="Enter item" v-model="search"/>
@@ -41,7 +41,8 @@
                 </div>
             </div>
             <hr class="my-0">
-            <div class="row" data-aos="fade-up">
+            <div class="row py-3" data-aos="fade-up">
+
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
                 <ListingCard></ListingCard>
@@ -56,6 +57,8 @@
             </div>
         </div>
         <scroll-to-top></scroll-to-top>
+        <Footer style="margin-left:4.5rem;"></Footer>
+        <scroll-to-top></scroll-to-top>
     </div>
 </template>
 
@@ -63,6 +66,7 @@
     import TopNavbar from "@/components/Navbar/TopNavbar.vue";
     import Sidebar from "@/components/Navbar/Sidebar.vue"
     import ListingCard from "@/components/ListingCard.vue"
+    import Footer from "@/components/Footer.vue";
     import ScrollToTop from "@/components/ScrollToTop.vue"
     import AOS from 'aos'
     import 'aos/dist/aos.css';
@@ -87,6 +91,7 @@
             TopNavbar,
             Sidebar,
             ListingCard,
+            Footer,
             ScrollToTop
         },
         methods: {
