@@ -107,7 +107,7 @@ td {
                             <img src="../assets/dchair.png" height="82" style="margin:0px;padding:10px">
                         </button>
                         <button type="button" class="btn" style="border-radius:0px 10px 10px 0px;padding-top:30px; padding-bottom:30px;margin:0px;border-color:#c5dad2" disabled>
-                        <lead>&nbsp;Add a New Inventory&nbsp;</lead></button>
+                        <lead>Add a New Inventory</lead></button>
                     </div>
                 </div>
             </div>
