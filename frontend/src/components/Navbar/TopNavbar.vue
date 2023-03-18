@@ -12,7 +12,7 @@
         <div class="d-flex align-items-center px-4">
                 <img class="ms-4 me-1" src="../../assets/logo.png" style="height:20px;opacity:50%;">
                 <router-link to="/" class="nav-link text-dark m-0 p-0" >
-                    <p class="logo ">SecondChance</p>
+                    <h5 class="logo ">SecondChance</h5>
                 </router-link>
         </div>
         <div class="d-flex align-items-center">

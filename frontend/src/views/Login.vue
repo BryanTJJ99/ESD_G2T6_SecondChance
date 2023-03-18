@@ -1,77 +1,96 @@
 <script setup>
-    import { getAuth, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from 'firebase/auth'
 </script>
 
 
 <template>
-    <div class="container-fluid" style="background-color: #C5DAD2; height: 100vh;">
-       <div class="row">
-        <div class="col-7">
-            <div class="container-fluid my-auto d-lg-block d-none" style="height: 100vh;">
-                <div style="position: relative; right:200px; inherit; top: 200px; text-align: right;"> 
-                    <p>Your go to asset <br> management <br> system.</p>
-                 </div>
-                <img src="../assets/—Pngtree—isometric and colorful warehouse_5511333.png" alt="" style="width: 60%; position: absolute; left: -100px; top:-50px;">
-            </div>
-            
-        </div>
-        <div class="col-lg-5 col-12 p-0 d-flex align-items-center" >
-            <div class="p-3" style="width: 100%;">
-                <div class="text-center mb-5"> <h1>SecondChance</h1></div>
-                <div class="mb-3 ">
-                    <small class="m-1">Email</small>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+    <header style="background-color:#6e9190;" class="text-center">
+        <small style="color:white;">Track your carbon emissions. Give unwanted items a second chance.</small>
+    </header>
+    <div class="container-fluid" style="background-color: #C5DAD2; height: 120vh;">
+        <div class="row">
+            <div class="col-7">
+                <div class="container-fluid my-auto d-lg-block d-none" style="height: 100vh;">
+                    <div style="position: relative; top: 15%; text-align: right;" class="pe-5">
+                        <h4>Your go to asset <br> management <br> system.</h4>
                     </div>
+                    <img src="../assets/—Pngtree—isometric and colorful warehouse_5511333.png" alt=""
+                        style="width: 60%; position: absolute; left: -100px;">
                 </div>
-                <div class="mb-3 ">
-                    <small class="m-1">Password</small>
-                    <div class="input-group">
-                        <input type="password" class="form-control" id="basic-url" aria-describedby="basic-addon3">
-                    </div>
+
+            </div>
+            <div class="col-lg-5 col-12" style="background-color:white;border-radius: 0px 0px 0px 15px;">
+                <div class="text-center px-3" style="margin-top:20%;">
+                    <img src="../assets/logo.png" style="height:80px;opacity:50%;">
+                    <h3 class="mt-1">SecondChance</h3>
+                    <form class="mt-5 px-5">
+                        <div class="group">
+                            <input type="text" v-model="email" required>
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label>Enter Your Email:</label>
+                        </div>
+                        <div class="group mt-5">
+                            <input type="text" v-model="password" required>
+                            <span class="highlight"></span>
+                            <span class="bar"></span>
+                            <label>Enter Your Password:</label>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="mb-5 pb-5">
+                    <button class="btn btn-none d-block mx-auto mt-5" style="width:250px;"
+                        @click="signInWithGoogle"><span>Sign In With Google</span></button>
+                    <button class="btn btn-dark d-block mx-auto mb-5" style="width:250px;"><span>Log In</span></button>
+
+                    <hr style="width:250px;" class="mx-auto my-0">
+
+                    <small class="d-block text-center mt-4" style="font-style:italic;">Don't have an account?</small>
+                    <router-link to="/register">
+                    <button class="btn btn-light d-block mx-auto" style="width:250px;"><span>Register Here</span></button></router-link>
                 </div>
             </div>
-        </div>
-       </div>
-       
     </div>
 
-     <!-- <h1>Register</h1>
+</div>
+
+<!-- <h1>Register</h1>
         <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
             <input type="email" v-model="email" class="form-control" id="email" aria-describedby="emailHelp">
-        </div>
+                    </div>
         <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" v-model="password" class="form-control" id="password">
-        </div> -->
-        <!-- <button type="submit" @click="register" class="btn btn-primary">Submit</button>
-        <button class="btn btn-primary" @click="signInWithGoogle">Sign In With Google</button> -->
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" v-model="password" class="form-control" id="password">
+                    </div> -->
+    <!-- <button type="submit" @click="register" class="btn btn-primary">Submit</button>
+                    <button class="btn btn-primary" @click="signInWithGoogle">Sign In With Google</button> -->
 </template>
 
 <script>
-    export default{
-        beforeCreate() {
-            const auth = getAuth()
-            onAuthStateChanged(auth, user => {
-                if(user){
-                    this.$router.push('/')
-                }
-            })
-        },
-        data(){
-            return {
-                email: '',
-                password: '',
+export default {
+    beforeCreate() {
+        const auth = getAuth()
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                this.$router.push('/')
             }
-        },
-        methods: {
-            register(){
-                signInWithEmailAndPassword(getAuth(), this.email, this.password)
+        })
+    },
+    data() {
+        return {
+            email: '',
+            password: '',
+        }
+    },
+    methods: {
+        register() {
+            signInWithEmailAndPassword(getAuth(), this.email, this.password)
                 .then(() => {
                     this.$router.push('/')
                 })
-            }
-        },
-    }
+        }
+    },
+}
 </script>

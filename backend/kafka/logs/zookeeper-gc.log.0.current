@@ -1,38 +1,38 @@
 Java HotSpot(TM) 64-Bit Server VM (25.361-b09) for bsd-amd64 JRE (1.8.0_361-b09), built on Jan  9 2023 08:31:35 by "java_re" with gcc 4.2.1 Compatible Apple LLVM 11.0.0 (clang-1100.0.33.17)
-Memory: 4k page, physical 16777216k(90340k free)
+Memory: 4k page, physical 16777216k(23540k free)
 
 /proc/meminfo:
 
 CommandLine flags: -XX:+ExplicitGCInvokesConcurrent -XX:GCLogFileSize=104857600 -XX:InitialHeapSize=536870912 -XX:InitiatingHeapOccupancyPercent=35 -XX:+ManagementServer -XX:MaxGCPauseMillis=20 -XX:MaxHeapSize=536870912 -XX:MaxInlineLevel=15 -XX:NumberOfGCLogFiles=10 -XX:+PrintGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC -XX:+UseGCLogFileRotation 
-2023-03-11T18:50:17.819-0800: 0.913: [GC pause (G1 Evacuation Pause) (young), 0.0098611 secs]
-   [Parallel Time: 8.6 ms, GC Workers: 8]
-      [GC Worker Start (ms): Min: 913.2, Avg: 913.3, Max: 913.4, Diff: 0.2]
-      [Ext Root Scanning (ms): Min: 0.1, Avg: 0.7, Max: 3.3, Diff: 3.2, Sum: 5.3]
+2023-03-17T22:47:26.126-0800: 0.928: [GC pause (G1 Evacuation Pause) (young), 0.0100941 secs]
+   [Parallel Time: 8.8 ms, GC Workers: 8]
+      [GC Worker Start (ms): Min: 928.6, Avg: 928.6, Max: 928.7, Diff: 0.1]
+      [Ext Root Scanning (ms): Min: 0.1, Avg: 0.9, Max: 2.1, Diff: 2.0, Sum: 7.1]
       [Update RS (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]
          [Processed Buffers: Min: 0, Avg: 0.0, Max: 0, Diff: 0, Sum: 0]
-      [Scan RS (ms): Min: 0.0, Avg: 0.1, Max: 0.5, Diff: 0.5, Sum: 0.7]
-      [Code Root Scanning (ms): Min: 0.0, Avg: 3.2, Max: 7.4, Diff: 7.4, Sum: 25.8]
-      [Object Copy (ms): Min: 0.1, Avg: 1.4, Max: 3.7, Diff: 3.6, Sum: 11.2]
-      [Termination (ms): Min: 0.0, Avg: 2.8, Max: 3.8, Diff: 3.8, Sum: 22.2]
-         [Termination Attempts: Min: 1, Avg: 6.1, Max: 18, Diff: 17, Sum: 49]
-      [GC Worker Other (ms): Min: 0.0, Avg: 0.1, Max: 0.1, Diff: 0.1, Sum: 0.6]
-      [GC Worker Total (ms): Min: 8.1, Avg: 8.2, Max: 8.3, Diff: 0.2, Sum: 65.7]
-      [GC Worker End (ms): Min: 921.4, Avg: 921.5, Max: 921.5, Diff: 0.1]
+      [Scan RS (ms): Min: 0.0, Avg: 0.1, Max: 0.6, Diff: 0.6, Sum: 0.7]
+      [Code Root Scanning (ms): Min: 0.0, Avg: 2.7, Max: 6.8, Diff: 6.8, Sum: 21.2]
+      [Object Copy (ms): Min: 0.0, Avg: 1.8, Max: 2.9, Diff: 2.8, Sum: 14.4]
+      [Termination (ms): Min: 0.0, Avg: 2.9, Max: 3.5, Diff: 3.5, Sum: 23.0]
+         [Termination Attempts: Min: 1, Avg: 80.1, Max: 133, Diff: 132, Sum: 641]
+      [GC Worker Other (ms): Min: 0.0, Avg: 0.1, Max: 0.6, Diff: 0.6, Sum: 1.2]
+      [GC Worker Total (ms): Min: 8.3, Avg: 8.4, Max: 8.5, Diff: 0.2, Sum: 67.6]
+      [GC Worker End (ms): Min: 937.0, Avg: 937.1, Max: 937.1, Diff: 0.1]
    [Code Root Fixup: 0.0 ms]
    [Code Root Purge: 0.0 ms]
-   [Clear CT: 0.1 ms]
-   [Other: 1.2 ms]
+   [Clear CT: 0.0 ms]
+   [Other: 1.3 ms]
       [Choose CSet: 0.0 ms]
       [Ref Proc: 0.8 ms]
       [Ref Enq: 0.0 ms]
       [Redirty Cards: 0.0 ms]
-      [Humongous Register: 0.0 ms]
+      [Humongous Register: 0.1 ms]
       [Humongous Reclaim: 0.0 ms]
       [Free CSet: 0.0 ms]
-   [Eden: 25.0M(25.0M)->0.0B(21.0M) Survivors: 0.0B->4096.0K Heap: 25.0M(512.0M)->5384.0K(512.0M)]
- [Times: user=0.02 sys=0.01, real=0.01 secs] 
+   [Eden: 25.0M(25.0M)->0.0B(21.0M) Survivors: 0.0B->4096.0K Heap: 25.0M(512.0M)->5225.0K(512.0M)]
+ [Times: user=0.03 sys=0.01, real=0.01 secs] 
 Heap
- garbage-first heap   total 524288K, used 17672K [0x00000007a0000000, 0x00000007a0101000, 0x00000007c0000000)
-  region size 1024K, 17 young (17408K), 4 survivors (4096K)
- Metaspace       used 12116K, capacity 12432K, committed 12544K, reserved 1060864K
-  class space    used 1384K, capacity 1454K, committed 1536K, reserved 1048576K
+ garbage-first heap   total 524288K, used 18537K [0x00000007a0000000, 0x00000007a0101000, 0x00000007c0000000)
+  region size 1024K, 18 young (18432K), 4 survivors (4096K)
+ Metaspace       used 12040K, capacity 12304K, committed 12544K, reserved 1060864K
+  class space    used 1382K, capacity 1454K, committed 1536K, reserved 1048576K
