@@ -7,10 +7,11 @@
         <svg class="bi" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
         <span class="visually-hidden">Icon-only</span>
         </a> -->
+        
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
         <li class="nav-item">
-            <router-link to="/home" class="nav-link py-4" >
-                <i class="fas fa-home" style="color:black"></i>
+            <router-link to="/home" class="nav-link py-4" v-tooltip="'Click me!'">
+                <i class="fas fa-home" style="color:black" v-tooltip="'Click me!'"></i>
             </router-link>
         </li>
         <li>
@@ -51,23 +52,52 @@
 </template>
 
 <script>
-  import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+    import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+    import { ref, nextTick } from 'vue';
+    import { VTooltip } from 'v-tooltip';
+    import 'v-tooltip/dist/v-tooltip.css';
 
-  export default {
+    export default {
     data(){
-      return{
+        return{
             department : "Finance",
             organization : "SMU",
-      }
+            tooltip: null,
+        }
     },
-    
+
     methods: {
-      signOut(){
+        signOut(){
         const auth = getAuth()
         signOut(auth).then(() => {
-          console.log('Sign out complete')
+            console.log('Sign out complete')
         })
-      }
+        }
+    },
+
+    // components: {
+    //     VTooltip,
+    // },
+    // setup() {
+    //     const tooltip = ref(null);
+
+    //     return {
+    //     tooltip,
+    //     };
+    // },
+    // mounted() {
+    //     nextTick(() => {
+    //     this.$refs.tooltipTarget.addEventListener('mouseover', () => {
+    //         if (this.tooltip.value !== null) {
+    //             this.tooltip.value.show();
+    //         }
+    //     });
+    //     this.$refs.tooltipTarget.addEventListener('mouseout', () => {
+    //         if (this.tooltip.value !== null) {
+    //             this.tooltip.value.hide();
+    //         }
+    //     });
+    //     });
+    // },
     }
-  }
 </script>

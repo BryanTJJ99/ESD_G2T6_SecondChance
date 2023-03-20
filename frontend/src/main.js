@@ -1,4 +1,6 @@
 import { createApp } from 'vue'
+import VTooltip from 'v-tooltip'
+import 'v-tooltip/dist/v-tooltip.css'
 import App from './App.vue'
 import router from './router'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -9,8 +11,10 @@ import "../src/assets/fontawesome-free-6.3.0-web/css/brands.css"
 import "../src/assets/fontawesome-free-6.3.0-web/css/solid.css"
 import "./style.css"
 
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+// import { VTooltip } from 'v-tooltip'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -49,5 +53,6 @@ initializeApp(firebaseConfig);
 
 const app = createApp(App)
 app.use(router)
+app.use(VTooltip)
 
 app.mount('#app')
