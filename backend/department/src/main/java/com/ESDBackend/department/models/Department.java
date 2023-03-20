@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 @Document(collection = "department")
 public class Department {
@@ -16,8 +15,6 @@ public class Department {
 
     private String departmentName;
 
-    @Transient
-    private ArrayList<UserDto> users;
 
     private String country;
 
@@ -41,13 +38,6 @@ public class Department {
     
 
     //Getters and Setters
-    public ArrayList<UserDto> getUsers() {
-        return users;
-    }
-
-    public void setUsers(ArrayList<UserDto> users) {
-        this.users = users;
-    }
 
     public ArrayList<ItemDto> getItems() {
         return items;
