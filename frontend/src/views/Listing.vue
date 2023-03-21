@@ -6,8 +6,7 @@
                 style="color:#6e9190;height: 20px;"> <span style="font-style:italic;"> Back to
                     Marketplace</span></i></router-link>
     </div>
-
-    <div class="row ps-5 py-4 pe-4" style="margin-left:4.5rem;">
+    <div class="row ps-5 py-4 pe-4" style="margin-left:4.5rem;" data-aos="fade-down">
 
         <div class="col-xl-6 pb-5">
 
@@ -120,8 +119,15 @@ import TopNavbar from "@/components/Navbar/TopNavbar.vue";
 import Sidebar from "@/components/Navbar/Sidebar.vue"
 import ListingCard from "@/components/ListingCard.vue"
 import Footer from "@/components/Footer.vue"
+import AOS from 'aos'
+import 'aos/dist/aos.css';
 
 export default {
+    mounted() {
+            AOS.init({
+                duration: 1300,
+            })
+        },
     data() {
         return {
             search: "",
