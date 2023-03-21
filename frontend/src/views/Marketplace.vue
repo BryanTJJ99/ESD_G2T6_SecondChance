@@ -43,16 +43,16 @@
             <hr class="my-0">
             <div class="row py-3" data-aos="fade-up">
 
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
 
             </div>
         </div>
@@ -84,7 +84,8 @@
                 search: "",
                 header: "Marketplace",
                 categories: ["Furniture", "Office Supplies", "Equipment", "Electronics", "Others"],
-                category: ""
+                category: "",
+                offer: false
             }
         },
         components: {
