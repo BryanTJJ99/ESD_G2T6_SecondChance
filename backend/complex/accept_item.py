@@ -40,12 +40,13 @@ def accept_item(item_id):
 
 def process_accept_item(item_id):
     # retrieving item 
+    item = request.get_json()
     old_item_result = invoke_http(
         f"{item_url}/{item_id}",
         method="GET"
     )
 
-    # item retrieval failed --> handle error 
+    # if item retrieval fails
     if old_item_result["code"] not in range(200,300):
     
         print('\n\n-----Publishing the item retrieval error message with routing_key=retrieval.error-----')  
@@ -63,14 +64,9 @@ def process_accept_item(item_id):
 
 
         print("\nitem retrieval error published to RabbitMQ Exchange.\n")
-
-        # ##################### END OF AMQP code
-
         return old_item_result
-
-        # ##################### AMQP code
     
-    # item retrieval successful 
+    # else item retrieval successful 
     old_item_data = old_item_result['data']
 
     print('\n\n-----Publishing the item retrieval notification message with routing_key=retrieval.notify-----')        
@@ -87,12 +83,11 @@ def process_accept_item(item_id):
 
     print("\nItem retrieval notification published to RabbitMQ Exchange.\n")
 
-    # ##################### END OF AMQP code
 
-    # handle notification -> item acceptance successful
-    if old_item_data["status"] == false:
+    # item acceptance successful
+    if old_item_data["status"] == False:
         item_status = {
-            "status": true
+            "status": True
         }
         new_item_result = invoke_http(
             f"{item_url}/{item_id}",
@@ -117,8 +112,37 @@ def process_accept_item(item_id):
     
         print("\nItem accept notification published to RabbitMQ Exchange.\n")
 
-        # add carbon to deparment's overall carbon saved
+        # add carbon to department's overall carbon saved
+        amqp_setup.check_setup()
+        # get department of item created
+        department_result = invoke_http(
+            f"{department_url}/{item['creatorId']}",
+            method="GET"
+        )
 
+        # if department does not exist
+        if department_result["code"] not in range(200, 300):
+            print('\n\n-----Publishing the (department error) message with routing_key=department.error-----')
+            code = department_result['code']
+            message = {
+                "code": 400,
+                "message_type": "business_error",
+                "data": "Invalid department ID"
+            }
+            message = json.dumps(message)
+            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
+            print("\nDepartment error - Code {} - published to the RabbitMQ Exchange:".format(code))
+            return department_result
+        
+        # department does exist so post item
+        department_data = department_result['data']
+        item_result = invoke_http(
+        f"{create_item_url}",
+        method='POST',
+        json=item
+        )
+
+        item_data = item_result['data']
         # store new item_id in department
         item_id = item_data['_id']
         department_items = department_data['items']
@@ -133,11 +157,38 @@ def process_accept_item(item_id):
             method='PUT',
             json=department_data
         )
+        
+        department_update_data = department_update_result['data']
 
-        return new_item_result
+        # department not updated
+        if department_update_result['code'] not in range(200,300):
+            code = department_update_result['code']
+            print('\n\n-----Publishing the (department error) message with routing_key=department.error-----')
+            message = {
+                "code": 400,
+                "message_type": "department_error",
+                "data": department_update_data
+            }
 
-    # handle error -> item update fail
+            message = json.dumps(message)
+            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
+            print("\nDepartment error - Code {} - published to the RabbitMQ Exchange:".format(code))
+            return department_update_result
+        
+        # department updated
+        else:
+            message = {
+                "code": 201,
+                "message_type": 'department_put_request',
+                "data": department_update_data
+            }
+            message = json.dumps(message)
+            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
+            print("------------ DEPARTMENT EDITED SUCCESSFULLY - {} ------------".format(department_update_result))
+            return department_update_result
 
+
+    # handle error -> not accepted
     print('\n\n-----Publishing the item accept update message with routing_key=accept.error-----')        
 
     message = json.dumps({
