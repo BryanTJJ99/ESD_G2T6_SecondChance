@@ -63,6 +63,7 @@ export default {
     methods: {
         viewMore(){
             console.log("view more")
+            this.$router.push({path: '/listing'});
         },
         acceptOffer(){
             console.log("accept offer")
