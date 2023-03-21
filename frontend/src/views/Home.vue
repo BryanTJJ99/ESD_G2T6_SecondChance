@@ -109,14 +109,14 @@ table {
             
             <!-- Your listings -->
             <div class="px-3 py-2" data-aos="fade-down">
-                <h3 class="ps-3">Your Recent Listings</h3>
-                <small class="pt-3 ps-3 mt-2"><i>Listed by your department</i></small>
+                <h3 class="ps-3">Your Listing Offers</h3>
+                <small class="pt-3 ps-3 mt-2"><i>Accept or decline your offers here</i></small>
             </div>
             <div class="row pb-4" data-aos="fade-up">
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
-                <ListingCard></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard>
             </div>
         </div>
      
@@ -151,6 +151,7 @@ table {
             return {
                 department : "Finance",
                 organization : "SMU",
+                offer: true,
             }
         },
         components: {
