@@ -1,6 +1,6 @@
 from bson import ObjectId
 from dotenv import load_dotenv
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import pymongo
 import os
 from error import *
@@ -17,15 +17,30 @@ itemCollection = db['items']
 userCollection = db['users']
 
 # insert new item
-@app.route('/create/<user_id>', methods=['POST'])
-def insert(user_id):
+@app.route('/create', methods=['POST'])
+def insert():
     data = request.json
     errMsg = handleError(data)
     if errMsg == '':
-        data['creatorId'] = user_id
-        itemCollection.insert_one(data)
-        return "Created item"
+        result = itemCollection.insert_one(data)
+        item_id = result.inserted_id
+        data['_id'] = item_id
+        return jsonify({
+            "code": 200,
+            "data": {
+                "item": data
+            }
+        })
     return errMsg
+
+@app.route('/all', methods=['GET'])
+def all():
+    items = itemCollection.find()
+    res = []
+    for item in items:
+        newItem = json.loads(json_util.dumps(item))
+        res.append(newItem)
+    return res
 
 # read item
 @app.route('/<item_id>', methods=['GET'])
