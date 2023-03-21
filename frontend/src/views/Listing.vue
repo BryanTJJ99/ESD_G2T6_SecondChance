@@ -7,9 +7,9 @@
                     Marketplace</span></i></router-link>
     </div>
 
-    <div class="row ps-3 py-4 pe-4" style="margin-left:4.5rem;">
+    <div class="row ps-5 py-4 pe-4" style="margin-left:4.5rem;">
 
-        <div class="col-xl-6">
+        <div class="col-xl-6 pb-5">
 
             <!-- Carousel wrapper -->
             <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel"
@@ -65,7 +65,7 @@
 
         </div>
 
-        <div class="col-xl-6 pe-5 text-start mt-xl-0 mt-5 pt-xl-0 pt-3">
+        <div class="col-xl-6 pe-5 ps-4 text-start mt-xl-0 mt-5 pt-xl-0 py-3">
 
             <div class="row d-flex justify-content-between">
 
@@ -73,38 +73,53 @@
                     <h4>IKEA Chair</h4>
                 </div>
                 <div class="col-xl-4 text-xl-end text-start">
-                    <small class="desc">{{status}}</small>
+                    <small class="desc">{{ status }}</small>
                 </div>
 
             </div>
-            <i class="fa-solid fa-location-dot mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{address}}</span></i>
-            <i class="fa-solid fa-building d-block mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{company}}, {{department}}</span></i>
+            <i class="fa-solid fa-location-dot mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ address }}</span></i>
+            <i class="fa-solid fa-building d-block mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ company }},{{ department }}</span></i>
             <hr>
 
-            <p style="font-style:italic;font-weight:bold;">Description:</p>
-            <div style="overflow:scroll; height: 400px;" class="mt-2">
-                <p>{{desc}} Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam cum quos repudiandae iure exercitationem repellat expedita quia facere? Beatae asperiores harum amet quae provident alias repellendus dolorem? Voluptatibus, nemo quos? Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sequi fugit nulla, aliquam necessitatibus pariatur in veritatis enim suscipit soluta optio, quas voluptas dolorem, nam sint dolore molestias incidunt facere. Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat modi maiores cum repellendus dolor, possimus temporibus tempore nam. Dolor sed magnam accusamus soluta beatae quas at. Fugiat, quidem architecto? Et. Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, rem. Enim nesciunt quam obcaecati dignissimos sapiente rerum, ipsa, magnam ipsum laborum, molestias est. Repellendus dicta provident cum velit modi ratione! Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, libero fuga. At magni similique quidem quod optio, culpa iure, a earum hic quasi excepturi delectus saepe ratione. Amet, numquam libero. Lorem ipsum, dolor sit amet consectetur adipisicing elit. At quisquam aspernatur, incidunt maiores fuga perferendis illo quis illum consequuntur laborum reiciendis minus saepe sint rem autem! Error blanditiis sapiente dolorum?</p>
-            </div>
+            <div class="d-flex justify-content-between align-items-center">
 
-            <div class="d-flex justify-content-center my-3">
+                <p style="font-style:italic;font-weight:bold;">Description:</p>
                 <button class="btn btn-light text-center"><span><i class="fa-regular fa-comment" style="color:#6e9190">
-                </i> &nbsp; Contact Seller</span></button>
+                        </i> &nbsp; Contact Seller</span></button>
             </div>
 
+            <div class="my-3">
+                <p>{{ desc }} Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam cum quos repudiandae iure
+                    exercitationem repellat expedita quia facere? Beatae asperiores harum amet quae provident alias
+                    repellendus dolorem? Voluptatibus, nemo quos? Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Odit sequi fugit nulla, aliquam necessitatibus pariatur in veritatis enim suscipit soluta optio, quas
+                    voluptas dolorem, nam sint dolore molestias incidunt facere. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Fugiat modi maiores cum repellendus dolor, possimus temporibus tempore nam. Dolor sed
+                    magnam accusamus soluta beatae quas at. Fugiat, quidem architecto? Et. Lorem ipsum dolor sit amet
+                    consectetur adipisicing elit. Impedit, rem. Enim nesciunt quam obcaecati dignissimos sapiente rerum,
+                    ipsa, magnam ipsum laborum, molestias est. Repellendus dicta provident cum velit modi ratione! Lorem
+                    ipsum dolor sit amet consectetur adipisicing elit. Pariatur, libero fuga. At magni similique quidem quod
+                    optio, culpa iure, a earum hic quasi excepturi delectus saepe ratione. Amet, numquam libero. Lorem
+                    ipsum, dolor sit amet consectetur adipisicing elit. At quisquam aspernatur, incidunt maiores fuga
+                    perferendis illo quis illum consequuntur laborum reiciendis minus saepe sint rem autem! Error blanditiis
+                    sapiente dolorum?</p>
+            </div>
+
+            <!-- <div class="d-flex justify-content-center mt-3 mb-4">
+                <button class="btn btn-light text-center"><span><i class="fa-regular fa-comment" style="color:#6e9190">
+                        </i> &nbsp; Contact Seller</span></button>
+            </div> -->
 
         </div>
-
-
-
-
-
     </div>
+    <Footer style="margin-left:4.5rem;"></Footer>
 </template>
 
 <script>
 import TopNavbar from "@/components/Navbar/TopNavbar.vue";
 import Sidebar from "@/components/Navbar/Sidebar.vue"
 import ListingCard from "@/components/ListingCard.vue"
+import Footer from "@/components/Footer.vue"
 
 export default {
     data() {
@@ -126,7 +141,8 @@ export default {
     components: {
         TopNavbar,
         Sidebar,
-        ListingCard
+        ListingCard,
+        Footer
     },
     methods: {
         setCategory() {
@@ -140,10 +156,8 @@ export default {
 
 </script>
 
-<style>
-.carousel-item img {
+<style>.carousel-item img {
     height: 650px;
     width: 650px;
     object-fit: cover;
-}
-</style>
+}</style>

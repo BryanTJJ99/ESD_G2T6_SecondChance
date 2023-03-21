@@ -3,7 +3,28 @@
 </script>
 
 <template>
-  <div class="col-xl-3 col-md-6 pt-4 d-flex justify-content-center">
+  <div v-if="offer" class="col-xl-3 col-md-6 py-4 d-flex justify-content-center">
+    <div class="card p-1">
+        <img src="https://i.postimg.cc/1X8R7m8y/design.png"/>
+        <div class="p-2">
+            <div class="d-flex justify-content-between align-items-bottom">
+                <p style="font-size:20px" class="desc">{{itemName}}</p>
+                <small class="desc">{{status}}</small>
+            </div>
+            <i class="fa-solid fa-location-dot" style="color:#a3a0a0"><span class="desc ps-1">{{address}}</span></i>
+            <i class="fa-solid fa-building d-block" style="color:#a3a0a0"><span class="desc ps-1">{{company}}, {{department}}</span></i>
+        </div>
+        <div class="card__content">
+            <div class="d-flex justify-content-center mt-2">
+              <button class="btn btn-light desc" v-on:click="acceptOffer"><span>Accept</span></button>
+              <button class="btn btn-dark desc" v-on:click="declineOffer"><span>Decline</span></button>
+            </div>
+          </div>
+
+      </div>
+  </div>
+
+  <div v-else class="col-xl-3 col-md-6 py-4 d-flex justify-content-center">
     <div class="card p-1">
         <img src="https://i.postimg.cc/1X8R7m8y/design.png"/>
         <div class="p-2">
@@ -16,11 +37,10 @@
         </div>
 
         <div class="card__content">
-          <div class="d-flex justify-content-center mt-2">
-            <button class="btn btn-light desc"><span>View More</span></button>
+            <div class="d-flex justify-content-center mt-2">
+              <button class="btn btn-light desc" v-on:click="viewMore"><span>View More</span></button>
+            </div>
           </div>
-        </div>
-
       </div>
   </div>
 </template>
@@ -38,7 +58,20 @@ export default {
             img: ""
         }
     },
-    props: ["listingId"]
+    props: ["listingId", "offer", "viewMore", "acceptOffer", "declineOffer"],
+    emits: ["viewMore", "acceptOffer", "declineOffer"],
+    methods: {
+        viewMore(){
+            console.log("view more")
+            this.$router.push({path: '/listing'});
+        },
+        acceptOffer(){
+            console.log("accept offer")
+        },
+        declineOffer(){
+            console.log("decline offer")
+        }
+    }
 }
 
 </script>

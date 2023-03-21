@@ -7,9 +7,10 @@
         <svg class="bi" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
         <span class="visually-hidden">Icon-only</span>
         </a> -->
+        
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
         <li class="nav-item">
-            <router-link to="/" class="nav-link py-4" >
+            <router-link to="/home" class="nav-link py-4">
                 <i class="fas fa-home" style="color:black"></i>
             </router-link>
         </li>
@@ -30,7 +31,7 @@
             </router-link>
         </li>
         <li>
-            <a href="#" class="nav-link py-4" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
+            <a href="#" class="nav-link py-4" title="" data-bs-placement="right" data-bs-original-title="Customers">
                 <i class="fa-solid fa-gear" style="color:black"></i>
             </a>
         </li>
@@ -51,21 +52,52 @@
 </template>
 
 <script>
-  import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
-  export default {
+    import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+    import { ref, nextTick } from 'vue';
+    // import { VTooltip } from 'v-tooltip';
+    // import 'v-tooltip/dist/v-tooltip.css';
+
+    export default {
     data(){
-      return{
+        return{
             department : "Finance",
             organization : "SMU",
-      }
+            // tooltip: null,
+        }
     },
+
     methods: {
-      signOut(){
+        signOut(){
         const auth = getAuth()
         signOut(auth).then(() => {
-          console.log('Sign out complete')
+            console.log('Sign out complete')
         })
-      }
+        }
+    },
+
+    // components: {
+    //     VTooltip,
+    // },
+    // setup() {
+    //     const tooltip = ref(null);
+
+    //     return {
+    //     tooltip,
+    //     };
+    // },
+    // mounted() {
+    //     nextTick(() => {
+    //     this.$refs.tooltipTarget.addEventListener('mouseover', () => {
+    //         if (this.tooltip.value !== null) {
+    //             this.tooltip.value.show();
+    //         }
+    //     });
+    //     this.$refs.tooltipTarget.addEventListener('mouseout', () => {
+    //         if (this.tooltip.value !== null) {
+    //             this.tooltip.value.hide();
+    //         }
+    //     });
+    //     });
+    // },
     }
-  }
 </script>

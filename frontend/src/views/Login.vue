@@ -7,7 +7,7 @@ import { getAuth, signInWithEmailAndPassword, updateProfile, onAuthStateChanged 
     <header style="background-color:#6e9190;" class="text-center">
         <small style="color:white;">Track your carbon emissions. Give unwanted items a second chance.</small>
     </header>
-    <div class="container-fluid" style="background-color: #C5DAD2; height: 120vh;">
+    <div class="container-fluid" style="background-color: #C5DAD2;height: 120vh;">
         <div class="row">
             <div class="col-7">
                 <div class="container-fluid my-auto d-lg-block d-none" style="height: 100vh;">
@@ -20,8 +20,8 @@ import { getAuth, signInWithEmailAndPassword, updateProfile, onAuthStateChanged 
 
             </div>
             <div class="col-lg-5 col-12" style="background-color:white;border-radius: 0px 0px 0px 15px;">
-                <div class="text-center px-3" style="margin-top:20%;">
-                    <img src="../assets/logo.png" style="height:80px;opacity:50%;">
+                <div class="text-center px-3" style="margin-top:25%;">
+                    <img src="../assets/logo.png" style="height:50px;opacity:50%;">
                     <h3 class="mt-1">SecondChance</h3>
                     <form class="mt-5 px-5">
                         <div class="group">
@@ -48,27 +48,31 @@ import { getAuth, signInWithEmailAndPassword, updateProfile, onAuthStateChanged 
 
                     <small class="d-block text-center mt-4" style="font-style:italic;">Don't have an account?</small>
                     <router-link to="/register">
-                    <button class="btn btn-light d-block mx-auto" style="width:250px;"><span>Register Here</span></button></router-link>
+                        <button class="btn btn-light d-block mx-auto" style="width:250px;"><span>Register
+                                Here</span></button></router-link>
                 </div>
             </div>
+        </div>
     </div>
+    <Footer></Footer>
 
-</div>
 
 <!-- <h1>Register</h1>
         <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
             <input type="email" v-model="email" class="form-control" id="email" aria-describedby="emailHelp">
-                    </div>
+                        </div>
         <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" v-model="password" class="form-control" id="password">
-                    </div> -->
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" v-model="password" class="form-control" id="password">
+                        </div> -->
     <!-- <button type="submit" @click="register" class="btn btn-primary">Submit</button>
-                    <button class="btn btn-primary" @click="signInWithGoogle">Sign In With Google</button> -->
+                        <button class="btn btn-primary" @click="signInWithGoogle">Sign In With Google</button> -->
 </template>
 
 <script>
+import Footer from "@/components/Footer.vue";
+
 export default {
     beforeCreate() {
         const auth = getAuth()
@@ -92,5 +96,8 @@ export default {
                 })
         }
     },
+    components: {
+        Footer
+    }
 }
 </script>
