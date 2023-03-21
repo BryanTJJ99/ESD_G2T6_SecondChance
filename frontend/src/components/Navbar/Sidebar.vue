@@ -10,8 +10,8 @@
         
         <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
         <li class="nav-item">
-            <router-link to="/home" class="nav-link py-4" v-tooltip="'Click me!'">
-                <i class="fas fa-home" style="color:black" v-tooltip="'Click me!'"></i>
+            <router-link to="/home" class="nav-link py-4">
+                <i class="fas fa-home" style="color:black"></i>
             </router-link>
         </li>
         <li>
@@ -31,7 +31,7 @@
             </router-link>
         </li>
         <li>
-            <a href="#" class="nav-link py-4" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
+            <a href="#" class="nav-link py-4" title="" data-bs-placement="right" data-bs-original-title="Customers">
                 <i class="fa-solid fa-gear" style="color:black"></i>
             </a>
         </li>
@@ -54,15 +54,15 @@
 <script>
     import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
     import { ref, nextTick } from 'vue';
-    import { VTooltip } from 'v-tooltip';
-    import 'v-tooltip/dist/v-tooltip.css';
+    // import { VTooltip } from 'v-tooltip';
+    // import 'v-tooltip/dist/v-tooltip.css';
 
     export default {
     data(){
         return{
             department : "Finance",
             organization : "SMU",
-            tooltip: null,
+            // tooltip: null,
         }
     },
 
