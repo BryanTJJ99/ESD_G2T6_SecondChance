@@ -28,12 +28,12 @@ table {
 
         <div class="container-flex p-3" style="margin-left:4.5rem">
             <!-- Welcome back -->
-            <div class="row px-3 py-2">
+            <div class="row px-3 pt-2 pb-4">
                 <div class="col-md-7 col-sm-auto" data-aos="fade-down">
                     <h3 class="pt-3 ps-3">Welcome back,</h3>
                     <h5 class="pt-1 ps-3">&nbsp;what would you look like to do today?</h5>
                 </div>
-                <div class="col-md-5 col-sm-auto pt-3">
+                <div class="col-md-5 col-sm-auto py-3">
                     <h4 data-aos="fade-down">Leaderboard</h4>
                     <!-- to insert link below -->
                     <small><a href="/" class="pt-3 mt-2" style="color:grey" data-aos="fade-down">View all</a></small> 
