@@ -39,6 +39,36 @@ public class Department {
 
     //Getters and Setters
 
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+
+    public String getDepartmentCountry() {
+        return departmentCountry;
+    }
+
+
+    public void setDepartmentCountry(String departmentCountry) {
+        this.departmentCountry = departmentCountry;
+    }
+
+
+    public String getDepartmentPostalCode() {
+        return departmentPostalCode;
+    }
+
+
+    public void setDepartmentPostalCode(String departmentPostalCode) {
+        this.departmentPostalCode = departmentPostalCode;
+    }
+
+
     public ArrayList<String> getItems() {
         return items;
     }
