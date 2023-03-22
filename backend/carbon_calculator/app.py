@@ -1,9 +1,18 @@
+from bson import ObjectId
+from dotenv import load_dotenv
 from flask import Flask, request
 import pymongo
 import os
+from bson import json_util, ObjectId
 import json
 
+load_dotenv()
+
 app = Flask(__name__)
+mongodb = os.getenv('MONGODB')
+client = pymongo.MongoClient(mongodb)
+db = client['ESDProject']
+allEmissions = db['emissions']
 
 @app.route("/")
 def home():
@@ -11,30 +20,42 @@ def home():
 
 # return carbon emission for item
 # input is product name and category
-@app.route('/search', methods=['POST'])
-def insert():
+@app.route('/search', methods=['GET'])
+def search():
     
-    general_emissions = {
-        "furniture": 0,
-        "office supplies": 0,
-        "equipment": 0,
-        "electronics": 0,
-        "others": 0
+    generalEmissions = {
+        "furniture": 150,
+        "office supplies": 50,
+        "equipment": 200,
+        "electronics": 300,
+        "others": 100
     }
 
-    data = request.json
-    category = data["category"]
-    item_name = data["name"].split(" ")
-    found = False
-    emissions_data = 0
+    category = request.args.get('category') # use default value repalce 'None'
+    name = request.args.get('name')
+    itemName = name.split(" ")
 
-    # for each in item_name:
-        # if collection.find_one({"_id": ObjectId(item_id)}):
-            # emissions = collection.find_one({"_id": ObjectId(item_id)})
-            # emissions_data = json.loads(json_util.dumps(emissions))
-            # found = True
+    # data = request.json
+    # category = data["category"]
+    # itemName = data["name"].split(" ")
+
+    found = False
+    emissionsData = 0
+
+    for each in itemName:
+        each = each.strip().lower()
+
+        if allEmissions.find_one({"itemName": each}):
+            emission = allEmissions.find_one({"itemName": each})
+            emissionsData = json.loads(json_util.dumps(emission["carbonEmission"]))
+
+            found = True
+            break
 
     if not found:
-        emissions_data = general_emissions[category]
+        emissionsData = generalEmissions[category]
 
-    return emissions_data
+    return str(emissionsData)
+
+if __name__ == '__main__':
+    app.run(debug=True)
