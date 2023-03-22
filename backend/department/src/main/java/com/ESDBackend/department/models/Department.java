@@ -83,6 +83,15 @@ public class Department {
         items.remove(itemID);
     }
 
+    public double getTotalCarbon(){
+        return totalCarbon;
+    }
+
+    public void setTotalCarbon(int addition){
+        totalCarbon = totalCarbon + addition;
+    }
+
+
 
 }
 
