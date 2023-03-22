@@ -72,19 +72,24 @@
                     <h4>IKEA Chair</h4>
                 </div>
                 <div class="col-xl-4 text-xl-end text-start">
-                    <small class="desc">{{ status }}</small>
+                    <p class="desc" style="color:#a3a0a0"><i class="fa-solid fa-smog"></i> {{ emission }}</p>
                 </div>
 
             </div>
             <i class="fa-solid fa-location-dot mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ address }}</span></i>
-            <i class="fa-solid fa-building d-block mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ company }},{{ department }}</span></i>
+            <i class="fa-solid fa-building d-block mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ company }},{{
+                department }}</span></i>
             <hr>
 
             <div class="d-flex justify-content-between align-items-center">
 
                 <p style="font-style:italic;font-weight:bold;">Description:</p>
-                <button class="btn btn-light text-center"><span><i class="fa-regular fa-comment" style="color:#6e9190">
-                        </i> &nbsp; Contact Seller</span></button>
+                <div>
+                    <button class="btn btn-dark text-center"><span><i class="fa-solid fa-paper-plane" style="color:#c5dad2">
+                            </i> &nbsp; Send Offer</span></button>
+                    <button class="btn btn-light text-center"><span><i class="fa-regular fa-comment" style="color:#6e9190">
+                            </i> &nbsp; Contact Seller</span></button>
+                </div>
             </div>
 
             <div class="my-3">
@@ -124,10 +129,10 @@ import 'aos/dist/aos.css';
 
 export default {
     mounted() {
-            AOS.init({
-                duration: 1300,
-            })
-        },
+        AOS.init({
+            duration: 1300,
+        })
+    },
     data() {
         return {
             search: "",
@@ -140,7 +145,7 @@ export default {
             company: "SMU",
             department: "Finance",
             desc: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-            status: "Used",
+            emission: "500",
             img: ""
         }
     },
@@ -162,7 +167,8 @@ export default {
 
 </script>
 
-<style>.carousel-item img {
+<style>
+.carousel-item img {
     height: 650px;
     width: 650px;
     object-fit: cover;

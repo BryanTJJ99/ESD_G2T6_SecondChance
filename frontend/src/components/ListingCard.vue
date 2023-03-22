@@ -7,9 +7,9 @@
     <div class="card p-1">
         <img src="https://i.postimg.cc/1X8R7m8y/design.png"/>
         <div class="p-2">
-            <div class="d-flex justify-content-between align-items-bottom">
+            <div class="d-flex justify-content-between align-items-center">
                 <p style="font-size:20px" class="desc">{{itemName}}</p>
-                <small class="desc">{{status}}</small>
+                <small class="desc"><i class="fa-solid fa-smog"></i> {{emission}}</small>
             </div>
             <i class="fa-solid fa-location-dot" style="color:#a3a0a0"><span class="desc ps-1">{{address}}</span></i>
             <i class="fa-solid fa-building d-block" style="color:#a3a0a0"><span class="desc ps-1">{{company}}, {{department}}</span></i>
@@ -28,9 +28,9 @@
     <div class="card p-1">
         <img src="https://i.postimg.cc/1X8R7m8y/design.png"/>
         <div class="p-2">
-            <div class="d-flex justify-content-between align-items-bottom">
+            <div class="d-flex justify-content-between align-items-center">
                 <p style="font-size:20px" class="desc">{{itemName}}</p>
-                <small class="desc">{{status}}</small>
+                <small class="desc"><i class="fa-solid fa-smog"></i> {{emission}}</small>
             </div>
             <i class="fa-solid fa-location-dot" style="color:#a3a0a0"><span class="desc ps-1">{{address}}</span></i>
             <i class="fa-solid fa-building d-block" style="color:#a3a0a0"><span class="desc ps-1">{{company}}, {{department}}</span></i>
@@ -54,7 +54,7 @@ export default {
             address: "Bras Basah",
             company: "SMU",
             department: "Finance",
-            status: "Like New",
+            emission: "500",
             img: ""
         }
     },
