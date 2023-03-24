@@ -1,7 +1,7 @@
 from kafka import KafkaConsumer
 from slack_bolt import App
 import json
-app = App(token="xoxb-4901815051863-4909773123750-yoz2pFRyJk4BuVkUULJuBnqH")
+app = App(token="xoxb-4901815051863-4909773123750-8oLa0zx90HfRPYhSiPzqyOFM")
 
 TOPIC_NAME = 'slack'
 KAFKA_SERVER = 'localhost:9092'
@@ -9,11 +9,39 @@ KAFKA_SERVER = 'localhost:9092'
 def send_message_to_channel(channel_id, message):
     print(message)
     blocks = [
-    {
+        {
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": f"Department Name: {message['dept_name']}!"
+                "text": f"item ID: {message['id']}"
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": f"item Name: {message['item_name']}"
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": f"creator ID: {message['creatorId']}"
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": f"reciever ID: {message['recievorId']}"
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": f"Listed?: {message['isListing']}"
             }
         },
         {
@@ -23,7 +51,7 @@ def send_message_to_channel(channel_id, message):
 				"text": "item image"
 			},
                 "block_id": "image4",
-                "image_url": message['img_url'],
+                "image_url": 'https://picsum.photos/id/237/200/300',
                 "alt_text": "item image"
 		}
 ]
