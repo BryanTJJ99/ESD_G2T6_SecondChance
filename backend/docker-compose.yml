@@ -1,0 +1,156 @@
+## Useful commands
+# docker-compose up -d
+# docker-compose down
+
+## To stop single containers from compose
+# docker-compose rm -sv <service name>
+# docker rmi -f <image_id> # to remove image
+# docker-compose up -d  # to rebuild only that image you removed (built images wont be rebuilt)
+
+## To remove images
+# docker images -q
+# copy and paste ids and use docker rmi
+
+
+# version: "3.8"
+
+# volumes:
+#   rabbitmq_data:
+
+# networks:
+#   default:
+#     name: kong_kong-next
+
+
+  #######################################################################
+  # Simple microservices
+  #######################################################################
+
+
+  ####################################
+  # Item microservice
+  ####################################
+  # item:
+  #   build:
+  #     context: ./microservices/item
+  #     dockerfile: item.Dockerfile
+  #   image: bryantjj/item:esd
+  #   restart: always
+  #   environment:
+  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/esd
+  #     PYTHONUNBUFFERED: 1
+  #   ports:
+  #     - "5001:5001"
+  #   container_name: item
+
+
+
+  ####################################
+  # Company microservice
+  ####################################
+
+
+
+
+  ####################################
+  # Department microservice
+  ####################################
+
+
+
+
+
+  ####################################
+  # Chat microservice
+  ####################################
+
+
+
+
+  ####################################
+  # Carbon Calculator microservice
+  ####################################
+  
+
+
+  
+
+  ####################################
+  # Slack microservice
+  ####################################  
+
+
+
+
+
+  ####################################
+  # Authentication microservice
+  ####################################
+
+
+
+
+
+
+
+
+  #######################################################################
+  # Message broker microservices
+  #######################################################################
+
+
+  ####################################
+  # RabbitMQ
+  ####################################
+
+
+
+
+
+
+
+  ####################################
+  # Kafka
+  ####################################
+
+
+
+
+
+
+
+
+  #######################################################################
+  # Complex microservices
+  ####################################################################### 
+
+
+
+  ###############################################
+  # Place Item
+  ###############################################
+
+
+
+
+
+
+  ###############################################
+  # Accept Item
+  ###############################################
+
+
+
+
+
+
+
+  ###############################################
+  # Reject Item
+  ###############################################
+
+
+
+
+
+
