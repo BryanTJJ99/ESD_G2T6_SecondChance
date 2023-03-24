@@ -21,7 +21,7 @@ public class Department {
     private String departmentPostalCode;
 
     @Transient
-    private ArrayList<ItemDto> items;
+    private ArrayList<String> items;
 
     private double totalCarbon;
 
@@ -30,28 +30,67 @@ public class Department {
     // }
     public Department(String departmentName, String country, String postalCode, double totalCarbon) {
         this.departmentName = departmentName;
-        this.country = country;
-        this.postalCode = postalCode;
+        this.departmentCountry = country;
+        this.departmentPostalCode = postalCode;
         this.totalCarbon = totalCarbon;
-        this.items = new ArrayList<ItemDto>();
+        this.items = new ArrayList<String>();
     }
     
 
     //Getters and Setters
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+
+    public String getDepartmentCountry() {
+        return departmentCountry;
+    }
+
+
+    public void setDepartmentCountry(String departmentCountry) {
+        this.departmentCountry = departmentCountry;
+    }
+
+
+    public String getDepartmentPostalCode() {
+        return departmentPostalCode;
+    }
+
+
+    public void setDepartmentPostalCode(String departmentPostalCode) {
+        this.departmentPostalCode = departmentPostalCode;
+    }
+
 
     public ArrayList<String> getItems() {
         return items;
     }
 
     
-    public void addItem(ItemDto item){
-        items.add(item);
+    public void addItem(String itemID){
+        items.add(itemID);
     }
     
 
-    public void removeItem(ItemDto item){
-        items.remove(item);
+    public void removeItem(String itemID){
+        items.remove(itemID);
     }
+
+    public double getTotalCarbon(){
+        return totalCarbon;
+    }
+
+    public void setTotalCarbon(int addition){
+        totalCarbon = totalCarbon + addition;
+    }
+
 
 
 }
