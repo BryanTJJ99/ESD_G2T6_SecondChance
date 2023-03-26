@@ -188,20 +188,20 @@ Marketplace Search Button
     padding-left: 5px;
     padding-bottom: 5px;
     width: 50vh;
-    border-bottom: 1px solid #c5dad2;
+    border-bottom: 1px solid #a3a0a0;
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
   }
   
   .growing-search .input input:focus {
-    width: 75vh;
+    width: 70vh;
   }
   
   .growing-search .submit button {
     margin-left: 0;
     border: none;
     font-size: 1.15em;
-    color: #6e9190;
+    color: #a3a0a0;
     background-color: #fff;
     padding-top: 2px;
     padding-bottom: 2px;

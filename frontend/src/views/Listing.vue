@@ -64,20 +64,19 @@
 
         </div>
 
-        <div class="col-xl-6 pe-5 ps-4 text-start mt-xl-0 mt-5 pt-xl-0 py-3">
+        <div class="col-xl-6 pe-5 ps-4 text-start mt-xl-0 mt-5 pt-xl-0 py-2">
 
-            <div class="row d-flex justify-content-between">
-
-                <div class="col-xl-8">
-                    <h4>IKEA Chair</h4>
+            <div class="d-flex justify-content-between">
+                <div class="">
+                    <h4>{{ itemName }}</h4>
                 </div>
-                <div class="col-xl-4 text-xl-end text-start">
-                    <p class="desc" style="color:#a3a0a0"><i class="fa-solid fa-smog"></i> {{ emission }}</p>
+                <div class="">
+                    <p class="desc" style="color:#a3a0a0"> {{ emission }} <i class="fa-solid fa-smog"></i></p>
                 </div>
 
             </div>
             <i class="fa-solid fa-location-dot mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ address }}</span></i>
-            <i class="fa-solid fa-building d-block mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ company }},{{
+            <i class="fa-solid fa-building d-block mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ company }}, {{
                 department }}</span></i>
             <hr>
 
@@ -85,28 +84,16 @@
 
                 <p style="font-style:italic;font-weight:bold;">Description:</p>
                 <div>
-                    <button class="btn btn-dark text-center"><span><i class="fa-solid fa-paper-plane" style="color:#c5dad2">
-                            </i> &nbsp; Send Offer</span></button>
-                    <button class="btn btn-light text-center"><span><i class="fa-regular fa-comment" style="color:#6e9190">
+                    <button v-if="sent" class="btn btn-dark text-center" disabled><span><i class="fa-solid fa-paper-plane" style="color:#c5dad2"></i> &nbsp; Offer Sent</span></button>
+                    <button v-else class="btn btn-dark text-center" v-on:click="sendOffer()"><span><i class="fa-solid fa-paper-plane" style="color:#c5dad2"></i> &nbsp; Send Offer</span></button>
+
+                    <button class="btn btn-light text-center"><span><i class="fa-regular fa-comment" style="color:#6e9190" v-on:click="contactSeller">
                             </i> &nbsp; Contact Seller</span></button>
                 </div>
             </div>
 
-            <div class="my-3">
-                <p>{{ desc }} Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam cum quos repudiandae iure
-                    exercitationem repellat expedita quia facere? Beatae asperiores harum amet quae provident alias
-                    repellendus dolorem? Voluptatibus, nemo quos? Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Odit sequi fugit nulla, aliquam necessitatibus pariatur in veritatis enim suscipit soluta optio, quas
-                    voluptas dolorem, nam sint dolore molestias incidunt facere. Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit. Fugiat modi maiores cum repellendus dolor, possimus temporibus tempore nam. Dolor sed
-                    magnam accusamus soluta beatae quas at. Fugiat, quidem architecto? Et. Lorem ipsum dolor sit amet
-                    consectetur adipisicing elit. Impedit, rem. Enim nesciunt quam obcaecati dignissimos sapiente rerum,
-                    ipsa, magnam ipsum laborum, molestias est. Repellendus dicta provident cum velit modi ratione! Lorem
-                    ipsum dolor sit amet consectetur adipisicing elit. Pariatur, libero fuga. At magni similique quidem quod
-                    optio, culpa iure, a earum hic quasi excepturi delectus saepe ratione. Amet, numquam libero. Lorem
-                    ipsum, dolor sit amet consectetur adipisicing elit. At quisquam aspernatur, incidunt maiores fuga
-                    perferendis illo quis illum consequuntur laborum reiciendis minus saepe sint rem autem! Error blanditiis
-                    sapiente dolorum?</p>
+            <div class="mt-4">
+                <p>{{ desc }}</p>
             </div>
 
             <!-- <div class="d-flex justify-content-center mt-3 mb-4">
@@ -135,18 +122,20 @@ export default {
     },
     data() {
         return {
-            search: "",
-            header: "Marketplace",
-            categories: ["Furniture", "Office Supplies", "Equipment", "Electronics", "IT",
-                "Lightings", "Decor", "Kitchen", "Others"],
-            category: "",
+            sent: false,
+
+            listingId: "",
             itemName: "IKEA Chair",
             address: "Bras Basah",
             company: "SMU",
             department: "Finance",
             desc: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
             emission: "500",
-            img: ""
+            img: "",
+
+            creatorId: ""
+
+
         }
     },
     components: {
@@ -156,12 +145,49 @@ export default {
         Footer
     },
     methods: {
-        setCategory() {
-            console.log(event.target.value)
-            this.category = event.target.value
-            this.header = "Marketplace,"
+        sendOffer(){
+            console.log("offer sent")
+            this.sent = true
+        },
+        contactSeller(){
+
+        },
+        getListing(){
+            var url = ""
+
+            this.listingId = sessionStorage.getItem("viewListing");
+            console.log(this.listingId);
+
+            axios.get(url, {
+                params: {
+                    listingId: this.listingId
+                }
+            })
+            .then(response => {
+                // retrieve item details + creatorId
+
+                this.itemName = "IKEA Chair",
+                this.address = "Bras Basah", // might have to use geolocation to retrieve this
+                this.company = "SMU",
+                this.department = "Finance",
+                this.emission = "500",
+                this.img = ""
+                
+            })
+            .catch(error => {
+
+                console.log(error.message)
+                
+                })
+        
         }
-    }
+        
+    },
+    beforeMount() {
+        this.getListing()
+    },
+        
+
 
 }
 
