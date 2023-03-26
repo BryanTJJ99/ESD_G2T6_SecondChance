@@ -92,25 +92,30 @@ def test_slack(item):
 
 
 def process_accept_item(item):
+    item_id = item['id']
+    buyerId = item["recievorId"]
+    sellerId = item["recievorId"]
 
+    #---------------------------------------------------------------------------------
     #change status of isListing from true to false
-    if item["isListing"] == False:
+    if item["isListing"] == True:
         item_status = {
-            "isListing": True
+            "id": item_id,
+            "isListing": False
         }
         new_item_result = invoke_http(
-            f"{item_url}/{item_id}",
+            f"{item_url}",
             method="PUT",
-            json=item_status
+            json=item_status,
         )   
 
         print('\n\n-----Publishing the item accept notification message with routing_key=accept.notify-----')        
 
-        new_creatorID = item["recievorId"]
+        
         message = {
             "code": 201,
             "message_type": "accept_notification",
-            "data": new_creatorID
+            "data": new_item_result
         }
 
         message = json.dumps(message)
@@ -120,14 +125,52 @@ def process_accept_item(item):
     
         print("\nItem accept notification published to RabbitMQ Exchange.\n")
 
+
+    #---------------------------------------------------------------------------------
+    # change ownership of item
+        department_update_result = invoke_http(
+            f"{department_url}/edit/{item['creatorId']}",
+            method='PUT',
+            json=item
+        )
+        code = department_update_result['code']
+
+        # ownership of department not updated
+        if code not in range(200,300):
+            print('\n\n-----Publishing the (updating ownership error) message with routing_key=ownership.error-----')
+            message = {
+                "code": 400,
+                "message_type": "ownership_error",
+                "data": department_update_result
+            }
+
+            message = json.dumps(message)
+            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='ownership.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
+            print("\nDepartment error - Code {} - published to the RabbitMQ Exchange:".format(code))
+            return department_update_result
+        
+        # ownership of department updated
+        else:
+            message = {
+                "code": 201,
+                "message_type": 'department_ownership_put_request',
+                "data": department_update_result
+            }
+            message = json.dumps(message)
+            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='ownership.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
+            print("------------ OWNERSHIP EDITED SUCCESSFULLY - {} ------------".format(department_update_result))
  
+
         amqp_setup.check_setup()
-        # get department of buyer
+
+
+    #---------------------------------------------------------------------------------
+    # get department of buyer
         buyer_department_result = invoke_http(
-            f"{department_url}/{new_creatorID}",
+            f"{department_url}/{buyerId}",
             method="GET"
         )
-        # department not updated
+        # buyer department not updated
         code = buyer_department_result['code']
         if code not in range(200,300):
             print('\n\n-----Publishing the (department error) message with routing_key=department.error-----')
@@ -142,43 +185,21 @@ def process_accept_item(item):
             print("\nDepartment error - Code {} - published to the RabbitMQ Exchange:".format(code))
             return buyer_department_result
         
-        # department updated
+        # buyer department updated
         else:
             message = {
                 "code": 201,
                 "message_type": 'department_put_request',
-                "data": seller_department_result
+                "data": buyer_department_result
             }
             message = json.dumps(message)
             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
-            print("------------ DEPARTMENT EDITED SUCCESSFULLY - {} ------------".format(seller_department_result))
+            print("------------ DEPARTMENT EDITED SUCCESSFULLY - {} ------------".format(buyer_department_result))
             
         
-        # if department does not exist
-        # if department_result["code"] not in range(200, 300):
-        #     print('\n\n-----Publishing the (department error) message with routing_key=department.error-----')
-        #     code = department_result['code']
-        #     message = {
-        #         "code": 400,
-        #         "message_type": "business_error",
-        #         "data": "Invalid department ID"
-        #     }
-        #     message = json.dumps(message)
-        #     amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
-        #     print("\nDepartment error - Code {} - published to the RabbitMQ Exchange:".format(code))
-        #     return department_result
-        
-        # department does exist so post item
-        # department_data = department_result['data']
-        # item_result = invoke_http(
-        # f"{create_item_url}",
-        # method='POST',
-        # json=item
-        # )
-
+        #adding item into buyer's department database and adding total carbon emission
         buyer_department_data = buyer_department_result['data']
         # store new item_id in department
-        item_id = item['id']
         department_items = buyer_department_data['items']
         department_items.append(item_id)
         buyer_department_data['items'] = department_items
@@ -186,14 +207,17 @@ def process_accept_item(item):
         department_carbon = buyer_department_data['totalCarbon']
         buyer_department_data['totalCarbon'] = department_carbon + item['carbonEmission']
 
-        # change ownership of item
-        department_update_result = invoke_http(
-            f"{department_url}/edit/{item['creatorId']}",
+        #invoke department url to update changes to buyer's database
+        invoke_http(
+            f"{department_url}/edit/{item['recievorId']}",
             method='PUT',
             json=item
         )
+        
 
-        #slack notification
+
+    #---------------------------------------------------------------------------------
+    #slack notification
         slack_result = invoke_http(
                 f"{slack_url}",
                 method="POST",
@@ -225,9 +249,11 @@ def process_accept_item(item):
             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
             print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(slack_data))
             
-        # get department of seller
+    
+    #---------------------------------------------------------------------------------
+    # get department of seller
         seller_department_result = invoke_http(
-            f"{department_url}/{new_creatorID}",
+            f"{department_url}/{sellerId}",
             method="GET"
         )
 
@@ -255,16 +281,38 @@ def process_accept_item(item):
             print("------------ DEPARTMENT EDITED SUCCESSFULLY - {} ------------".format(seller_department_result))
         
 
+        #remove item from seller's and add carbon emission
         seller_department_data = seller_department_result['data']
         # store new item_id in department
         item_id = item['id']
         department_items = seller_department_data['items']
-        department_items.append(item_id)
+        department_items.pop(item_id)
         seller_department_data['items'] = department_items
         # add carbon data to department
         department_carbon = seller_department_data['totalCarbon']
         seller_department_data['totalCarbon'] = department_carbon + item['carbonEmission']
-    
+        
+
+    #---------------------------------------------------------------------------------
+    #handle error for 'change status of isListing from true to false'
+    else:
+        print('\n\n-----Publishing the item accept update message with routing_key=accept.error-----')        
+
+        message = json.dumps({
+            "code": 400,
+            "message_type": "accept_error",
+            "data": new_item_result
+        })
+        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="accept.error", 
+        body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+
+        print("\nItem accept error published to RabbitMQ Exchange.\n")
+
+        return jsonify({
+            "code": 403,
+            "message": f"Unable to accept item. Item status is already {new_item_result['isListing']}."
+        })
+
     # ##################### END OF AMQP code
 
 if __name__ == "__main__":
