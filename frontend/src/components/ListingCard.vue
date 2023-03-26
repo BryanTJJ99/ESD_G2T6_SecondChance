@@ -55,21 +55,55 @@ export default {
             company: "SMU",
             department: "Finance",
             emission: "500",
-            img: ""
+            img: "",
+            listingId: 1
         }
     },
-    props: ["listingId", "offer", "viewMore", "acceptOffer", "declineOffer"],
-    emits: ["viewMore", "acceptOffer", "declineOffer"],
+    props: ["listingId", "offer"],
     methods: {
-        viewMore(){
-            console.log("view more")
-            this.$router.push({path: '/listing'});
-        },
+
+        // OFFER FUNCTIONS
         acceptOffer(){
             console.log("accept offer")
         },
         declineOffer(){
             console.log("decline offer")
+        },
+
+        // LISTING FUNCTIONS
+        viewMore(){
+            console.log("view more")
+
+            // set session variable to view listing
+            sessionStorage.setItem("viewListing", this.listingId);
+
+            // re-route to listing page
+            this.$router.push({path: '/listing'});
+        },
+
+        getListing() {
+            var url = ""
+
+            axios.get(url, {
+                params: {
+                    listingId: this.listingId
+                }
+            })
+            .then(response => {
+
+                this.itemName = "IKEA Chair",
+                this.address = "Bras Basah", // might have to use geolocation to retrieve this
+                this.company = "SMU",
+                this.department = "Finance",
+                this.emission = "500",
+                this.img = ""
+                
+            })
+            .catch(error => {
+
+                console.log(error.message)
+                
+            })
         }
     }
 }
