@@ -5,12 +5,14 @@ import java.util.*;
 
 
 public interface DepartmentService {
-    public int addItem(String itemID);
 
-    public List<String> getDepartmentItems();
 
-    public int removeItem(String itemID);
+    public ArrayList<String> getDepartmentItemsIDList(String departmentID);
 
-    public int itemTransfer(Department receivingDepartment, String itemID);
+    public List<Department> getAllDepartments();
+
+    public Department addDepartmentItemId(String departmentID, String itemID);
     
+    public Department deleteDepartmentItemId(String departmentID, String itemID);
+
 }

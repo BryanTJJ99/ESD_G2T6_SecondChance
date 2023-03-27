@@ -1,97 +1,71 @@
 package com.ESDBackend.department.services;
-import com.ESDBackend.department.models.Department;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.stereotype.Service;
 
+import com.ESDBackend.department.models.Department;
+import com.ESDBackend.department.repositories.DepartmentRepository;
 
-
-
-
-@RestController
-@RequestMapping("/department")
-public class DepartmentServiceImpl {
+@Service
+public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
-    private DepartmentDAO DepartmentDAO;
+    private DepartmentRepository departmentRepository;
 
-    @PutMapping("/departments/{departmentID}")
-    public int addItem(@PathVariable String departmentID, @RequestBody String itemID) {
-        return DepartmentDAO.addItem(departmentID, itemID);
+
+    @Override
+    public List<Department> getAllDepartments() {
+        return departmentRepository.findAll();
     }
 
-    @GetMapping("/department/{departmentID}")
-    public ArrayList<String> getDepartmentItems(@PathVariable String departmentID) {
-        return DepartmentDAO.getDepartmentItems(departmentID);
+
+    @Override
+    public ArrayList<String> getDepartmentItemsIDList(String departmentID) {
+        Optional<Department> optionalDepartment = departmentRepository.findById(departmentID);
+        if (optionalDepartment.isPresent()) {
+            System.out.println("have");
+            return (ArrayList<String>) optionalDepartment.get().getItemIdArrayList();
+        } else {
+            System.out.println("dont have");
+            return null;
+        }
     }
 
-    @PutMapping("/department/{departmentID}")
-    public int removeItem(@PathVariable String departmentID, @RequestBody String itemID) {
-        return DepartmentDAO.removeItem(departmentID, itemID);
+
+    @Override
+    public Department addDepartmentItemId(String departmentID, String itemID) {
+        Department department = departmentRepository.findById(departmentID).get();
+        if (department != null) {
+            System.out.println("have");
+            department.addItem(itemID);
+            // List<String> itemArr = department.getItemIdArrayList();
+            // itemArr.add(itemID);
+            // department.setItemIdArrayList(itemArr);
+            return departmentRepository.save(department);
+        }
+        return null;
     }
+
+
+    @Override
+    public Department deleteDepartmentItemId(String departmentID, String itemID) {
+        Department department = departmentRepository.findById(departmentID).get();
+        if (department != null) {
+            System.out.println("have");
+            department.removeItem(itemID);
+            return departmentRepository.save(department);
+        }
+        return null;
+    }
+
+
+
 }
 
 
 
 
-    // public int addItem(String itemID){
-    //     try {
 
-    //         dept.addItem(itemID);
-    //         return 200;
-
-    //     } catch (Exception e) {
-
-    //         System.out.println(e.getMessage());
-    //         return 400;
-
-    //     }
-        
-    // }
-
-    // public List<String> getDepartmentItems(){
-    //     try {
-
-    //         return dept.getItems();
-
-    //     } catch (Exception e) {
-
-    //         System.out.println(e.getMessage());
-    //         return null;
-
-    //     }
-    // }
-
-    // public int removeItem(String itemID){
-    //     try {
-    //         dept.removeItem(itemID);
-    //         return 200;
-    //     } catch (Exception e) {
-    //         System.out.println(e.getMessage());
-    //         return 400;
-    //     }
-
-    // }
-
-    // public int itemTransfer(Department receivingDepartment, String itemID){
-    //     try {
-    //         receivingDepartment.addItem(itemID);
-    //         dept.removeItem(itemID);
-    //         return 200;
-    //     } catch (Exception e) {
-    //         System.out.println(e.getMessage());
-    //         return 400;
-    //     }
-
-    // }
