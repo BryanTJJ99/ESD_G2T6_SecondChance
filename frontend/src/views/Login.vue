@@ -1,7 +1,3 @@
-<script setup>
-import { getAuth, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from 'firebase/auth'
-</script>
-
 
 <template>
     <header style="background-color:#6e9190;" class="text-center">
@@ -20,21 +16,26 @@ import { getAuth, signInWithEmailAndPassword, updateProfile, onAuthStateChanged 
 
             </div>
             <div class="col-lg-5 col-12" style="background-color:white;border-radius: 0px 0px 0px 15px;">
-                <div class="text-center px-3" style="margin-top:25%;">
-                    <img src="../assets/logo.png" style="height:50px;opacity:50%;">
-                    <h3 class="mt-1">SecondChance</h3>
+                <div class="px-3" style="margin-top:25%;">
+                    <div class="text-center">
+                        <img src="../assets/logo.png" style="height:50px;opacity:50%;">
+                        <h3 class="mt-1 text-center">SecondChance</h3>
+
+                    </div>
                     <form class="mt-5 px-5">
                         <div class="group">
                             <input type="text" v-model="email" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Enter Your Email:</label>
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.email}}</small>
                         </div>
                         <div class="group mt-5">
                             <input type="text" v-model="password" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Enter Your Password:</label>
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.password}}</small>
                         </div>
                     </form>
                 </div>
@@ -42,13 +43,13 @@ import { getAuth, signInWithEmailAndPassword, updateProfile, onAuthStateChanged 
                 <div class="mb-5 pb-5">
                     <button class="btn btn-none d-block mx-auto mt-5" style="width:250px;"
                         @click="signInWithGoogle"><span>Sign In With Google</span></button>
-                    <button class="btn btn-dark d-block mx-auto mb-5" style="width:250px;"><span>Log In</span></button>
+                    <button class="btn btn-dark d-block mx-auto mb-5" style="width:250px;" v-on:click="logIn()"><span>Log In</span></button>
 
                     <hr style="width:250px;" class="mx-auto my-0">
 
                     <small class="d-block text-center mt-4" style="font-style:italic;">Don't have an account?</small>
                     <router-link to="/register">
-                        <button class="btn btn-light d-block mx-auto" style="width:250px;"><span>Register
+                        <button class="btn btn-light d-block mx-auto" style="width:250px;" v-on:click="register()"><span>Register
                                 Here</span></button></router-link>
                 </div>
             </div>
@@ -56,22 +57,12 @@ import { getAuth, signInWithEmailAndPassword, updateProfile, onAuthStateChanged 
     </div>
     <Footer></Footer>
 
-
-<!-- <h1>Register</h1>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" v-model="email" class="form-control" id="email" aria-describedby="emailHelp">
-                        </div>
-        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" v-model="password" class="form-control" id="password">
-                        </div> -->
-    <!-- <button type="submit" @click="register" class="btn btn-primary">Submit</button>
-                        <button class="btn btn-primary" @click="signInWithGoogle">Sign In With Google</button> -->
 </template>
 
 <script>
 import Footer from "@/components/Footer.vue";
+import { getAuth, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from 'firebase/auth';
+
 
 export default {
     beforeCreate() {
@@ -86,14 +77,50 @@ export default {
         return {
             email: '',
             password: '',
+            companyName: '',
+            companyDept: '',
+            officeLocation: '',
+            errMsg: {email:'', password:''},
+            
         }
     },
     methods: {
-        register() {
+        logIn(){
+            console.log("login")
+
+            if (this.checkInputs()){
+                console.log("no input error")
+            } else {
+                console.log("input error")
+            }
+
+        },
+        signInWithGoogle(){
+            console.log("sign in with google")
+
             signInWithEmailAndPassword(getAuth(), this.email, this.password)
-                .then(() => {
-                    this.$router.push('/')
-                })
+            .then(() => {
+                this.$router.push('/')
+            })
+        },
+        // check user inputs
+        checkInputs(){
+            var check = true
+
+            if (this.email == ""){
+                this.errMsg.email = "Please enter an email."
+                check = false
+            } else {
+                this.errMsg['email'] = ""
+            }
+            if (this.password == ""){
+                this.errMsg['password'] = "Please enter a password."
+                check = false
+            } else {
+                this.errMsg['password'] = ""
+            }
+
+            return check
         }
     },
     components: {

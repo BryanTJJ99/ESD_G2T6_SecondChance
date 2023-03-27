@@ -138,7 +138,7 @@ export default {
             })
             .then(response => {
 
-                if (length(response) == 0){
+                if (response.length == 0){
                     this.gotListings = false
                 } else {
                     // return list of listingIds

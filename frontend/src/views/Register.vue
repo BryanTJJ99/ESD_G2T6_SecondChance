@@ -20,45 +20,56 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
 
             </div>
             <div class="col-lg-5 col-12" style="background-color:white;border-radius: 0px 0px 0px 15px;">
-                <div class="text-center px-3" style="margin-top:15%;">
-                    <img src="../assets/logo.png" style="height:50px;opacity:50%;">
-                    <h3 class="mt-1">SecondChance</h3>
+                <div class="px-3" style="margin-top:15%;">
+                    <div class="text-center">
+                        <img src="../assets/logo.png" style="height:50px;opacity:50%;">
+                        <h3 class="mt-1 text-center">SecondChance</h3>
+
+                    </div>
                     <form class="mt-5 px-5">
                         <div class="group">
                             <input type="text" v-model="email" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Your Email:</label>
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.email}}</small>
                         </div>
                         <div class="group mt-5">
-                            <input type="text" v-model="password" required>
+                            <input type="password" v-model="password" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Your Password:</label>
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.password}}</small>
+                       
                         </div>
                         <div class="group mt-5">
-                            <input type="text" v-model="password" required>
+                            <input type="text" v-model="companyName" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Your Company Name:</label>
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.companyName}}</small>
+                       
                         </div>
                         <div class="group mt-5">
-                            <input type="text" v-model="password" required>
+                            <input type="text" v-model="companyDept" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Your Company Department:</label>
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.companyDept}}</small>
+                       
                         </div>
                         <div class="group mt-5">
-                            <input type="text" v-model="password" required>
+                            <input type="text" v-model="officeLocation" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Your Office Location:</label>
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.officeLocation}}</small>
                         </div>
                     </form>
                 </div>
 
                 <div class="my-5 pt-2">
-                    <button class="btn btn-dark d-block mx-auto" style="width:250px;"><span>Register Now</span></button>
+                    <button class="btn btn-dark d-block mx-auto" style="width:250px;" v-on:click="register()"><span>Register Now</span></button>
                 </div>
             </div>
         </div>
@@ -66,20 +77,6 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
     </div>
     <Footer></Footer>
 
-<!-- <div>
-        <h1>Register</h1>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" v-model="email" class="form-control" id="email" aria-describedby="emailHelp">
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" v-model="password" class="form-control" id="password">
-        </div>
-            <p v-if="errMsg">{{ errMsg }}</p>
-            <button type="submit" @click="register" class="btn btn-primary">Submit</button>
-            <button class="btn btn-primary" @click="signInWithGoogle">Sign In With Google</button>
-        </div> -->
 </template>
 
 <script>
@@ -88,13 +85,31 @@ import Footer from "@/components/Footer.vue";
 export default {
     data() {
         return {
+            errMsg: {email:'', password:'', companyName:'', companyDept: '', officeLocation:'',valid:''},
             email: '',
             password: '',
-            errMsg: ''
+            companyName: '',
+            companyDept: '',
+            officeLocation: '',
+            valid: true
         }
     },
     methods: {
         register() {
+            
+            var check = this.checkInputs()
+
+            if (check) {
+                console.log("no input error")
+
+                this.validateAccount()
+
+            } else {
+                console.log("input error")
+
+            }
+
+
             createUserWithEmailAndPassword(getAuth(), this.email, this.password)
                 .then(() => {
                     this.$router.push('/')
@@ -102,10 +117,82 @@ export default {
                 .catch((err) => {
                     switch (err.code) {
                         case "auth/email-already-in-use":
-                            this.errMsg = 'Email is already in use'
+                            this.errMsg['valid'] = 'Email is already in use'
                             break
                     }
                 })
+        },
+        // check if company dept is alr registered
+        validateAccount(){
+
+            var url = ''
+
+            axios.get(url, {
+                params: {
+                    companyName: this.companyName,
+                    companyDept: this.companyDept,
+                    officeLocation: this.officeLocation
+                }
+            })
+            .then(response => {
+
+                if (length(response) == 0){
+                    
+                    this.valid = true // no account registered yet
+
+                } else {
+                    
+                    this.valid = false
+                    this.errMsg.valid = "Your company department already has a valid account."
+
+                }
+
+                return this.valid
+
+
+
+            })
+            .catch(error => {
+                console.log(error.message)
+                
+            })
+        },
+        // check user inputs
+        checkInputs(){
+            var check = true
+
+            if (this.email == ""){
+                this.errMsg.email = "Please enter an email."
+                check = false
+            } else {
+                this.errMsg['email'] = ""
+            }
+            if (this.password.length < 8){
+                this.errMsg['password'] = "Please enter a password that is at least 8 characters long."
+                check = false
+            } else {
+                this.errMsg['password'] = ""
+            }
+            if (this.companyDept == ""){
+                this.errMsg['companyDept'] = "Please enter your company's department."
+                check = false
+            } else {
+                this.errMsg['companyDept'] = ""
+            }
+            if (this.companyName == ""){
+                this.errMsg['companyName'] = "Please enter your company's name."
+                check = false
+            } else {
+                this.errMsg['companyName'] = ""
+            }
+            if (this.officeLocation == ""){
+                this.errMsg['officeLocation'] = "Please enter your office location."
+                check = false
+            } else {
+                this.errMsg['officeLocation'] = ""
+            }
+
+            return check
         }
     },
     components: {
