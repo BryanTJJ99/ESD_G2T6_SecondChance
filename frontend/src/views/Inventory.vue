@@ -120,7 +120,7 @@ import TopNavbar from "@/components/Navbar/TopNavbar.vue";
 import Sidebar from "@/components/Navbar/Sidebar.vue";
 import Container from "@/components/Container.vue";
 import Footer from "@/components/Footer.vue";
-import AOS from 'aos'
+import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 export default {
@@ -131,6 +131,7 @@ export default {
     },
     data() {
         return {
+            depItems:{},
             department: "Finance",
             organization: "SMU",
             newItem: "",
@@ -178,9 +179,47 @@ export default {
 
             this.newItem = "";
             this.newItemQty = 0;
+        },
+
+        getInventory(){
+            var departmentUrl = ""
+            var itemUrl = ""
+            var depItems = []
+            
+            // call department service to retrieve departmentItems
+            axios.get(departmentUrl,{
+                params:{
+                    departmentID :this.department,
+                }
+            })
+            .then(response => {
+                if(len(response.itemIdArrayList) > 0){
+                    depItems = response.itemIdArrayList
+                }
+            })
+            .catch(error=>{
+                console.log(error.message)
+                return
+            })
+
+            //get each item by invoking item microservice
+            for (let i = 0; i < depItems.len; i++){
+               axios.get(itemUrl,{
+                params: {
+                    itemId : depItems[i]
+                }
+               })
+               .then(response => {})
+               .catch(error => {})
+            }   
+        },
+
+        addItem(){
+            departmentUrl = ""
+            itemUrl = ""
+            axios.get()
         }
     }
-
 }
 
 </script>
