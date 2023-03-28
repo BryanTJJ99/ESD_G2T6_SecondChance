@@ -81,8 +81,17 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
 
 <script>
 import Footer from "@/components/Footer.vue";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 
 export default {
+    // beforeCreate(){
+    //     const auth = getAuth();
+    //     onAuthStateChanged(auth, user =>{
+    //         if (!user){
+    //             this.$router.push("/")
+    //         }
+    //     })
+    // },
     data() {
         return {
             errMsg: {email:'', password:'', companyName:'', companyDept: '', officeLocation:'',valid:''},
@@ -139,6 +148,9 @@ export default {
                 if (length(response) == 0){
                     
                     this.valid = true // no account registered yet
+                    auth.createUserWithEmailAndPassword(email, this.password)
+                    console.log("SUCCESSFUL User Update")
+
 
                 } else {
                     
