@@ -121,7 +121,7 @@ def process_place_item(item):
 
         message = json.dumps(message)
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='carbon_calculator.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
-        print("\nItem error - Code {} - published to the RabbitMQ Exchange:".format(code))
+        print("\nCarbon Calculator error - Code {} - published to the RabbitMQ Exchange:".format(code))
         return carbon_calculator_result
 
     message = {
