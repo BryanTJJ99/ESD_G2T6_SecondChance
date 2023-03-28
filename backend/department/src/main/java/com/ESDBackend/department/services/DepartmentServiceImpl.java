@@ -1,4 +1,5 @@
 package com.ESDBackend.department.services;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,12 +16,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private DepartmentRepository departmentRepository;
 
-
     @Override
     public List<Department> getAllDepartments() {
         return departmentRepository.findAll();
     }
-
 
     @Override
     public ArrayList<String> getDepartmentItemsIDList(String departmentID) {
@@ -33,7 +32,6 @@ public class DepartmentServiceImpl implements DepartmentService {
             return null;
         }
     }
-
 
     @Override
     public Department addDepartmentItemId(String departmentID, String itemID) {
@@ -49,7 +47,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         return null;
     }
 
-
     @Override
     public Department deleteDepartmentItemId(String departmentID, String itemID) {
         Department department = departmentRepository.findById(departmentID).get();
@@ -61,11 +58,21 @@ public class DepartmentServiceImpl implements DepartmentService {
         return null;
     }
 
+    @Override
+    public double getDepartmentCarbon(String departmentID) {
+        Department department = departmentRepository.findById(departmentID).get();
+        if (department != null) {
+            return department.getTotalCarbon();
+        }
+        return -1;
+    }
 
+    @Override
+    public void addDepartmentCarbon(String departmentID, double carbonToAdd) {
+        Department department = departmentRepository.findById(departmentID).get();
+        if (department != null) {
+            department.setTotalCarbon(carbonToAdd + department.getTotalCarbon());
+        }
+    }
 
 }
-
-
-
-
-

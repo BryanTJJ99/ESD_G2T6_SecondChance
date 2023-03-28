@@ -18,11 +18,13 @@ public class Department {
     @Id
     private String departmentId;
     private String departmentName;
+    private String companyId;
     private String email;
     private List<String> itemIdArrayList;
     private String password;
     private String postalCode;
     private double totalCarbon;
+    
 
     // public Department() {
     //     // Default constructor
