@@ -1,7 +1,6 @@
 /Users/bryantan/Documents/GitHub/ESD_G2T6_SecondChance/backend/department/src/main/java/com/ESDBackend/department/DepartmentApplication.java
 /Users/bryantan/Documents/GitHub/ESD_G2T6_SecondChance/backend/department/src/main/java/com/ESDBackend/department/services/DepartmentServiceImpl.java
 /Users/bryantan/Documents/GitHub/ESD_G2T6_SecondChance/backend/department/src/main/java/com/ESDBackend/department/models/Department.java
-/Users/bryantan/Documents/GitHub/ESD_G2T6_SecondChance/backend/department/src/main/java/com/ESDBackend/department/repositories/DepartmentDAO.java
 /Users/bryantan/Documents/GitHub/ESD_G2T6_SecondChance/backend/department/src/main/java/com/ESDBackend/department/services/DepartmentService.java
 /Users/bryantan/Documents/GitHub/ESD_G2T6_SecondChance/backend/department/src/main/java/com/ESDBackend/department/repositories/DepartmentRepository.java
 /Users/bryantan/Documents/GitHub/ESD_G2T6_SecondChance/backend/department/src/main/java/com/ESDBackend/department/controllers/DepartmentController.java

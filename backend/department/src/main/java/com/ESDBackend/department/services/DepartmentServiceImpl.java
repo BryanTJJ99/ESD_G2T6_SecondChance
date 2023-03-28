@@ -22,11 +22,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<String> getDepartmentItemsIDList(String departmentID) {
+    public Department getDepartmentById(String departmentID) {
         Department department = departmentRepository.findById(departmentID).get();
         if (department != null) {
             System.out.println("Successful");
-            return department.getItemIdArrayList();
+            return department;
         } else {
             System.out.println("Unsuccessful");
             return null;
