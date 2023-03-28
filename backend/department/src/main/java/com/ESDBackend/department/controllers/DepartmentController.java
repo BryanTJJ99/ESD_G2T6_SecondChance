@@ -33,7 +33,7 @@ public class DepartmentController {
 
     @GetMapping("/{departmentID}")
     @CrossOrigin
-    public ArrayList<String> getDepartmentItemsIDList(@PathVariable String departmentID) {
+    public List<String> getDepartmentItemsIDList(@PathVariable String departmentID) {
         return departmentService.getDepartmentItemsIDList(departmentID);
     }
 
@@ -51,16 +51,10 @@ public class DepartmentController {
         return departmentService.deleteDepartmentItemId(departmentID, itemID);
     }
 
-    @GetMapping("/departmentCarbon")
+    @GetMapping("/departmentCarbon/{departmentID}")
     @CrossOrigin
     public double getDepartmentCarbon(@PathVariable String departmentID) {
         return departmentService.getDepartmentCarbon(departmentID);
-    }
-
-    @GetMapping("/addDepartmentCarbon/{departmentID}/{carbonToAdd}")
-    @CrossOrigin
-    public void addDepartmentCarbon(@PathVariable String departmentID, @PathVariable double carbonToAdd) {
-        departmentService.addDepartmentCarbon(departmentID, carbonToAdd);
     }
 
     // @PutMapping("/department/{departmentID}")

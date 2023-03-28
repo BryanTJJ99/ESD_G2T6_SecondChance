@@ -5,7 +5,7 @@ import java.util.*;
 
 public interface DepartmentService {
 
-    public ArrayList<String> getDepartmentItemsIDList(String departmentID);
+    public List<String> getDepartmentItemsIDList(String departmentID);
 
     public List<Department> getAllDepartments();
 
@@ -14,7 +14,5 @@ public interface DepartmentService {
     public Department deleteDepartmentItemId(String departmentID, String itemID);
 
     public double getDepartmentCarbon(String departmentID);
-
-    public void addDepartmentCarbon(String departmentID, double carbonToAdd);
 
 }
