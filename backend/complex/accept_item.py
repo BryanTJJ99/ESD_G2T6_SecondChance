@@ -13,7 +13,7 @@ import json
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-department_url = 'http://localhost:5004/department'
+department_url = 'http://localhost:8080/department'
 carbon_calculator_url = 'http://localhost:5005/carbon_calc'
 create_item_url = 'http://localhost:5006/create'
 item_url = 'http://localhost:5007/item'
@@ -39,7 +39,7 @@ def accept_item():
     if request.is_json:
         try:
             # result = process_accept_item(request.json)
-            result = test_slack(request.json)
+            result = process_accept_item(request.json)
             return result
 
         except Exception as e:
@@ -54,39 +54,39 @@ def accept_item():
             })
 
 #to test slack bot
-def test_slack(item):
-        #slack notification
-        slack_result = invoke_http(
-                f"{slack_url}",
-                method="POST",
-                json=item
-            )
-        # slack error
-        code = slack_result['code']
-        slack_data = slack_result['data']
+# def test_slack(item):
+#         #slack notification
+#         slack_result = invoke_http(
+#                 f"{slack_url}",
+#                 method="POST",
+#                 json=item
+#             )
+#         # slack error
+#         code = slack_result['code']
+#         slack_data = slack_result['data']
         
-        if code not in range(200, 300):
-            print('\n\n-----Publishing the (slack error) message with routing_key=slack.error-----')
+#         if code not in range(200, 300):
+#             print('\n\n-----Publishing the (slack error) message with routing_key=slack.error-----')
                 
-            message = {
-                "code": 400,
-                "message_type": "business_error",
-                "data": "Invalid department ID"
-            }
-            message = json.dumps(message)
-            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
-            print("\nSlack error - Code {} - published to the RabbitMQ Exchange:".format(code))
-            return slack_result
+#             message = {
+#                 "code": 400,
+#                 "message_type": "business_error",
+#                 "data": "Invalid department ID"
+#             }
+#             message = json.dumps(message)
+#             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
+#             print("\nSlack error - Code {} - published to the RabbitMQ Exchange:".format(code))
+#             return slack_result
         
-        else:
-            message = {
-                "code": 201,
-                    "message_type": 'slack_notification',
-                    "data": slack_data
-            }
-            message = json.dumps(message)
-            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
-            print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(slack_data))
+#         else:
+#             message = {
+#                 "code": 201,
+#                     "message_type": 'slack_notification',
+#                     "data": slack_data
+#             }
+#             message = json.dumps(message)
+#             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
+#             print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(slack_data))
             return slack_result
         
 
@@ -165,11 +165,13 @@ def process_accept_item(item):
 
 
     #---------------------------------------------------------------------------------
-    # get department of buyer
+
+        #invoke department url to update changes to buyer's database
         buyer_department_result = invoke_http(
-            f"{department_url}/{buyerId}",
-            method="GET"
+            f"{department_url}/{item['recievorId']}/{item['id']}",
+            method='PUT',
         )
+
         # buyer department not updated
         code = buyer_department_result['code']
         if code not in range(200,300):
@@ -195,24 +197,6 @@ def process_accept_item(item):
             message = json.dumps(message)
             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
             print("------------ DEPARTMENT EDITED SUCCESSFULLY - {} ------------".format(buyer_department_result))
-            
-        
-        #adding item into buyer's department database and adding total carbon emission
-        buyer_department_data = buyer_department_result['data']
-        # store new item_id in department
-        department_items = buyer_department_data['items']
-        department_items.append(item_id)
-        buyer_department_data['items'] = department_items
-        # add carbon data to department
-        department_carbon = buyer_department_data['totalCarbon']
-        buyer_department_data['totalCarbon'] = department_carbon + item['carbonEmission']
-
-        #invoke department url to update changes to buyer's database
-        invoke_http(
-            f"{department_url}/edit/{item['recievorId']}",
-            method='PUT',
-            json=item
-        )
         
 
 
@@ -251,10 +235,10 @@ def process_accept_item(item):
             
     
     #---------------------------------------------------------------------------------
-    # get department of seller
+    #invoke department url to update changes to seller's database
         seller_department_result = invoke_http(
-            f"{department_url}/{sellerId}",
-            method="GET"
+            f"{department_url}/{item['creatorId']}/{item['id']}",
+            method='PUT',
         )
 
         if seller_department_result['code'] not in range(200,300):
@@ -279,18 +263,6 @@ def process_accept_item(item):
             message = json.dumps(message)
             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
             print("------------ DEPARTMENT EDITED SUCCESSFULLY - {} ------------".format(seller_department_result))
-        
-
-        #remove item from seller's and add carbon emission
-        seller_department_data = seller_department_result['data']
-        # store new item_id in department
-        item_id = item['id']
-        department_items = seller_department_data['items']
-        department_items.pop(item_id)
-        seller_department_data['items'] = department_items
-        # add carbon data to department
-        department_carbon = seller_department_data['totalCarbon']
-        seller_department_data['totalCarbon'] = department_carbon + item['carbonEmission']
         
 
     #---------------------------------------------------------------------------------
