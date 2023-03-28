@@ -1,0 +1,6 @@
+com/ESDBackend/department/DepartmentApplication.class
+com/ESDBackend/department/models/Department.class
+com/ESDBackend/department/controllers/DepartmentController.class
+com/ESDBackend/department/services/DepartmentServiceImpl.class
+com/ESDBackend/department/services/DepartmentService.class
+com/ESDBackend/department/repositories/DepartmentRepository.class
