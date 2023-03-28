@@ -16,15 +16,13 @@ import com.ESDBackend.department.models.Department;
 // import com.ESDBackend.department.repositories.DepartmentDAO;
 import com.ESDBackend.department.services.DepartmentService;
 
-
 @RestController
 @RequestMapping("/department")
 public class DepartmentController {
-    
+
     @Autowired
     // @Qualifier("departments")
     private DepartmentService departmentService;
-
 
     @GetMapping("/allDepartments")
     @CrossOrigin
@@ -33,42 +31,54 @@ public class DepartmentController {
         return departmentService.getAllDepartments();
     }
 
-
-
     @GetMapping("/{departmentID}")
     @CrossOrigin
     public ArrayList<String> getDepartmentItemsIDList(@PathVariable String departmentID) {
         return departmentService.getDepartmentItemsIDList(departmentID);
     }
 
-
     @PostMapping("/addItemID/{departmentID}/{itemID}")
     @CrossOrigin
-    public Department addDepartmentItemId(@PathVariable("departmentID") String departmentID, @PathVariable("itemID") String itemID) {
+    public Department addDepartmentItemId(@PathVariable("departmentID") String departmentID,
+            @PathVariable("itemID") String itemID) {
         return departmentService.addDepartmentItemId(departmentID, itemID);
     }
 
-
     @DeleteMapping("/deleteItemID/{departmentID}/{itemID}")
     @CrossOrigin
-    public Department deleteDepartmentItemId(@PathVariable("departmentID") String departmentID, @PathVariable("itemID") String itemID) {
+    public Department deleteDepartmentItemId(@PathVariable("departmentID") String departmentID,
+            @PathVariable("itemID") String itemID) {
         return departmentService.deleteDepartmentItemId(departmentID, itemID);
     }
 
+    @GetMapping("/departmentCarbon")
+    @CrossOrigin
+    public double getDepartmentCarbon(@PathVariable String departmentID) {
+        return departmentService.getDepartmentCarbon(departmentID);
+    }
+
+    @GetMapping("/addDepartmentCarbon/{departmentID}/{carbonToAdd}")
+    @CrossOrigin
+    public void addDepartmentCarbon(@PathVariable String departmentID, @PathVariable double carbonToAdd) {
+        departmentService.addDepartmentCarbon(departmentID, carbonToAdd);
+    }
+
     // @PutMapping("/department/{departmentID}")
-    // public int removeItem(@PathVariable String departmentID, @RequestBody String itemID) {
-    //     return departmentService.removeItem(departmentID, itemID);
+    // public int removeItem(@PathVariable String departmentID, @RequestBody String
+    // itemID) {
+    // return departmentService.removeItem(departmentID, itemID);
     // }
 
     // @PutMapping("/departments/{departmentID}")
-    // public int addItem(@PathVariable String departmentID, @RequestBody String itemID) {
-    //     return departmentService.addItem(departmentID, itemID);
+    // public int addItem(@PathVariable String departmentID, @RequestBody String
+    // itemID) {
+    // return departmentService.addItem(departmentID, itemID);
     // }
 
     // @PutMapping("/department/{departmentID}")
-    // public int transferItem(@PathVariable String departmentID, @RequestBody String itemID) {
-    //     return departmentService.removeItem(departmentID, itemID);
+    // public int transferItem(@PathVariable String departmentID, @RequestBody
+    // String itemID) {
+    // return departmentService.removeItem(departmentID, itemID);
     // }
 
-    
 }
