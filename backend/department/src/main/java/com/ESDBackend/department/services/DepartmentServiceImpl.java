@@ -22,13 +22,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public ArrayList<String> getDepartmentItemsIDList(String departmentID) {
-        Optional<Department> optionalDepartment = departmentRepository.findById(departmentID);
-        if (optionalDepartment.isPresent()) {
-            System.out.println("have");
-            return (ArrayList<String>) optionalDepartment.get().getItemIdArrayList();
+    public List<String> getDepartmentItemsIDList(String departmentID) {
+        Department department = departmentRepository.findById(departmentID).get();
+        if (department != null) {
+            System.out.println("Successful");
+            return department.getItemIdArrayList();
         } else {
-            System.out.println("dont have");
+            System.out.println("Unsuccessful");
             return null;
         }
     }
@@ -37,8 +37,13 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department addDepartmentItemId(String departmentID, String itemID) {
         Department department = departmentRepository.findById(departmentID).get();
         if (department != null) {
-            System.out.println("have");
-            department.addItem(itemID);
+            List<String> itemIdArr = department.getItemIdArrayList();
+            if (itemIdArr.contains(itemID)) {
+                System.out.println("This item already exists inside the department");
+            } else {
+                department.addItem(itemID);
+                System.out.println("Added successfully");
+            }
             // List<String> itemArr = department.getItemIdArrayList();
             // itemArr.add(itemID);
             // department.setItemIdArrayList(itemArr);
@@ -51,9 +56,16 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department deleteDepartmentItemId(String departmentID, String itemID) {
         Department department = departmentRepository.findById(departmentID).get();
         if (department != null) {
-            System.out.println("have");
-            department.removeItem(itemID);
-            return departmentRepository.save(department);
+            List<String> itemIdArr = department.getItemIdArrayList();
+            if (itemIdArr.contains(itemID)) {
+                department.removeItem(itemID);
+                System.out.println("Removed successfully");
+                return departmentRepository.save(department);
+            } else {
+                System.out.println("This item does not exist inside the department");
+                return null;
+            }
+            
         }
         return null;
     }
@@ -65,14 +77,6 @@ public class DepartmentServiceImpl implements DepartmentService {
             return department.getTotalCarbon();
         }
         return -1;
-    }
-
-    @Override
-    public void addDepartmentCarbon(String departmentID, double carbonToAdd) {
-        Department department = departmentRepository.findById(departmentID).get();
-        if (department != null) {
-            department.setTotalCarbon(carbonToAdd + department.getTotalCarbon());
-        }
     }
 
 }

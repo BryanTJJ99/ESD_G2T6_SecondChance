@@ -26,14 +26,14 @@ def place_item():
             # {
             #   '_id': string,
             #   'itemName': string,
-            #   'creatorId': string,
             #   'itemCategory': string,
-            #   'isListed': Boolean,
+            #   'isListed': boolean,
             #   'itemPicture': BLOB,
-            #   'itemDescription': string
-            #   'status': string,
-            #   'carbonEmission': number,
-            #   'receivorId': null, string
+            #   'itemDescription': Null, String,
+            #   'carbonEmission': Null, Number,
+            #   'receivorId': string (Department),
+            #   'companyId': string (Company),
+            #   'departmentId': string (Department)
             # }
             item = request.get_json()
             result = process_place_item(item)
@@ -58,7 +58,7 @@ def process_place_item(item):
     amqp_setup.check_setup()
     # get department of item created
     department_result = invoke_http(
-        f"{department_url}/{item['creatorId']}",
+        f"{department_url}/{item['departmentId']}",
         method="GET"
     )
 
@@ -78,6 +78,8 @@ def process_place_item(item):
     
     # if department exists
     department_data = department_result['data']
+
+    company_id = department_data['companyId']
 
     message = {
         "code": 201,
@@ -134,6 +136,8 @@ def process_place_item(item):
     
     # add carbon data to item
     item['carbonEmission'] = carbon_calculator_data['emission']
+    # add companyId to item
+    item['companyId'] = company_id
     # post item
 
     item_result = invoke_http(
@@ -179,7 +183,7 @@ def process_place_item(item):
         department_data.pop('_id')
         # run department put request
         department_update_result = invoke_http(
-            f"{department_url}/edit/{item['creatorId']}",
+            f"{department_url}/edit/{item['departmentId']}",
             method='PUT',
             json=department_data
         )
