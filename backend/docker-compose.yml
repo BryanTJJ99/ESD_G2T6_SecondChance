@@ -12,16 +12,16 @@
 # copy and paste ids and use docker rmi
 
 
-# version: "3.8"
+version: "3.8"
 
-# volumes:
-#   rabbitmq_data:
+volumes:
+  rabbitmq_data:
 
 # networks:
 #   default:
 #     name: kong_kong-next
 
-
+services:
   #######################################################################
   # Simple microservices
   #######################################################################
@@ -30,26 +30,32 @@
   ####################################
   # Item microservice
   ####################################
-  # item:
-  #   build:
-  #     context: ./microservices/item
-  #     dockerfile: item.Dockerfile
-  #   image: bryantjj/item:esd
-  #   restart: always
-  #   environment:
-  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/esd
-  #     PYTHONUNBUFFERED: 1
-  #   ports:
-  #     - "5001:5001"
-  #   container_name: item
+  item:
+    build:
+      context: ./item
+      dockerfile: item.Dockerfile
+    image: vickyyqu/item:esd
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5000:5000"
 
 
 
   ####################################
   # Company microservice
   ####################################
-
-
+  company:
+    build:
+      context: ./company
+      dockerfile: company.Dockerfile
+    image: vickyyqu/company:esd
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5001:5001"
 
 
   ####################################
@@ -61,19 +67,18 @@
 
 
   ####################################
-  # Chat microservice
-  ####################################
-
-
-
-
-  ####################################
   # Carbon Calculator microservice
   ####################################
-  
-
-
-  
+  carbon_calculator:
+    build:
+      context: ./carbon_calculator
+      dockerfile: carbon_calculator.Dockerfile
+    image: vickyyqu/carbon_calculator:esd
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5002:5002"
 
   ####################################
   # Slack microservice
@@ -82,31 +87,54 @@
 
 
 
+  ####################################
+  # Error microservice
+  ####################################  
+  error:
+    build:
+      context: ./error
+      dockerfile: error.Dockerfile
+    image: vickyyqu/error:esd
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
 
   ####################################
-  # Authentication microservice
-  ####################################
-
-
-
-
-
-
-
+  # Activity Log microservice
+  ####################################  
+  activity_log:
+    build:
+      context: ./activity_log
+      dockerfile: activity_log.Dockerfile
+    image: vickyyqu/activity_log:esd
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
 
   #######################################################################
   # Message broker microservices
   #######################################################################
 
-
   ####################################
-  # RabbitMQ
+  # RabbitMQ: The messaging broker   
   ####################################
-
-
-
-
-
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: esd-rabbit
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - rabbitmq_data:/var/lib/rabbitmq
 
 
   ####################################
