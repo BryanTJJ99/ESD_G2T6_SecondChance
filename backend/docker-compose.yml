@@ -61,10 +61,14 @@ services:
   ####################################
   # Department microservice
   ####################################
-
-
-
-
+  department:
+    build:
+      context: ./department
+      dockerfile: Dockerfile
+    image: vickyyqu/department:esd
+    restart: always
+    ports:
+      - "5005:5005"
 
   ####################################
   # Carbon Calculator microservice
