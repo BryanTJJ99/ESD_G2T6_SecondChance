@@ -3,7 +3,6 @@ from flask_cors import CORS, cross_origin
 
 import os, sys
 
-import requests
 from invokes import invoke_http
 
 import amqp_setup
@@ -51,7 +50,7 @@ def place_item():
         
     return jsonify({
         "code": 400,
-        "message": f"Invalid JSON input {requests.request.get_data()}"
+        "message": f"Invalid JSON input {request.get_data()}"
     })
         
 def process_place_item(item):
