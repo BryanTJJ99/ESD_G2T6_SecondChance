@@ -17,9 +17,9 @@ version: "3.8"
 volumes:
   rabbitmq_data:
 
-# networks:
-#   default:
-#     name: kong_kong-next
+networks:
+  default:
+    name: kong_kong-net
 
 services:
   #######################################################################
