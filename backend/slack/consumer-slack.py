@@ -65,10 +65,44 @@ def send_message_to_channel(channel_id, message):
         print("Error sending message: ", e)
 
 
-consumer = KafkaConsumer(TOPIC_NAME, bootstrap_servers=KAFKA_SERVER, value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+# consumer = KafkaConsumer(TOPIC_NAME, bootstrap_servers=KAFKA_SERVER, value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+# for message in consumer:
+
+#     channel_id = "C04SYABL19Q"  # Replace with your channel ID
+#     message_text = message.value
+    
+#     send_message_to_channel(channel_id, message_text)
+
+TOPIC_NAME1 = 'accept'
+TOPIC_NAME2 = 'reject'
+
+# Create a Kafka consumer
+consumer = KafkaConsumer(
+    bootstrap_servers=KAFKA_SERVER,
+    group_id='my_group',
+    auto_offset_reset='earliest'
+)
+
+# Subscribe to the topics
+consumer.subscribe(topics=[TOPIC_NAME1, TOPIC_NAME2])
+
+# Read messages from the topics
 for message in consumer:
 
     channel_id = "C04SYABL19Q"  # Replace with your channel ID
     message_text = message.value
-    
-    send_message_to_channel(channel_id, message_text)
+
+    topic = message.topic
+    key = message.key
+    value = message.value.decode('utf-8')
+    if topic == TOPIC_NAME1:
+        # Handle messages from topic1 with key1
+        if key == 'accepted_key':
+            data = json.loads(value)
+            print(f"Received message with key={key} from {topic}: {data}")
+            send_message_to_channel(channel_id, message_text)
+    elif topic == TOPIC_NAME2:
+        # Handle messages from topic2 with key2
+        if key == 'rejected_key':
+            data = json.loads(value)
+            print(f"Received message with key={key} from {topic}: {data}")

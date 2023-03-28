@@ -88,7 +88,6 @@ def accept_item():
 #             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
 #             print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(slack_data))
 #            return slack_result
-        
 
 
 def process_accept_item(item):
@@ -96,6 +95,7 @@ def process_accept_item(item):
     buyerId = item["recievorId"]
     sellerId = item["creatorId"]
     listOfRejected = item["listOfRejected"]
+    item_name = item['item_name']
 
     #---------------------------------------------------------------------------------
     #change status of isListing from true to false
@@ -202,15 +202,16 @@ def process_accept_item(item):
 
 
     #---------------------------------------------------------------------------------
-    #slack notification for accepted buyer
-        accepted_item = {"item_id": item_id, "buyer_id": buyerId, "topic_name": "accepted_slack"}
-        accept_slack_result = invoke_http(
+    #slack notification for accepted buyer and rejected list
+        slack_item = {"item_id": item_id, "item_name": item_name, "buyer_id": buyerId, "reject_id": listOfRejected}
+    
+        slack_result = invoke_http(
                 f"{slack_url}",
                 method="POST",
-                json=accepted_item
+                json=slack_item
             )
-        code = accept_slack_result['code']
-        accept_slack_data = accept_slack_result['data']
+        code = slack_result['code']
+        slack_data = slack_result['data']
         
         if code not in range(200, 300):
             print('\n\n-----Publishing the (slack error) message with routing_key=slack.error-----')
@@ -223,7 +224,7 @@ def process_accept_item(item):
             message = json.dumps(message)
             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
             print("\nSlack error - Code {} - published to the RabbitMQ Exchange:".format(code))
-            return accept_slack_result
+            return slack_result
         
         else:
             message = {
@@ -233,42 +234,8 @@ def process_accept_item(item):
             }
             message = json.dumps(message)
             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
-            print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(accept_slack_data))
+            print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(slack_data))
 
-    #---------------------------------------------------------------------------------
-    #slack notification for rejected buyers
-        rejected_item = {"item_id": item_id, "buyer_id": listOfRejected, "topic_name": "rejected_slack"}
-        rejected_slack_result = invoke_http(
-                f"{slack_url}",
-                method="POST",
-                json=rejected_item
-            )
-        code = rejected_slack_result['code']
-        rejected_slack_data = rejected_slack_result['data']
-        
-        if code not in range(200, 300):
-            print('\n\n-----Publishing the (slack error) message with routing_key=slack.error-----')
-                
-            message = {
-                "code": 400,
-                "message_type": "business_error",
-                "data": "Invalid slack response"
-            }
-            message = json.dumps(message)
-            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
-            print("\nSlack error - Code {} - published to the RabbitMQ Exchange:".format(code))
-            return rejected_slack_result
-        
-        else:
-            message = {
-                "code": 201,
-                    "message_type": 'slack_notification',
-                    "data": rejected_slack_data
-            }
-            message = json.dumps(message)
-            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
-            print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(rejected_slack_data))
-    
     #---------------------------------------------------------------------------------
     #invoke department url to update changes to seller's database
         seller_department_result = invoke_http(
