@@ -70,4 +70,5 @@ for message in consumer:
 
     channel_id = "C04SYABL19Q"  # Replace with your channel ID
     message_text = message.value
+    
     send_message_to_channel(channel_id, message_text)

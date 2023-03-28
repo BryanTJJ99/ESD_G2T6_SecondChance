@@ -7,27 +7,36 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-TOPIC_NAME = 'slack'
+
 KAFKA_SERVER = 'localhost:9092'
+
 
 #Get item added
 @app.route('/slack', methods=['POST'])
 def getSlackMsg():
     if request.is_json:
         item = request.get_json()
-        
+        if item["topic_name"] == 'accepted_slack':
+            TOPIC_NAME1 = "accepted_slack"
+            
+        else:
+            TOPIC_NAME2 = "rejetcted_slack"
+
         #slack configuration
         producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER)
 
-        # dummy data, data will come from item management
-        # dept_name = 'finance'
-        # img_url = 'https://picsum.photos/id/237/200/300'
-        # data = {'dept_name': dept_name, 'img_url':img_url}
+        # Send messages to the topic with the specified key
+        accepted_key = b'key1'
+        accepted_message = item
+        producer.send(TOPIC_NAME1, key=accepted_key, value=accepted_message)
+
+        rejected_key = b'key2'
+        rejected_message2 = item
+        producer.send(TOPIC_NAME2, key=rejected_key, value=rejected_message2)
 
         print('==================')
         print(item)
-        message = json.dumps(item).encode('utf-8')
-        producer.send(TOPIC_NAME, message)
+
         producer.flush()
 
         return item

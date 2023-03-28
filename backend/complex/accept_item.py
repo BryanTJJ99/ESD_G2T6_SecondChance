@@ -14,8 +14,8 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 department_url = 'http://localhost:8080/department'
-carbon_calculator_url = 'http://localhost:5005/carbon_calc'
-create_item_url = 'http://localhost:5006/create'
+# carbon_calculator_url = 'http://localhost:5005/carbon_calc'
+# create_item_url = 'http://localhost:5006/create'
 item_url = 'http://localhost:5007/item'
 slack_url = 'http://localhost:5008/slack'
 
@@ -87,21 +87,22 @@ def accept_item():
 #             message = json.dumps(message)
 #             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
 #             print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(slack_data))
-            return slack_result
+#            return slack_result
         
 
 
 def process_accept_item(item):
     item_id = item['id']
     buyerId = item["recievorId"]
-    sellerId = item["recievorId"]
+    sellerId = item["creatorId"]
+    listOfRejected = item["listOfRejected"]
 
     #---------------------------------------------------------------------------------
     #change status of isListing from true to false
     if item["isListing"] == True:
         item_status = {
             "id": item_id,
-            "isListing": False
+            "isListing": False,
         }
         new_item_result = invoke_http(
             f"{item_url}",
@@ -127,14 +128,14 @@ def process_accept_item(item):
 
 
     #---------------------------------------------------------------------------------
-    # change ownership of item
+    #change ownership of item
         department_update_result = invoke_http(
-            f"{department_url}/edit/{item['creatorId']}",
+            f"{item_url}/edit/{item['creatorId']}",
             method='PUT',
             json=item
         )
-        code = department_update_result['code']
 
+        code = department_update_result['code']
         # ownership of department not updated
         if code not in range(200,300):
             print('\n\n-----Publishing the (updating ownership error) message with routing_key=ownership.error-----')
@@ -201,14 +202,15 @@ def process_accept_item(item):
 
 
     #---------------------------------------------------------------------------------
-    #slack notification
-        slack_result = invoke_http(
+    #slack notification for accepted buyer
+        accepted_item = {"item_id": item_id, "buyer_id": buyerId, "topic_name": "accepted_slack"}
+        accept_slack_result = invoke_http(
                 f"{slack_url}",
                 method="POST",
-                json=item
+                json=accepted_item
             )
-        code = slack_result['code']
-        slack_data = slack_result['data']
+        code = accept_slack_result['code']
+        accept_slack_data = accept_slack_result['data']
         
         if code not in range(200, 300):
             print('\n\n-----Publishing the (slack error) message with routing_key=slack.error-----')
@@ -221,23 +223,56 @@ def process_accept_item(item):
             message = json.dumps(message)
             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
             print("\nSlack error - Code {} - published to the RabbitMQ Exchange:".format(code))
-            return slack_result
+            return accept_slack_result
         
         else:
             message = {
                 "code": 201,
                     "message_type": 'slack_notification',
-                    "data": slack_data
+                    "data": accept_slack_data
             }
             message = json.dumps(message)
             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
-            print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(slack_data))
-            
+            print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(accept_slack_data))
+
+    #---------------------------------------------------------------------------------
+    #slack notification for rejected buyers
+        rejected_item = {"item_id": item_id, "buyer_id": listOfRejected, "topic_name": "rejected_slack"}
+        rejected_slack_result = invoke_http(
+                f"{slack_url}",
+                method="POST",
+                json=rejected_item
+            )
+        code = rejected_slack_result['code']
+        rejected_slack_data = rejected_slack_result['data']
+        
+        if code not in range(200, 300):
+            print('\n\n-----Publishing the (slack error) message with routing_key=slack.error-----')
+                
+            message = {
+                "code": 400,
+                "message_type": "business_error",
+                "data": "Invalid slack response"
+            }
+            message = json.dumps(message)
+            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
+            print("\nSlack error - Code {} - published to the RabbitMQ Exchange:".format(code))
+            return rejected_slack_result
+        
+        else:
+            message = {
+                "code": 201,
+                    "message_type": 'slack_notification',
+                    "data": rejected_slack_data
+            }
+            message = json.dumps(message)
+            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
+            print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(rejected_slack_data))
     
     #---------------------------------------------------------------------------------
     #invoke department url to update changes to seller's database
         seller_department_result = invoke_http(
-            f"{department_url}/{item['creatorId']}/{item['id']}",
+            f"{department_url}/{sellerId}/{item['id']}",
             method='PUT',
         )
 
