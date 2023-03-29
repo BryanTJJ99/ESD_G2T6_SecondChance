@@ -13,10 +13,10 @@ import json
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-department_url = 'http://localhost:5004/department'
+department_url = 'http://localhost:8080/department'
 # carbon_calculator_url = 'http://localhost:5005/carbon_calc'
 # create_item_url = 'http://localhost:5006/create'
-item_url = 'http://localhost:5000/item'
+item_url = 'http://localhost:5000'
 slack_url = 'http://localhost:5008/slack'
 
 
@@ -52,10 +52,10 @@ def process_accept_item(request):
             f"{department_url}/deleteItemID/{item['departmentId']}/{item['_id']}",
             method='DELETE'
         )
-        print(item['departmentId'],item['_id'])
+
         if seller_department_result['code'] not in range(200,300):
             print('\n\n-----Publishing the (seller department error) message with routing_key=department.error-----')
-            print(seller_department_result)
+
             message = {
                 "code": 400,
                 "message_type": "department_error",
@@ -73,7 +73,7 @@ def process_accept_item(request):
             }
             message = json.dumps(message)
             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
-            print("------------ DEPARTMENT EDITED SUCCESSFULLY - {} ------------".format(seller_department_result))
+            print("------------ SELLER DEPARTMENT EDITED SUCCESSFULLY - {} ------------".format(seller_department_result))
 
 #---------------------------------------------------------------------------------
     #invoke department url to update changes to buyer's database
@@ -101,16 +101,18 @@ def process_accept_item(request):
             }
             message = json.dumps(message)
             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
-            print("------------ DEPARTMENT EDITED SUCCESSFULLY - {} ------------".format(buyer_department_result))
+            print("------------ BUYER DEPARTMENT EDITED SUCCESSFULLY - {} ------------".format(buyer_department_result))
 
 
     #--------------------------------------------------------------------------------
     #getting the rejected list and accepted buyer id
         buyer_list = item['buyerId']
         for id in buyer_list:
+
             if buyerId == id:
-                buyer_list.pop(id)
+                buyer_list.remove(id)
         rejected_list = buyer_list
+
 
     #---------------------------------------------------------------------------------
     #slack notification for accepted buyer
@@ -192,16 +194,18 @@ def process_accept_item(request):
                 "itemPicture": item["itemPicture"],
                 "itemDescription": item["itemDescription"],
                 "carbonEmission": item["carbonEmission"],
-                "buyerId": [],
+                "buyerIds": [],
                 "companyId": item["companyId"],
                 "departmentId": buyerId
             }
+
+            print('HELLO', updated_item)
 
             updated_item_result = invoke_http(
                 f"{item_url}/edit/{item['_id']}",
                 method="PUT",
                 json=updated_item,
-            )  
+            )
                  
             if updated_item_result['code'] not in range(200,300):
                 print('\n\n-----Publishing the (updating ownership error) message with routing_key=ownership.error-----')

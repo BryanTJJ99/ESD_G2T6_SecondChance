@@ -1,7 +1,7 @@
 from kafka import KafkaConsumer
 from slack_bolt import App
 import json
-app = App(token="xoxb-4901815051863-4909773123750-H5yJ8sitntNUXX4Q2BqIbUuL")
+app = App(token="xoxb-4901815051863-4909773123750-Q89chexb3rBT0QQsnNBc7nMk")
 
 
 KAFKA_SERVER = 'localhost:9092'
@@ -14,7 +14,7 @@ def send_message_to_channel(channel_id, message):
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": f"item ID: {message['id']}"
+                "text": f"item ID: {message['item_id']}"
             }
         },
         {
