@@ -13,7 +13,7 @@ public interface DepartmentService {
 
     public Department deleteDepartmentItemId(String departmentID, String itemID);
 
-    public double getDepartmentCarbon(String departmentID);
+    public double getDepartmentCarbonSaved(String departmentID);
 
     public void addDepartmentCarbonSaved(String departmentID, double carbonAmt);
 

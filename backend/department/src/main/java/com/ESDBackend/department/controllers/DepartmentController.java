@@ -54,8 +54,8 @@ public class DepartmentController {
 
     @GetMapping("/departmentCarbon/{departmentID}")
     @CrossOrigin
-    public double getDepartmentCarbon(@PathVariable String departmentID) {
-        return departmentService.getDepartmentCarbon(departmentID);
+    public double getDepartmentCarbonSaved(@PathVariable String departmentID) {
+        return departmentService.getDepartmentCarbonSaved(departmentID);
     }
 
     @PutMapping("/departmentCarbon/{departmentID}/{carbonAmount}")

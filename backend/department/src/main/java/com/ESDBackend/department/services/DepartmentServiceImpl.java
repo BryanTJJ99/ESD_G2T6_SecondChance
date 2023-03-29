@@ -71,7 +71,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public double getDepartmentCarbon(String departmentID) {
+    public double getDepartmentCarbonSaved(String departmentID) {
         Department department = departmentRepository.findById(departmentID).get();
         if (department != null) {
             return department.getTotalCarbonSaved();
