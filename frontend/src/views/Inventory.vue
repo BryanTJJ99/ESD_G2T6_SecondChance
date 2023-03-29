@@ -25,19 +25,17 @@
                 </div>
 
                 <div class="list-group px-3" data-aos="fade-up">
-                    <button v-for="item in items" :key="item.id" type="button"
+                    <button v-for="item in depItems" type="button"
                         class="list-group-item list-group-item-action d-flex justify-content-between p-3 pt-3 ps-3">
 
-                        <p>{{ item['name'] }} &nbsp; </p>
+                        <p>{{ item }} &nbsp; </p>
 
                         <div class="align-items-center">
-                            <small>{{ item['category'] }}</small>
+                            <small class="mx-3">{{ item['category'] }}</small>
 
                             <!-- <span class="badge mx-3" style="background-color:#c5dad2; color: black; width: 100px;">
                                 <p>Quantity : {{ item['Quantity'] }}</p>
                             </span> -->
-                            <small class="mx-3">Quantity : {{ item['Quantity'] }}</small>
-
                             <i class="fa-regular fa-store mr-3" data-bs-toggle="modal"
                             data-bs-target="#marketModal" style="color: grey;"></i>
                         </div>
@@ -48,6 +46,7 @@
                 </div>
             </div>
         </div>
+      
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -111,6 +110,7 @@
                 </div>
             </div>
         </div>
+
         <Footer style="margin-left:4.5rem;"></Footer>
     </div>
 </template>
@@ -122,16 +122,31 @@ import Container from "@/components/Container.vue";
 import Footer from "@/components/Footer.vue";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import departmentService from "../../services/department/departmentService";
+import axios from "axios";
+
 
 export default {
+   
     mounted() {
         AOS.init({
             duration: 1300,
         })
+
+        departmentService.getDepartmentById("641d7448835767ff182d7c43")
+        .then(response =>{
+            console.log("Response Successful")
+            this.depDetails = response;
+            this.depItems = response.itemIdArrayList
+            console.log(this.depDetails)
+            console.log(this.depItems)
+        });
+      
     },
     data() {
         return {
-            depItems:{},
+            depDetails : undefined,
+            depItems : undefined,
             department: "Finance",
             organization: "SMU",
             newItem: "",
@@ -176,49 +191,51 @@ export default {
                 "name": this.newItem,
                 "Quantity": this.newItemQty
             })
+            console.log(this.depItems)
 
             this.newItem = "";
             this.newItemQty = 0;
         },
 
-        getInventory(){
-            var departmentUrl = ""
-            var itemUrl = ""
-            var depItems = []
+        // getInventory(){
+        //     var departmentUrl = ""
+        //     var itemUrl = ""
+        //     var depItems = []
             
-            // call department service to retrieve departmentItems
-            axios.get(departmentUrl,{
-                params:{
-                    departmentID :this.department,
-                }
-            })
-            .then(response => {
-                if(len(response.itemIdArrayList) > 0){
-                    depItems = response.itemIdArrayList
-                }
-            })
-            .catch(error=>{
-                console.log(error.message)
-                return
-            })
+        //     // call department service to retrieve departmentItems
+        //     axios.get(departmentUrl,{
+        //         params:{
+        //             departmentID :this.department,
+        //         }
+        //     })
+        //     .then(response => {
+        //         if(len(response.itemIdArrayList) > 0){
+        //             depItems = response.itemIdArrayList
+        //         }
+        //     })
+        //     .catch(error=>{
+        //         console.log(error.message)
+        //         return
+        //     })
 
-            //get each item by invoking item microservice
-            for (let i = 0; i < depItems.len; i++){
-               axios.get(itemUrl,{
-                params: {
-                    itemId : depItems[i]
-                }
-               })
-               .then(response => {})
-               .catch(error => {})
-            }   
-        },
+        //     //get each item by invoking item microservice
+        //     for (let i = 0; i < depItems.len; i++){
+        //        axios.get(itemUrl,{
+        //         params: {
+        //             itemId : depItems[i]
+        //         }
+        //        })
+        //        .then(response => {})
+        //        .catch(error => {})
+        //     }   
+        // },
+        
 
-        addItem(){
-            departmentUrl = ""
-            itemUrl = ""
-            axios.get()
-        }
+        // addItem(){
+        //     departmentUrl = ""
+        //     itemUrl = ""
+        //     axios.get()
+        // }
     }
 }
 
