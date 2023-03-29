@@ -34,6 +34,7 @@ public class DepartmentController {
     @GetMapping("/{departmentID}")
     @CrossOrigin
     public Department getDepartmentById(@PathVariable String departmentID) {
+        System.out.println("Testing1");
         return departmentService.getDepartmentById(departmentID);
     }
 
