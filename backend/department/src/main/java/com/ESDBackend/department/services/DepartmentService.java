@@ -15,4 +15,6 @@ public interface DepartmentService {
 
     public double getDepartmentCarbon(String departmentID);
 
+    public void addDepartmentCarbonSaved(String departmentID, double carbonAmt);
+
 }
