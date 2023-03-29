@@ -28,10 +28,10 @@
                     <button v-for="item in depItems" type="button"
                         class="list-group-item list-group-item-action d-flex justify-content-between p-3 pt-3 ps-3">
 
-                        <p>{{ item }} &nbsp; </p>
+                        <p>{{ item.itemName }} &nbsp; </p>
 
                         <div class="align-items-center">
-                            <small class="mx-3">{{ item['category'] }}</small>
+                            <small class="mx-3">{{ item.itemCategory.toUpperCase() }}</small>
 
                             <!-- <span class="badge mx-3" style="background-color:#c5dad2; color: black; width: 100px;">
                                 <p>Quantity : {{ item['Quantity'] }}</p>
@@ -123,6 +123,7 @@ import Footer from "@/components/Footer.vue";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import departmentService from "../../services/department/departmentService";
+import itemService from "../../services/items/itemService"
 import axios from "axios";
 
 
@@ -133,51 +134,35 @@ export default {
             duration: 1300,
         })
 
+
         departmentService.getDepartmentById("641d7448835767ff182d7c43")
         .then(response =>{
             console.log("Response Successful")
             this.depDetails = response;
-            this.depItems = response.itemIdArrayList
             console.log(this.depDetails)
-            console.log(this.depItems)
+
+            for(let i = 0; i < response.itemIdArrayList.length; i++){
+
+                console.log("getting " + response.itemIdArrayList[i])
+                itemService.getItem(response.itemIdArrayList[i])
+                .then(response => {
+                    this.depItems.push(response.data);
+                    console.log(this.depItems)
+                })
+            }
         });
+
+        
       
     },
     data() {
         return {
             depDetails : undefined,
-            depItems : undefined,
+            depItems : [],
             department: "Finance",
             organization: "SMU",
             newItem: "",
             newItemQty: 0,
-            items: [
-                {
-                    "name": "Ikea Dalgon",
-                    "category": "Furniture",
-                    "Quantity": 4
-                },
-                {
-                    "name": "Swiss Candace",
-                    "category": "Furniture",
-                    "Quantity": 10
-                },
-                {
-                    "name": "Woo Jablomi",
-                    "category": "Equipment",
-                    "Quantity": 5
-                },
-                {
-                    "name": "Big ForceKin",
-                    "category": "Electronics",
-                    "Quantity": 10
-                },
-                {
-                    "name": "Vicky",
-                    "category": "Office Supplies",
-                    "Quantity": 1
-                },
-            ]
         }
     },
     components: {
@@ -197,45 +182,6 @@ export default {
             this.newItemQty = 0;
         },
 
-        // getInventory(){
-        //     var departmentUrl = ""
-        //     var itemUrl = ""
-        //     var depItems = []
-            
-        //     // call department service to retrieve departmentItems
-        //     axios.get(departmentUrl,{
-        //         params:{
-        //             departmentID :this.department,
-        //         }
-        //     })
-        //     .then(response => {
-        //         if(len(response.itemIdArrayList) > 0){
-        //             depItems = response.itemIdArrayList
-        //         }
-        //     })
-        //     .catch(error=>{
-        //         console.log(error.message)
-        //         return
-        //     })
-
-        //     //get each item by invoking item microservice
-        //     for (let i = 0; i < depItems.len; i++){
-        //        axios.get(itemUrl,{
-        //         params: {
-        //             itemId : depItems[i]
-        //         }
-        //        })
-        //        .then(response => {})
-        //        .catch(error => {})
-        //     }   
-        // },
-        
-
-        // addItem(){
-        //     departmentUrl = ""
-        //     itemUrl = ""
-        //     axios.get()
-        // }
     }
 }
 
