@@ -116,7 +116,7 @@ def process_accept_item(request):
 
     #---------------------------------------------------------------------------------
     #slack notification for accepted buyer
-        buyer_slack_item = {"item_id": item["_id"], "item_name": item["itemName"], "buyer_id": buyerId, "isAccept":True}
+        buyer_slack_item = {"itemId": item["_id"], "itemName": item["itemName"], "buyerId": buyerId, "isAccept":True}
     
         buyer_slack_result = invoke_http(
                 f"{slack_url}",
@@ -151,7 +151,7 @@ def process_accept_item(request):
     #---------------------------------------------------------------------------------
     #slack notification for rejected list
         for rejectedId in rejected_list:
-            rejected_slack_item = {"item_id": item["_id"], "item_name": item["itemName"], "buyer_id": rejectedId, "isAccept":False}
+            rejected_slack_item = {"itemId": item["_id"], "itemName": item["itemName"], "buyeId": rejectedId, "isAccept":False}
         
             rejected_slack_result = invoke_http(
                     f"{slack_url}",

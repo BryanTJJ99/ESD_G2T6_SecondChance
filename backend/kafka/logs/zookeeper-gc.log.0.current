@@ -1,38 +1,38 @@
 Java HotSpot(TM) 64-Bit Server VM (25.361-b09) for bsd-amd64 JRE (1.8.0_361-b09), built on Jan  9 2023 08:31:35 by "java_re" with gcc 4.2.1 Compatible Apple LLVM 11.0.0 (clang-1100.0.33.17)
-Memory: 4k page, physical 16777216k(18120k free)
+Memory: 4k page, physical 16777216k(17528k free)
 
 /proc/meminfo:
 
 CommandLine flags: -XX:+ExplicitGCInvokesConcurrent -XX:GCLogFileSize=104857600 -XX:InitialHeapSize=536870912 -XX:InitiatingHeapOccupancyPercent=35 -XX:+ManagementServer -XX:MaxGCPauseMillis=20 -XX:MaxHeapSize=536870912 -XX:MaxInlineLevel=15 -XX:NumberOfGCLogFiles=10 -XX:+PrintGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC -XX:+UseGCLogFileRotation 
-2023-03-29T12:51:55.968-0800: 0.945: [GC pause (G1 Evacuation Pause) (young), 0.0109629 secs]
-   [Parallel Time: 9.6 ms, GC Workers: 8]
-      [GC Worker Start (ms): Min: 945.0, Avg: 945.0, Max: 945.1, Diff: 0.1]
-      [Ext Root Scanning (ms): Min: 0.2, Avg: 0.8, Max: 3.0, Diff: 2.9, Sum: 6.7]
+2023-03-29T17:06:41.202-0800: 0.773: [GC pause (G1 Evacuation Pause) (young), 0.0117156 secs]
+   [Parallel Time: 9.4 ms, GC Workers: 8]
+      [GC Worker Start (ms): Min: 773.7, Avg: 774.0, Max: 774.6, Diff: 0.9]
+      [Ext Root Scanning (ms): Min: 0.0, Avg: 0.5, Max: 2.4, Diff: 2.4, Sum: 3.8]
       [Update RS (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]
          [Processed Buffers: Min: 0, Avg: 0.0, Max: 0, Diff: 0, Sum: 0]
-      [Scan RS (ms): Min: 0.0, Avg: 0.3, Max: 0.7, Diff: 0.7, Sum: 2.3]
-      [Code Root Scanning (ms): Min: 0.0, Avg: 3.2, Max: 8.0, Diff: 8.0, Sum: 25.4]
-      [Object Copy (ms): Min: 0.1, Avg: 1.5, Max: 3.1, Diff: 3.0, Sum: 12.1]
-      [Termination (ms): Min: 0.0, Avg: 3.3, Max: 4.8, Diff: 4.8, Sum: 26.3]
-         [Termination Attempts: Min: 1, Avg: 4.5, Max: 16, Diff: 15, Sum: 36]
-      [GC Worker Other (ms): Min: 0.0, Avg: 0.1, Max: 0.1, Diff: 0.1, Sum: 0.4]
-      [GC Worker Total (ms): Min: 9.1, Avg: 9.2, Max: 9.2, Diff: 0.1, Sum: 73.3]
-      [GC Worker End (ms): Min: 954.2, Avg: 954.2, Max: 954.3, Diff: 0.1]
+      [Scan RS (ms): Min: 0.0, Avg: 0.0, Max: 0.3, Diff: 0.3, Sum: 0.3]
+      [Code Root Scanning (ms): Min: 0.0, Avg: 3.8, Max: 8.0, Diff: 8.0, Sum: 30.8]
+      [Object Copy (ms): Min: 0.0, Avg: 1.6, Max: 3.3, Diff: 3.3, Sum: 13.0]
+      [Termination (ms): Min: 0.0, Avg: 2.8, Max: 3.9, Diff: 3.9, Sum: 22.1]
+         [Termination Attempts: Min: 1, Avg: 4.5, Max: 15, Diff: 14, Sum: 36]
+      [GC Worker Other (ms): Min: 0.0, Avg: 0.1, Max: 0.2, Diff: 0.2, Sum: 1.1]
+      [GC Worker Total (ms): Min: 8.4, Avg: 8.9, Max: 9.2, Diff: 0.8, Sum: 71.2]
+      [GC Worker End (ms): Min: 782.8, Avg: 782.9, Max: 783.0, Diff: 0.1]
    [Code Root Fixup: 0.0 ms]
    [Code Root Purge: 0.0 ms]
-   [Clear CT: 0.0 ms]
-   [Other: 1.3 ms]
+   [Clear CT: 0.1 ms]
+   [Other: 2.2 ms]
       [Choose CSet: 0.0 ms]
-      [Ref Proc: 0.8 ms]
+      [Ref Proc: 1.6 ms]
       [Ref Enq: 0.0 ms]
       [Redirty Cards: 0.0 ms]
       [Humongous Register: 0.1 ms]
       [Humongous Reclaim: 0.0 ms]
       [Free CSet: 0.0 ms]
-   [Eden: 25.0M(25.0M)->0.0B(21.0M) Survivors: 0.0B->4096.0K Heap: 25.0M(512.0M)->5303.5K(512.0M)]
- [Times: user=0.03 sys=0.02, real=0.01 secs] 
+   [Eden: 25.0M(25.0M)->0.0B(21.0M) Survivors: 0.0B->4096.0K Heap: 25.0M(512.0M)->5266.5K(512.0M)]
+ [Times: user=0.01 sys=0.01, real=0.01 secs] 
 Heap
- garbage-first heap   total 524288K, used 18615K [0x00000007a0000000, 0x00000007a0101000, 0x00000007c0000000)
-  region size 1024K, 18 young (18432K), 4 survivors (4096K)
- Metaspace       used 12230K, capacity 12496K, committed 12800K, reserved 1060864K
-  class space    used 1389K, capacity 1454K, committed 1536K, reserved 1048576K
+ garbage-first heap   total 524288K, used 16530K [0x00000007a0000000, 0x00000007a0101000, 0x00000007c0000000)
+  region size 1024K, 16 young (16384K), 4 survivors (4096K)
+ Metaspace       used 11996K, capacity 12304K, committed 12544K, reserved 1060864K
+  class space    used 1384K, capacity 1454K, committed 1536K, reserved 1048576K

@@ -104,6 +104,7 @@ def process_reject_item(itemId, departmentId):
     #------------------------------------------------------------------------------
     #slack notification for rejected list
 
+    
     rejected_slack_item = {"item_id": itemId, "item_name": item_data["itemName"], "buyer_id": departmentId, "isAccept":False}
 
     rejected_slack_result = invoke_http(
