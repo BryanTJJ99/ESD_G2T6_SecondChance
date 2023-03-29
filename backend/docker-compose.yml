@@ -65,7 +65,7 @@ services:
     build:
       context: ./department
       dockerfile: Dockerfile
-    image: vickyyqu/department:esd
+    image: bryantjj/department:esd
     restart: always
     ports:
       - "8080:8080"
