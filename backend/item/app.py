@@ -28,7 +28,7 @@ def insert():
         return jsonify({
             "code": 200,
             "data": {
-                "item": data
+                "item": json.loads(json_util.dumps(data))
             }
         })
     return errMsg
@@ -85,4 +85,4 @@ def addListing(item_id):
         return "Item removed from listing"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5006, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

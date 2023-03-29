@@ -12,8 +12,8 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 department_url = 'http://localhost:8080/department'
-item_url = 'http://localhost:5006'
-company_url = 'http://localhost:5007'
+item_url = 'http://localhost:5000'
+company_url = 'http://localhost:5001'
 
 @app.route('/get_company_items/<department_id>', methods=['GET'])
 @cross_origin()
@@ -237,4 +237,4 @@ def process_get_items_by_company(department_id):
 #     return "Teseting"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5003, debug=True)

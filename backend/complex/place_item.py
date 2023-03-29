@@ -12,9 +12,9 @@ import json
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-department_url = 'http://localhost:5004/department'
-carbon_calculator_url = 'http://localhost:5001/search'
-create_item_url = 'http://localhost:5006/create'
+department_url = 'http://localhost:8080/department'
+carbon_calculator_url = 'http://localhost:5002/search'
+create_item_url = 'http://localhost:5000/create'
 
 @app.route('/place_item', methods=['POST'])
 @cross_origin()
@@ -108,7 +108,6 @@ def process_place_item(item):
         method='GET'
     )
 
-    carbon_calculator_result = carbon_calculator_result['data']
     carbon_calculator_data = carbon_calculator_result['data']
 
     if carbon_calculator_result['code'] not in range(200,300):
@@ -130,11 +129,12 @@ def process_place_item(item):
         "message_type": 'carbon_calculator_get_request',
         "data": carbon_calculator_data
     }
+
     message = json.dumps(message)
     amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='carbon_calulator.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
     
     # add carbon data to item
-    item['carbonEmission'] = carbon_calculator_data['emission']
+    item['carbonEmission'] = carbon_calculator_data
     # add companyId to item
     item['companyId'] = company_id
     # post item
@@ -172,22 +172,21 @@ def process_place_item(item):
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='item.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
 
         # store new item_id in department
+
         item_id = item_data['item']['_id']['$oid']
-        department_items = department_data['items']
+        department_items = department_data['itemIdArrayList']
         department_items.append(item_id)
-        department_data['items'] = department_items
+        department_data['itemIdArrayList'] = department_items
         # add carbon data to department
         department_carbon = department_data['totalCarbon']
         department_data['totalCarbon'] = department_carbon + item['carbonEmission']
-        department_data.pop('_id')
+
         # run department put request
         department_update_result = invoke_http(
-            f"{department_url}/edit/{item['departmentId']}",
-            method='PUT',
+            f"{department_url}/addItemID/{item['departmentId']}/{item_id}",
+            method='POST',
             json=department_data
         )
-
-        department_update_result = department_update_result['data']
 
         department_update_data = department_update_result['data']
 
@@ -217,4 +216,4 @@ def process_place_item(item):
         return department_update_result
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5006, debug=True)

@@ -24,9 +24,9 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 # idk how to view the channel and verify also 
 
 department_url = 'http://localhost:8080/department'
-carbon_calculator_url = 'http://localhost:5005/carbon_calc'
-create_item_url = 'http://localhost:5006/create'
-item_url = 'http://localhost:5007/item'
+carbon_calculator_url = 'http://localhost:5002/carbon_calc'
+create_item_url = 'http://localhost:5000/create'
+item_url = 'http://localhost:5000/item'
 
 @app.route("/reject_item/<string:item_id>", methods=["POST"])
 @cross_origin()
