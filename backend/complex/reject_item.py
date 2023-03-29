@@ -4,31 +4,29 @@ from flask_cors import CORS, cross_origin
 
 # OS and error imports
 import os, sys
+from os import environ
 
 # HTTP imports
 import requests
 from invokes import invoke_http
 
+# # # AMQP imports
+## switch the comments for the amqp path to test locally with (python <filename>.py)
+# from amqp import amqp_setup # local path
 import amqp_setup # compose version
 import pika
 import json
-from slack_sdk import WebClient
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
-# slack_client = WebClient(token='supposed to put api token here')
-# response = slack_client.chat_postMessage(
-#             channel='#general',
-#             text='Hello, world!'
-#         ) 
-# idk how to view the channel and verify also 
 
-department_url = 'http://localhost:8080/department'
+department_url = 'http://localhost:5004/department'
 carbon_calculator_url = 'http://localhost:5005/carbon_calc'
 create_item_url = 'http://localhost:5006/create'
 item_url = 'http://localhost:5007/item'
+slack_url = 'http://localhost:5008/slack'
 
-@app.route("/reject_item/<string:item_id>", methods=["POST"])
+@app.route("/reject_item", methods=["POST"])
 @cross_origin()
 def reject_item(item_id):
     try:
@@ -44,22 +42,41 @@ def reject_item(item_id):
             "message": f"reject_item.py internal error: {ex_str}"
         })
     
-def process_reject_item(item_id):
+def process_reject_item(request):
+    item = request["item"]
+    rejectedId = request["rejectedId"]
 
-    # item microservice 
-    old_item_result =  invoke_http(
-        f"{item_url}/{item_id}",
-        method="GET"
+    #-----------------------------------------------------------
+    # update list of offers by removing rejectedId
+    buyer_list = item["buyerId"]
+    buyer_list.pop(rejectedId)
+
+    updated_item = {
+        "_id": item['_id'],
+        "itemName": item['itemName'],
+        "itemCategory": item["itemCategory"],
+        "isListed": True,
+        "itemPicture": item["itemPicture"],
+        "itemDescription": item["itemDescription"],
+        "carbonEmission": item["carbonEmission"],
+        "buyerId": buyer_list,
+        "companyId": item["companyId"],
+        "departmentId": item["departmentId"]
+    }
+    
+    remove_reject_result =  invoke_http(
+        f"{item_url}/{item['_id']}",
+        method="PUT",
+        json=updated_item
     )
 
-    # item retrieval fail
-    if old_item_result['code'] not in range(200,300):
+    if remove_reject_result['code'] not in range(200,300):
 
         print('\n\n-----Publishing item retrieval error message with routing_key=retrieval.error-----')
         message = {
             "code": 404,
             "message_type": "retrieval_error",
-            "data": old_item_result,
+            "data": remove_reject_result,
         }
         message = json.dumps(message)
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="retrieval.error", 
@@ -67,19 +84,17 @@ def process_reject_item(item_id):
     
         print("\nItem retrieval error published to RabbitMQ Exchange.\n")
 
-        return old_item_result
+        return remove_reject_result
 
-
-    #  item retrieval successful
 
     print('\n\n-----Publishing the i†em retrieval notification message with routing_key=retrieval.notify-----')
 
-    old_item_data = old_item_result['data']
+    remove_reject_data = remove_reject_result['data']
 
     message = {
         "code": 201,
         "message_type": "retrieval_notification",
-        "data": old_item_data
+        "data": remove_reject_data
     }
 
     message = json.dumps(message)
@@ -88,117 +103,40 @@ def process_reject_item(item_id):
 
     print("\nItem retrieval notification published to RabbitMQ Exchange.\n")
 
-    # delete request but would this delete the item altogether
-    if old_item_data["status"] == "pending":
-        item_delete_result = invoke_http(
-        f"{item_url}/{old_item_data['item_id']}",
-        method="DELETE"
-    )
 
-        if item_delete_result["code"] not in range(200,300):
-                # request deletion fail
+    #---------------------------------------------------------------------------------
+    #slack notification for rejected ID
 
-            print('\n\n-----Publishing the item deletion error message with routing_key=item_rejection.error-----')        
+    rejected_slack_item = {"item_id": item["_id"], "item_name": item["itemName"], "buyer_id": rejectedId, "isAccept":False}
 
-            message = {
-                "code": 400,
-                "message_type": "item_deletion_error",
-                "data": item_delete_result["message"]
-            }
-            message = json.dumps(message)
-            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="item_rejection.error", 
-            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
-
-            print("\nItem rejection error published to RabbitMQ Exchange.\n")
-            return item_delete_result
-
-        item_delete_data = item_delete_result["data"]
-
-
-        # rejection successful
-
-        print('\n\n-----Publishing the item deletion notification message with routing_key=item_rejection.notify-----')        
-
-        message = {
-            "code": 201,
-            "message_type": "item_deletion_notification",
-            "data": item_delete_data
-        }
-        message = json.dumps(message)
-        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="item_rejection.notify", 
-        body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
-
-        print("\nItem deletion notification published to RabbitMQ Exchange.\n")
-
-        item_status = {
-            "status": "rejected"
-        }
-        new_item_result = invoke_http(
-            f"{item_url}/{item_id}",
-            method="PUT",
-            json=item_status
+    rejected_slack_result = invoke_http(
+            f"{slack_url}",
+            method="POST",
+            json=rejected_slack_item
         )
-
-        if new_item_result["code"] not in range(200,300):
-
-            print('\n\n-----Publishing the item rejection update error message with routing_key=reject.error-----')        
-
-            message = {
-                    "code": 400,
-                    "message_type": "reject_error",
-                    "data": new_item_result
-            }
-            message = json.dumps(message)
-            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="reject.error", 
-            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
-
-            print("\nItem rejection update error published to RabbitMQ Exchange.\n")
-
-            return new_item_result
-
-        new_item_data = new_item_result["data"]
-
-        # item rejection success
-
-        print('\n\n-----Publishing the item rejection notification message with routing_key=reject.notify-----')       
-
-
+    
+    if rejected_slack_result['code'] not in range(200, 300):
+        print('\n\n-----Publishing the (slack error) message with routing_key=slack.error-----')
+            
         message = {
-            "code": 201,
-            "message_type": "reject_notification",
-            "data": new_item_data
+            "code": 400,
+            "message_type": "business_error",
+            "data": "Invalid slack response"
         }
         message = json.dumps(message)
-        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="reject.notify", 
-        body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
-
-        print("\nItem rejection notification published to RabbitMQ Exchange.\n")
-
-        return new_item_result
-
-
-# item rejection status error
-
-    print('\n\n-----Publishing the item rejection status error message with routing_key=reject_status.error-----')        
-
-    message = {
-        "code": 403,
-        "message_type": "reject_status_error",
-        "data": old_item_data
-    }
-    message = json.dumps(message)
-    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="reject_status.error", 
-    body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
-
-    print("\nItem rejection status error published to RabbitMQ Exchange.\n")
-
-    # ##################### END OF AMQP code
-
-    return jsonify({
-        "code": 403,
-        "message": f"Unable to reject item. Item status is already {old_item_data['status']}."
-    })
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5102, debug=True)
+        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
+        print("\nSlack error - Code {} - published to the RabbitMQ Exchange:".format(rejected_slack_result['code']))
+        return rejected_slack_result
     
+    else:
+        message = {
+            "code": 201,
+                "message_type": 'slack_notification',
+                "data": rejected_slack_result['data']
+        }
+        message = json.dumps(message)
+        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
+        print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(rejected_slack_result['data']))
+
+
+

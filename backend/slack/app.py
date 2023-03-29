@@ -9,29 +9,27 @@ CORS(app)
 
 
 KAFKA_SERVER = 'localhost:9092'
+TOPIC_NAME = 'slack'
 
 #Get item added
 @app.route('/slack', methods=['POST'])
 def getSlackMsg():
     if request.is_json:
         message = request.get_json()
-        TOPIC_NAME1 = 'accept'
-        TOPIC_NAME2 = 'reject'
-        #slack configuration
-        producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER)
-
-        # Send messages to the topic with the specified key
-        accepted_key = b'key1'
         accepted_message = {"item_id": message['item_id'], "item_name": message['item_name'], "message": "Hi, you are accepted!"}
-        producer.send(TOPIC_NAME1, key=accepted_key, value=accepted_message)
-
-        rejected_key = b'key2'
         rejected_message = {"item_id": message['item_id'], "item_name": message['item_name'], "message": "Hi, you are rejected!"}
-        for i in message["buyer_id"]:
-            producer.send(TOPIC_NAME2, key=rejected_key, value=rejected_message)
+        if message["isAccept"]:
+            message = accepted_message
+        else:
+            message = rejected_message
+
+        #slack configuration
+        producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER,
+                         value_serializer=lambda x: json.dumps(x).encode('utf-8'))
+
         print('==================')
         print(message)
-
+        producer.send(TOPIC_NAME, message)
         producer.flush()
 
         return message
