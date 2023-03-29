@@ -58,8 +58,15 @@ def edit(item_id):
         originalQuery = itemCollection.find_one({"_id": ObjectId(item_id)})
         newValues = { "$set": data }
         itemCollection.update_one(originalQuery, newValues)
-        return "Item updated"
+        data['_id'] = item_id
+        return jsonify({
+            "code": 200,
+            "data": {
+                "item": json.loads(json_util.dumps(data))
+            }
+        })
     return errMsg
+    
 
 # delete item
 @app.route('/delete/<item_id>', methods=['DELETE'])

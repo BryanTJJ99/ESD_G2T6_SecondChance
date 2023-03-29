@@ -89,6 +89,8 @@ def process_get_items_by_company(department_id):
     # get departments
     departments = company_data['departments']
 
+    print(company_data)
+
     # loop through each department to get items
     companyItemsList = []
     for departmentId in departments:

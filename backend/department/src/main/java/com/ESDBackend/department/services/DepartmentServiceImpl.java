@@ -71,12 +71,26 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public double getDepartmentCarbon(String departmentID) {
+    public double getDepartmentCarbonSaved(String departmentID) {
         Department department = departmentRepository.findById(departmentID).get();
         if (department != null) {
-            return department.getTotalCarbon();
+            return department.getTotalCarbonSaved();
         }
         return -1;
+    }
+
+
+    @Override
+    public void addDepartmentCarbonSaved(String departmentID, double carbonAmt) {
+        Department department = departmentRepository.findById(departmentID).get();
+        if (department != null) {
+            department.setTotalCarbonSaved(carbonAmt + department.getTotalCarbonSaved());
+            departmentRepository.save(department);
+            System.out.println("Added carbon saved of " + carbonAmt + "kgco2e to department " + departmentID);
+        } else {
+            System.out.println("Error: unable to add carbon saved of " + carbonAmt + "kgco2e to department " + departmentID);
+        }
+        
     }
 
 }
