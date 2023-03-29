@@ -238,7 +238,7 @@ def process_accept_item(accepted_department_id, item_id):
         print("\nDepartment error - Code {} - published to the RabbitMQ Exchange:".format(code))
         return addDepartmentCarbon_result
 
-    # if addItemId works
+    # if addDepartmentCarbon works
     message = {
         "code": 201,
         "message_type": 'department_delete_item_id_request_error',
