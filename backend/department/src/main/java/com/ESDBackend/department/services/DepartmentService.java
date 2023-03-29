@@ -5,7 +5,7 @@ import java.util.*;
 
 public interface DepartmentService {
 
-    public List<String> getDepartmentItemsIDList(String departmentID);
+    public Department getDepartmentById(String departmentID);
 
     public List<Department> getAllDepartments();
 

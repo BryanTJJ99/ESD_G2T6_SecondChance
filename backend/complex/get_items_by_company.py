@@ -11,44 +11,22 @@ import json
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-department_url = 'http://localhost:5004/department'
-item_url = 'http://localhost:5006/'
-company_url = 'http://locahost:5007/'
+department_url = 'http://localhost:8080/department'
+item_url = 'http://localhost:5000'
+company_url = 'http://localhost:5001'
 
 @app.route('/get_company_items/<department_id>', methods=['GET'])
 @cross_origin()
 def get_items_by_company(department_id):
-    if request.is_json:
-        try:
-            # department format
-            # {
-            #   “id”: ObjectId
-            #   “departmentName”: String,
-            #   “email”: String,
-            #   “password”: String
-            #   “postalCode”: String,
-            #   “Items”: ArrayList<Item>,
-            #   “totalCarbon”: double
-            # }
-            result = process_get_items_by_company(department_id)
-            return result
-        except Exception as e:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            ex_str = f"{str(e)} at {str(exc_type)}: {fname}: line {str(exc_tb.tb_lineno)}"
-            print(ex_str)
-        
-    return jsonify({
-        "code": 500,
-        "message": f"get_items_by_company.py internal error: {ex_str}" 
-    })
-        
+    result = process_get_items_by_company(department_id)
+    return result
+
 def process_get_items_by_company(department_id):
     amqp_setup.check_setup()
     # get department data
     department_result = invoke_http(
         f"{department_url}/{department_id}",
-        method="GET"
+        method='GET'
     )
 
     # if department does not exist
@@ -77,62 +55,46 @@ def process_get_items_by_company(department_id):
     message = json.dumps(message)
     amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
 
-    # department_result return format
-    # {
-    #   "code": int,
-    #   "data": {
-    #       "_id": int,
-    #       "departmentName": string,
-    #       "email": string,
-    #       "password": string,
-    #       "postalCode": string,
-    #       "items": ArrayList<item>,
-    #       "totalCarbon": double
-    #       "companyId": int
-    #   }
-    # }
-
     # get company data
     company_result = invoke_http(
         f"{company_url}/{company_id}",
-        method="GET"
+        method='GET'
     )
 
-    company_result = company_result['data']
-    company_data = company_result['data']
-
-    if company_result['code'] not in range(200,300):
-        code = company_result['code']
+    # if company does not exist
+    if company_result["code"] not in range(200, 300):
         print('\n\n-----Publishing the (company error) message with routing_key=company.error-----')
+        code = company_result['code']
         message = {
             "code": 400,
-            "message_type": "read_company_get_request_error",
-            "data": company_data
+            "message_type": "company_error",
+            "data": company_result
         }
-
         message = json.dumps(message)
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='company.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
         print("\nCompany error - Code {} - published to the RabbitMQ Exchange:".format(code))
         return company_result
-
+    
+    # if company exists
+    company_data = company_result['data']
     message = {
         "code": 201,
-        "message_type": 'read_company_get_request',
+        "message_type": 'company_get_request',
         "data": company_data
     }
+
     message = json.dumps(message)
     amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='company.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
 
-    # get all departments in company
+    # get departments
     departments = company_data['departments']
 
-    # get each department in departments to get all items
-    itemsList = []
-    
+    # loop through each department to get items
+    companyItemsList = []
     for departmentId in departments:
         department_result = invoke_http(
             f"{department_url}/{departmentId}",
-            method="GET"
+            method='GET'
         )
 
         # if department does not exist
@@ -141,17 +103,16 @@ def process_get_items_by_company(department_id):
             code = department_result['code']
             message = {
                 "code": 400,
-                "message_type": "business_error",
-                "data": "Invalid department ID"
+                "message_type": "department_error",
+                "data": department_result
             }
             message = json.dumps(message)
             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
             print("\nDepartment error - Code {} - published to the RabbitMQ Exchange:".format(code))
             return department_result
-        
+    
         # if department exists
         department_data = department_result['data']
-
         message = {
             "code": 201,
             "message_type": 'department_get_request',
@@ -161,45 +122,119 @@ def process_get_items_by_company(department_id):
         message = json.dumps(message)
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
 
-        # get items in department and concatenate into itemsList
-        department_items = department_data['items']
-        itemsList += department_items
-
-    # get all items data in itemsList
-    result = []
-    for itemId in itemsList:
-        # read each item
+        department_data = department_result['data']
+        itemsList = department_data['itemIdArrayList']
+        if len(itemsList) > 0 and itemsList != [""]:
+            companyItemsList += itemsList
+    
+    # loop through items
+    itemsData = []
+    for item_id in companyItemsList:
         item_result = invoke_http(
-            f"{item_url}/{itemId}",
-            method="GET"
+            f"{item_url}/{item_id}",
+            method='GET'
         )
 
-        item_result = item_result['data']
-        item_data = item_result['data']
-        # if get request to read item fails
-        if item_result['code'] not in range(200, 300):
-            code = item_result['code']
+        # if item does not exist
+        if item_result["code"] not in range(200, 300):
             print('\n\n-----Publishing the (item error) message with routing_key=item.error-----')
+            code = item_result['code']
             message = {
                 "code": 400,
-                "message_type": "item_read_error",
-                "data": item_data
+                "message_type": "item_error",
+                "data": item_result
             }
             message = json.dumps(message)
             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='item.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
             print("\nItem error - Code {} - published to the RabbitMQ Exchange:".format(code))
-            return item_result
-        # if get request works
-        result.append(item_data)
+            return department_result
+    
+        # if item exists
         message = {
             "code": 201,
-            "message_type": "item_get_request",
-            "data": item_data
+            "message_type": 'item_get_request',
+            "data": item_result
         }
+
         message = json.dumps(message)
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='item.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
+        
+        itemsData.append(item_result['data'])
+
+    result = {
+        "code": 200,
+        "data": itemsData
+    }
+
+    print("------------ DEPARTMENT EDITED SUCCESSFULLY - {} ------------".format(result))
 
     return result
 
+    # if request.is_json:
+    #     try:
+    #         # department format
+    #         # {
+    #         #   “id”: ObjectId
+    #         #   “departmentName”: String,
+    #         #   “email”: String,
+    #         #   “password”: String
+    #         #   “postalCode”: String,
+    #         #   “Items”: ArrayList<Item>,
+    #         #   “totalCarbon”: double
+    #         # }
+    #         result = process_get_items_by_company(department_id)
+    #         return result
+    #     except Exception as e:
+    #         exc_type, exc_obj, exc_tb = sys.exc_info()
+    #         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+    #         ex_str = f"{str(e)} at {str(exc_type)}: {fname}: line {str(exc_tb.tb_lineno)}"
+    #         print(ex_str)
+        
+    #     return jsonify({
+    #         "code": 500,
+    #         "message": f"get_items_by_company.py internal error: {ex_str}" 
+    #     })
+    
+    # return jsonify({
+    #     "code": 400,
+    #     "message": f"Invalid Input"
+    # })
+        
+# def process_get_items_by_company(department_id):
+#     amqp_setup.check_setup()
+#     # get department data
+#     department_result = invoke_http(
+#         f"{department_url}/{department_id}",
+#         method="GET"
+#     )
+
+#     # if department does not exist
+#     if department_result["code"] not in range(200, 300):
+#         print('\n\n-----Publishing the (department error) message with routing_key=department.error-----')
+#         code = department_result['code']
+#         message = {
+#             "code": 400,
+#             "message_type": "business_error",
+#             "data": "Invalid department ID"
+#         }
+#         message = json.dumps(message)
+#         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
+#         print("\nDepartment error - Code {} - published to the RabbitMQ Exchange:".format(code))
+#         return department_result
+    
+#     # if department exists
+#     department_data = department_result['data']
+#     company_id = department_data['companyId']
+#     message = {
+#         "code": 201,
+#         "message_type": 'department_get_request',
+#         "data": department_data
+#     }
+
+#     message = json.dumps(message)
+#     amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
+
+#     return "Teseting"
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5003, debug=True)

@@ -28,7 +28,7 @@ def insert():
         return jsonify({
             "code": 200,
             "data": {
-                "item": data
+                "item": json.loads(json_util.dumps(data))
             }
         })
     return errMsg

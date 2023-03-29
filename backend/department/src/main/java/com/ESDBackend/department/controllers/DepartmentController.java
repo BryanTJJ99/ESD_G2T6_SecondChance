@@ -33,8 +33,8 @@ public class DepartmentController {
 
     @GetMapping("/{departmentID}")
     @CrossOrigin
-    public List<String> getDepartmentItemsIDList(@PathVariable String departmentID) {
-        return departmentService.getDepartmentItemsIDList(departmentID);
+    public Department getDepartmentById(@PathVariable String departmentID) {
+        return departmentService.getDepartmentById(departmentID);
     }
 
     @PostMapping("/addItemID/{departmentID}/{itemID}")
