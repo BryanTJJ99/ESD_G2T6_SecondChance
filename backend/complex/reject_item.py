@@ -20,17 +20,15 @@ import json
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-department_url = 'http://localhost:8080/department'
-carbon_calculator_url = 'http://localhost:5002/carbon_calc'
-create_item_url = 'http://localhost:5000/create'
-item_url = 'http://localhost:5000/item'
+department_url = 'http://localhost:5004/department'
+item_url = 'http://localhost:5007/item'
 slack_url = 'http://localhost:5008/slack'
 
-@app.route("/reject_item", methods=["POST"])
+@app.route("/reject_item/<itemId>/<departmentId>", methods=["POST"])
 @cross_origin()
-def reject_item(item_id):
+def reject_item(itemId,departmentId):
     try:
-        return process_reject_item(item_id)
+        return process_reject_item(itemId, departmentId)
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -42,72 +40,72 @@ def reject_item(item_id):
             "message": f"reject_item.py internal error: {ex_str}"
         })
     
-def process_reject_item(request):
-    item = request["item"]
-    rejectedId = request["rejectedId"]
-
-    #-----------------------------------------------------------
-    # update list of offers by removing rejectedId
-    buyer_list = item["buyerId"]
-    buyer_list.pop(rejectedId)
-
-    updated_item = {
-        "_id": item['_id'],
-        "itemName": item['itemName'],
-        "itemCategory": item["itemCategory"],
-        "isListed": True,
-        "itemPicture": item["itemPicture"],
-        "itemDescription": item["itemDescription"],
-        "carbonEmission": item["carbonEmission"],
-        "buyerId": buyer_list,
-        "companyId": item["companyId"],
-        "departmentId": item["departmentId"]
-    }
-    
-    remove_reject_result =  invoke_http(
-        f"{item_url}/{item['_id']}",
-        method="PUT",
-        json=updated_item
+def process_reject_item(itemId, departmentId):
+    #------------------------------------------------------------------------------
+    #get data from department
+    department_result = invoke_http(
+        f"{department_url}/{departmentId}",
+        method="GET",
     )
+    
+    department_data = department_result["data"]
+    if department_result['code'] not in range(200,300):
+        print('\n\n-----Publishing the (buyer department error) message with routing_key=department.error-----')
 
-    if remove_reject_result['code'] not in range(200,300):
-
-        print('\n\n-----Publishing item retrieval error message with routing_key=retrieval.error-----')
         message = {
-            "code": 404,
-            "message_type": "retrieval_error",
-            "data": remove_reject_result,
+            "code": 400,
+            "message_type": "department_error",
+            "data": department_result['data']
         }
         message = json.dumps(message)
-        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="retrieval.error", 
-        body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
+        print("\nDepartment error - Code {} - published to the RabbitMQ Exchange:".format(department_result['code']))
+        return department_result
+    else:
+        message = {
+            "code": 201,
+            "message_type": 'department_put_request',
+            "data": department_result
+        }
+        message = json.dumps(message)
+        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
+        print("------------ DEPARTMENT RETRIEVED SUCCESSFULLY - {} ------------".format(department_data))
+
+#------------------------------------------------------------------------------
+#get data from item
+    item_result = invoke_http(
+        f"{item_url}/{itemId}",
+        method="GET",
+    )
     
-        print("\nItem retrieval error published to RabbitMQ Exchange.\n")
+    item_data = item_result["data"]
+    if item_result['code'] not in range(200,300):
+        print('\n\n-----Publishing the (buyer department error) message with routing_key=department.error-----')
 
-        return remove_reject_result
+        message = {
+            "code": 400,
+            "message_type": "item error",
+            "data": item_result['data']
+        }
+        message = json.dumps(message)
+        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='item.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
+        print("\item error - Code {} - published to the RabbitMQ Exchange:".format(item_result['code']))
+        return item_result
+    else:
+        message = {
+            "code": 201,
+            "message_type": 'department_put_request',
+            "data": item_result
+        }
+        message = json.dumps(message)
+        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='item.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
+        print("------------ ITEM RETRIEVED SUCCESSFULLY - {} ------------".format(item_data))
 
+    #------------------------------------------------------------------------------
+    #slack notification for rejected list
 
-    print('\n\n-----Publishing the i†em retrieval notification message with routing_key=retrieval.notify-----')
-
-    remove_reject_data = remove_reject_result['data']
-
-    message = {
-        "code": 201,
-        "message_type": "retrieval_notification",
-        "data": remove_reject_data
-    }
-
-    message = json.dumps(message)
-    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="retrieval.notify", 
-    body=message, properties=pika.BasicProperties(delivery_mode = 2))
-
-    print("\nItem retrieval notification published to RabbitMQ Exchange.\n")
-
-
-    #---------------------------------------------------------------------------------
-    #slack notification for rejected ID
-
-    rejected_slack_item = {"item_id": item["_id"], "item_name": item["itemName"], "buyer_id": rejectedId, "isAccept":False}
+    
+    rejected_slack_item = {"item_id": itemId, "item_name": item_data["itemName"], "buyer_id": departmentId, "isAccept":False}
 
     rejected_slack_result = invoke_http(
             f"{slack_url}",

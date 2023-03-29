@@ -3,22 +3,38 @@ import json
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import pymongo
+from bson import json_util, ObjectId
 
 app = Flask(__name__)
 CORS(app)
+
+mongodb = os.getenv('MONGODB')
+client = pymongo.MongoClient(mongodb)
+db = client['ESDProject']
+channelCollection = db['channels']
+
 
 
 KAFKA_SERVER = 'localhost:9092'
 TOPIC_NAME = 'slack'
 
-#Get item added
+#get channel ID and send data from producer
+
 @app.route('/slack', methods=['POST'])
 def getSlackMsg():
     if request.is_json:
-        message = request.get_json()
-        accepted_message = {"item_id": message['item_id'], "item_name": message['item_name'], "message": "Hi, you are accepted!"}
-        rejected_message = {"item_id": message['item_id'], "item_name": message['item_name'], "message": "Hi, you are rejected!"}
-        if message["isAccept"]:
+        data = request.get_json()
+        print(data)
+        #get channelId from MongoDB
+        channel = channelCollection.find_one({"departmentID": data["buyerId"]})
+        channel = json.loads(json_util.dumps(channel))
+
+        #decide if message should be accepted or rejected
+        accepted_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "message": "Hi, you are accepted!"}
+        rejected_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "message": "Hi, you are rejected!"}
+
+        if data["isAccept"]:
             message = accepted_message
         else:
             message = rejected_message
@@ -28,7 +44,7 @@ def getSlackMsg():
                          value_serializer=lambda x: json.dumps(x).encode('utf-8'))
 
         print('==================')
-        print(message)
+
         producer.send(TOPIC_NAME, message)
         producer.flush()
 
