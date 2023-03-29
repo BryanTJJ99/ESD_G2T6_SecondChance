@@ -16,13 +16,13 @@
 
 
 
-                <div class="input-group px-3 py-3">
+                <!-- <div class="input-group px-3 py-3">
                     <span class="input-group-text" style="background-color:#c5dad2;" id="inputGroup-sizing-default" data-aos="fade-up">
                         <p>Search</p>
                     </span>
                     <input type="text" class="form-control pt-3" aria-label="Sizing example input"
                         aria-describedby="inputGroup-sizing-default" data-aos="fade-up">
-                </div>
+                </div> -->
 
                 <div class="list-group px-3" data-aos="fade-up">
                     <button v-for="item in depItems" type="button"
@@ -123,7 +123,8 @@ import Footer from "@/components/Footer.vue";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import departmentService from "../../services/department/departmentService";
-import itemService from "../../services/items/itemService"
+import itemService from "../../services/items/itemService";
+import carbonRetrieverService from "../../services/carbonretriever/carbonRetrieverService"
 import axios from "axios";
 
 
@@ -148,6 +149,12 @@ export default {
                 .then(response => {
                     this.depItems.push(response.data);
                     console.log(this.depItems)
+
+                    // carbonRetrieverService.getCarbonAmt(response.data.itemName, response.data.itemCategory)
+                    // .then(response =>{
+                    //     console.log(response)
+
+                    // })
                 })
             }
         });
