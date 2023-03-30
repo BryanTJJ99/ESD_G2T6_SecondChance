@@ -21,7 +21,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 department_url = 'http://localhost:8080/department'
-item_url = 'http://localhost:5007/item'
+item_url = 'http://localhost:5000'
 slack_url = 'http://localhost:5008/slack'
 
 @app.route("/reject_item", methods=["POST"])
@@ -30,6 +30,7 @@ def reject_item():
     try:
         itemId = request.args.get('itemId')
         rejectedDepartmentId = request.args.get('departmentId')
+
         return process_reject_item(itemId, rejectedDepartmentId)
     
     except Exception as e:
@@ -51,30 +52,30 @@ def process_reject_item(itemId, rejectedDepartmentId):
         method="GET",
     )
     
-    print(department_result)
-    department_data = department_result["data"]
-    
+    print('error1')
     if department_result['code'] not in range(200,300):
         print('\n\n-----Publishing the message with routing_key=department.error-----')
 
         message = {
             "code": 400,
             "message_type": "department_error",
-            "data": department_result['data']
+            "data": department_result
         }
+
         message = json.dumps(message)
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
         print("\nDepartment error - Code {} - published to the RabbitMQ Exchange:".format(department_result['code']))
-        return department_result
+        return department_result['data']
     else:
         message = {
             "code": 201,
             "message_type": 'department_put_request',
-            "data": department_result
+            "data": department_result['data']
         }
+        print('error3')
         message = json.dumps(message)
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
-        print("------------ DEPARTMENT RETRIEVED SUCCESSFULLY - {} ------------".format(department_data))
+        print("------------ DEPARTMENT RETRIEVED SUCCESSFULLY - {} ------------".format(department_result['data']))
 
 #------------------------------------------------------------------------------
 #get data from item
@@ -86,7 +87,7 @@ def process_reject_item(itemId, rejectedDepartmentId):
     
     item_data = item_result["data"]
     if item_result['code'] not in range(200,300):
-        print('\n\n-----Publishing the message with routing_key=department.error-----')
+        print('\n\n-----Publishing the message with routing_key=item.error-----')
 
         message = {
             "code": 400,
@@ -100,8 +101,8 @@ def process_reject_item(itemId, rejectedDepartmentId):
     else:
         message = {
             "code": 201,
-            "message_type": 'department_put_request',
-            "data": item_result
+            "message_type": 'item get request',
+            "data": item_result['data']
         }
         message = json.dumps(message)
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='item.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
@@ -110,20 +111,21 @@ def process_reject_item(itemId, rejectedDepartmentId):
     #------------------------------------------------------------------------------
     #slack notification for rejected list
 
-    rejected_slack_item = {"item_id": itemId, "item_name": item_data["itemName"], "buyer_id": rejectedDepartmentId, "isAccept":False}
+    rejected_slack_item = {"itemId": itemId, "itemName": item_data["itemName"], "buyerId": rejectedDepartmentId, "isAccept":False}
 
     rejected_slack_result = invoke_http(
             f"{slack_url}",
             method="POST",
             json=rejected_slack_item
         )
+
     if rejected_slack_result['code'] not in range(200, 300):
         print('\n\n-----Publishing the (slack error) message with routing_key=slack.error-----')
-            
+        
         message = {
             "code": 400,
-            "message_type": "business_error",
-            "data": "Invalid slack response"
+            "message_type": "Invalid slack response",
+            "data": rejected_slack_result['data']
         }
         message = json.dumps(message)
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
@@ -140,7 +142,7 @@ def process_reject_item(itemId, rejectedDepartmentId):
         amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
         print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(rejected_slack_result['data']))
 
-
+    return "success"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5102, debug=True)

@@ -13,7 +13,7 @@ def send_message_to_channel(message):
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": f"Hi your offer for item name: {message['itemName']} (Item ID: {message['itemId']}) is {message['message']}!"
+                "text": f"Hello your offer for item name: {message['itemName']} (Item ID: {message['itemId']}) is {message['message']}!"
             }
         },
         {

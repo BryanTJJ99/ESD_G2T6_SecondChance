@@ -30,7 +30,7 @@ def getSlackMsg():
         data = request.get_json()
         #get channelId from MongoDB
         channel = channelCollection.find_one({"departmentID": data["buyerId"]})
-
+        
         if channel is not None:
             channel = json.loads(json_util.dumps(channel))
             
