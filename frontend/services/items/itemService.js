@@ -18,5 +18,20 @@ class itemService{
         return response;
     }
 
+    getAllItems(){
+        const response = axios.get(API_URL + "all")
+        .then((response) => {
+            console.log("Get all items successfull");
+            return response;
+        })
+        .catch((error) => {
+            console.log("Get all items unsuccessful" + error)
+            return error;
+            
+        })
+
+        return response;
+    }
+
 }
 export default new itemService()

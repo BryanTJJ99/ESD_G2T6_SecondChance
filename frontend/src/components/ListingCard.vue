@@ -11,7 +11,7 @@
                 <p style="font-size:20px" class="desc">{{itemName}}</p>
                 <small class="desc"><i class="fa-solid fa-smog"></i> {{emission}}</small>
             </div>
-            <i class="fa-solid fa-location-dot" style="color:#a3a0a0"><span class="desc ps-1">{{address}}</span></i>
+            <i class="fa-solid fa-location-dot" style="color:#a3a0a0"><span class="desc ps-1">SG{{postalCode}}</span></i>
             <i class="fa-solid fa-building d-block" style="color:#a3a0a0"><span class="desc ps-1">{{company}}, {{department}}</span></i>
         </div>
         <div class="card__content">
@@ -32,8 +32,8 @@
                 <p style="font-size:20px" class="desc">{{itemName}}</p>
                 <small class="desc"><i class="fa-solid fa-smog"></i> {{emission}}</small>
             </div>
-            <i class="fa-solid fa-location-dot" style="color:#a3a0a0"><span class="desc ps-1">{{address}}</span></i>
-            <i class="fa-solid fa-building d-block" style="color:#a3a0a0"><span class="desc ps-1">{{company}}, {{department}}</span></i>
+            <i class="fa-solid fa-location-dot" style="color:#a3a0a0"><span class="desc ps-1">SG {{postalCode}}</span></i>
+            <i class="fa-solid fa-building d-block" style="color:#a3a0a0"><span class="desc ps-1">{{company}}, {{deptName}}</span></i>
         </div>
 
         <div class="card__content">
@@ -50,16 +50,10 @@
 export default {
     data(){
         return {
-            itemName: "IKEA Chair",
-            address: "Bras Basah",
-            company: "SMU",
-            department: "Finance",
-            emission: "500",
-            img: "",
-            listingId: 1
+
         }
     },
-    props: ["listingId", "offer"],
+    props: ["itemName", "emission",  "offer", "company", "postalCode", "deptName", "itemId"],
     methods: {
 
         // OFFER FUNCTIONS
@@ -80,31 +74,6 @@ export default {
             // re-route to listing page
             this.$router.push({path: '/listing'});
         },
-
-        getListing() {
-            var url = ""
-
-            axios.get(url, {
-                params: {
-                    listingId: this.listingId
-                }
-            })
-            .then(response => {
-
-                this.itemName = "IKEA Chair",
-                this.address = "Bras Basah", // might have to use geolocation to retrieve this
-                this.company = "SMU",
-                this.department = "Finance",
-                this.emission = "500",
-                this.img = ""
-                
-            })
-            .catch(error => {
-
-                console.log(error.message)
-                
-            })
-        }
     }
 }
 

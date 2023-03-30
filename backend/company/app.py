@@ -1,6 +1,7 @@
 from bson import ObjectId
 from dotenv import load_dotenv
 from flask import Flask, request
+from flask_cors import CORS, cross_origin
 import pymongo
 import os
 from error import *
@@ -10,6 +11,8 @@ import json
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
+
 mongodb = os.getenv('MONGODB')
 client = pymongo.MongoClient(mongodb)
 db = client['ESDProject']

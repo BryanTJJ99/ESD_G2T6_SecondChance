@@ -45,18 +45,15 @@
                 </div>
             </div>
             <hr class="my-0">
-            <div v-if="gotListings" class="row py-3" data-aos="fade-up">
+            <div v-if="this.listedItems.length > 0" class="row py-3" data-aos="fade-up">
 
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard 
+                :company="item.companyName" :deptName="item.deptName" 
+                :offer="offer" 
+                :itemName ="item.itemName" :emission="item.carbonEmission"
+                :postalCode="item.postalCode" 
+                v-for="item in listedItems"></ListingCard>
+                
 
             </div>
             <div v-else class="row py-3" data-aos="fade-up">
@@ -78,6 +75,9 @@ import ListingCard from "@/components/ListingCard.vue"
 import Footer from "@/components/Footer.vue";
 import ScrollToTop from "@/components/ScrollToTop.vue";
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import itemService from "../../services/items/itemService";
+import companyService from "../../services/company/companyService";
+import departmentService from "../../services/department/departmentService";
 import AOS from 'aos'
 import 'aos/dist/aos.css';
 
@@ -87,10 +87,60 @@ export default {
         AOS.init({
             duration: 1300,
         })
-        this.getListings()
+
+        itemService.getAllItems()
+        .then((response) =>{
+            console.log("Item Service Invoked")
+            this.allItems = response.data;
+            console.log(response.data)
+            console.log(this.allItems);
+
+            for(let i = 0; i < this.allItems.length; i++){
+                if(this.allItems[i].isListed == true){
+
+                    var temp = this.allItems[i];
+                    var deptName = "";
+                    var companyName = "";
+
+                    departmentService.getDepartmentById(this.allItems[i].departmentId)
+                    .then((response) => {
+                        console.log(response)
+                        temp["deptName"] = response.departmentName;
+                        temp["postalCode"] = response.postalCode
+                        console.log(deptName)
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    })
+
+                    // temp["deptName"] = deptName;
+
+                    companyService.getCompanyById(this.allItems[i].companyId)
+                    .then((response)=>{
+                        console.log(response)
+                        temp["companyName"] = response.data.companyName;
+                    })                    
+                    .catch((error) =>{
+                        console.log(error)
+                    })
+
+                    temp["companyName"] = companyName
+
+                    this.listedItems.push(temp)
+                }
+            }
+
+            console.log(this.listedItems)
+        })
+        .catch((error)=>{
+            console.log(error)
+        })
+
     },
     data() {
         return {
+            allItems : undefined,
+            listedItems: [],
             company: "SMU",
             department: "Finance",
             search: "",
@@ -122,38 +172,38 @@ export default {
                 this.outsideCompany = false
             }
         },
-        getListings() {
-            var url = ""
-            var all = true
-            this.gotListings = true
+        // getListings() {
+        //     var url = ""
+        //     var all = true
+        //     this.gotListings = true
 
-            if (this.search != ""){
-                all = false
-            }
+        //     if (this.search != ""){
+        //         all = false
+        //     }
 
-            axios.get(url, {
-                params: {
-                    search: this.search, // search input, can be ""
-                    all: all, // if this.search = "", all listings returned
-                    category: this.category, // category
-                    outsideCompany: this.outsideCompany // toggle on or off
-                }
-            })
-            .then(response => {
+        //     axios.get(url, {
+        //         params: {
+        //             search: this.search, // search input, can be ""
+        //             all: all, // if this.search = "", all listings returned
+        //             category: this.category, // category
+        //             outsideCompany: this.outsideCompany // toggle on or off
+        //         }
+        //     })
+        //     .then(response => {
 
-                if (response.length == 0){
-                    this.gotListings = false
-                } else {
-                    // return list of listingIds
-                }
+        //         if (response.length == 0){
+        //             this.gotListings = false
+        //         } else {
+        //             // return list of listingIds
+        //         }
 
-            })
-            .catch(error => {
+        //     })
+        //     .catch(error => {
 
-                console.log(error.message)
+        //         console.log(error.message)
                 
-            })
-        }
+        //     })
+        // }
     }
 
 }
