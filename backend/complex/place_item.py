@@ -206,7 +206,7 @@ def process_place_item(item):
     amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
 
     addDepartmentCarbon_result = invoke_http(
-        f'{department_url}/departmentCarbon/{department_id}/{carbon_calculator_data}',
+        f'{department_url}/addDepartmentCarbon/{department_id}/{carbon_calculator_data}',
         method='PUT'
     )
 

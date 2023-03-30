@@ -219,7 +219,7 @@ def process_accept_item(accepted_department_id, item_id):
 
     # add carbon amount to new department
     addDepartmentCarbon_result = invoke_http(
-        f'{department_url}/departmentCarbon/{accepted_department_id}/{item_carbon_emissions_saved}',
+        f'{department_url}/addDepartmentCarbon/{accepted_department_id}/{item_carbon_emissions_saved}',
         method='PUT'
     )
 
