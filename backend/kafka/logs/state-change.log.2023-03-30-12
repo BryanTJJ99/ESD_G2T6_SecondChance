@@ -1,0 +1,8 @@
+[2023-03-30 12:24:37,264] INFO [Controller id=0 epoch=10] Sending UpdateMetadata request to brokers HashSet(0) for 0 partitions (state.change.logger)
+[2023-03-30 12:24:37,398] INFO [Controller id=0 epoch=10] Sending LeaderAndIsr request to broker 0 with 1 become-leader and 0 become-follower partitions (state.change.logger)
+[2023-03-30 12:24:37,450] INFO [Controller id=0 epoch=10] Sending UpdateMetadata request to brokers HashSet(0) for 1 partitions (state.change.logger)
+[2023-03-30 12:24:37,521] INFO [Broker id=0] Handling LeaderAndIsr request correlationId 1 from controller 0 for 1 partitions (state.change.logger)
+[2023-03-30 12:24:37,546] INFO [Broker id=0] Stopped fetchers as part of LeaderAndIsr request correlationId 1 from controller 0 epoch 10 as part of the become-leader transition for 1 partitions (state.change.logger)
+[2023-03-30 12:24:37,562] INFO [Broker id=0] Leader slack-0 with topic id Some(bQULbOiJREqfMx0dwH1byQ) starts at leader epoch 0 from offset 41 with partition epoch 0, high watermark 41, ISR [0], adding replicas [] and removing replicas []. Previous leader epoch was -1. (state.change.logger)
+[2023-03-30 12:24:37,580] INFO [Broker id=0] Finished LeaderAndIsr request in 58ms correlationId 1 from controller 0 for 1 partitions (state.change.logger)
+[2023-03-30 12:24:37,589] INFO [Broker id=0] Add 1 partitions and deleted 0 partitions from metadata cache in response to UpdateMetadata request sent by controller 0 epoch 10 with correlation id 2 (state.change.logger)

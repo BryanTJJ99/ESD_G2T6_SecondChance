@@ -5,6 +5,10 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pymongo
 from bson import json_util, ObjectId
+from dotenv import load_dotenv
+
+
+load_dotenv()  # load environment variables from .env file
 
 app = Flask(__name__)
 CORS(app)
@@ -13,7 +17,6 @@ mongodb = os.getenv('MONGODB')
 client = pymongo.MongoClient(mongodb)
 db = client['ESDProject']
 channelCollection = db['channels']
-
 
 
 KAFKA_SERVER = 'localhost:9092'
@@ -25,14 +28,18 @@ TOPIC_NAME = 'slack'
 def getSlackMsg():
     if request.is_json:
         data = request.get_json()
-        print(data)
         #get channelId from MongoDB
         channel = channelCollection.find_one({"departmentID": data["buyerId"]})
-        channel = json.loads(json_util.dumps(channel))
+
+        if channel is not None:
+            channel = json.loads(json_util.dumps(channel))
+            
+        else:
+            print('department do not have a channel ID')
 
         #decide if message should be accepted or rejected
-        accepted_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "message": "Hi, you are accepted!"}
-        rejected_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "message": "Hi, you are rejected!"}
+        accepted_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "token":channel["token"], "message": "Hi, you are accepted!"}
+        rejected_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "token":channel["token"], "message": "Hi, you are rejected!"}
 
         if data["isAccept"]:
             message = accepted_message
@@ -51,7 +58,6 @@ def getSlackMsg():
         return message
     else:
         data = request.get_data()
-        print(data)
         return jsonify({"code": 400,
                         # make the data string as we dunno what could be the actual format
                         "data": str(data),

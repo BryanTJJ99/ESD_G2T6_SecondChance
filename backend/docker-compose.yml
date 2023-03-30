@@ -65,13 +65,13 @@ services:
     build:
       context: ./department
       dockerfile: Dockerfile
-    image: bryantjj/department:esd
+    image: vickyyqu/department:esd
     restart: always
     ports:
       - "8080:8080"
 
   ####################################
-  # Carbon Calculator microservice
+  # Carbon Retriever microservice
   ####################################
   carbon_retriever:
     build:
@@ -162,36 +162,94 @@ services:
   ###############################################
   # Place Item
   ###############################################
-  # ports:
-  #   - "5006:5006"
-
-
-
+  place_item:
+    build:
+      context: ./complex
+      dockerfile: place_item.Dockerfile
+    image: vickyyqu/place_item:esd
+    restart: always
+    depends_on:
+      - department
+      - carbon_retriever
+      - item
+      - activity_log
+      - error
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+      department_URL: http://department:8080/department
+      carbon_retriever_URL: http://carbon_retriever:5002/search
+      item_URL: http://item:5000/create
+    ports:
+      - "5006:5006"
 
 
   ###############################################
   # Accept Item
   ###############################################
-  # ports:
-    # - "5101:5101"
-
-
-
-
+  accept_item:
+    build:
+      context: ./complex
+      dockerfile: accept_item.Dockerfile
+    image: vickyyqu/accept_item:esd
+    restart: always
+    depends_on:
+      - department
+      - item
+      - activity_log
+      - error
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+      department_URL: http://department:8080/department
+      item_URL: http://item:5000
+      slack_URL: http://slack:5008/slack
+    ports:
+      - "5101:5101"
 
 
   ###############################################
   # Reject Item
   ###############################################
-  # ports:
-  #   - "5102:5102"
+  # reject_item:
+  #   build:
+  #     context: ./complex
+  #     dockerfile: reject_item.Dockerfile
+  #   image: vickyyqu/reject_item:esd
+  #   restart: always
+  #   environment:
+  #     PYTHONUNBUFFERED: 1
+  #   ports:
+  #     - "5102:5102"
 
   
   
   #########################################
   # Get Items By Company
   ###############################################
-  # ports: 
-  #   - "5003:5003"
-
-
+  get_items_by_company:
+    build:
+      context: ./complex
+      dockerfile: get_items_by_company.Dockerfile
+    image: vickyyqu/get_items_by_company:esd
+    restart: always
+    depends_on:
+      - department
+      - item
+      - company
+      - activity_log
+      - error
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+      department_URL: http://department:8080/department
+      item_URL: http://item:5000
+      company_URL: http://company:5001
+    ports:
+      - "5003:5003"

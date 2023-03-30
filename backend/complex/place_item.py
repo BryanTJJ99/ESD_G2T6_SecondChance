@@ -3,6 +3,8 @@ from flask_cors import CORS, cross_origin
 
 import os, sys
 
+from os import environ
+
 from invokes import invoke_http
 
 import amqp_setup
@@ -12,9 +14,9 @@ import json
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-department_url = 'http://localhost:8080/department'
-carbon_calculator_url = 'http://localhost:5002/search'
-create_item_url = 'http://localhost:5000/create'
+department_url = environ.get('department_URL') or 'http://localhost:8080/department'
+carbon_retriever_url = environ.get('carbon_retriever_URL') or 'http://localhost:5002/search'
+create_item_url = environ.get('item_URL') or 'http://localhost:5000/create'
 
 @app.route('/place_item', methods=['POST'])
 @cross_origin()
@@ -104,7 +106,7 @@ def process_place_item(item):
 
     # get carbon emission
     carbon_calculator_result = invoke_http(
-        f"{carbon_calculator_url}?name={item['itemCategory']}",
+        f"{carbon_retriever_url}?name={item['itemCategory']}",
         method='GET'
     )
 
