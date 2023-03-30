@@ -32,6 +32,19 @@ class itemService{
 
         return response;
     }
+    
+    createItem(data){
+        const response = axios.post(API_URL + "create", data)
+        .then((response)=>{
+            console.log("Item create called successfully")
+            return response;
+        })
+        .catch((error)=>{
+            console.log("Item create called UNsuccessfully");
+            return error
+        })
+        return response
+    }
 
 }
 export default new itemService()

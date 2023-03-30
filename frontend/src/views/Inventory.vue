@@ -61,20 +61,20 @@
                             <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
                                 <p>Item Name</p>
                             </span>
-                            <input type="text" v-model="newItem" class="form-control" placeholder="Item Name"
+                            <input type="text" v-model="newItemName" class="form-control" placeholder="Item Name"
                                 aria-label="itemName" aria-describedby="basic-addon1">
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text" style="background-color:#c5dad2;" id="newItemQty">
-                                <p>Quantity</p>
+                            <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
+                                <p>Item Category</p>
                             </span>
-                            <input type="number" v-model="newItemQty" class="form-control" placeholder="Qty. No"
-                                aria-label="newItemQty" aria-describedby="basic-addon1">
+                            <input type="text" v-model="newItemCategory" class="form-control" placeholder="Item Name"
+                                aria-label="itemCategory" aria-describedby="basic-addon1">
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        <button class="btn btn-dark" type="button" @click="addItem">Save changes</button>
+                        <button class="btn btn-dark" type="button" @click="addItem" data-bs-dismiss="modal">Save changes</button>
                     </div>
                 </div>
             </div>
@@ -92,14 +92,14 @@
                             <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
                                 <p>Item Name</p>
                             </span>
-                            <input type="text" v-model="newItem" class="form-control" placeholder="Item Name"
+                            <input type="text" class="form-control" placeholder="Item Name"
                                 aria-label="itemName" aria-describedby="basic-addon1">
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text" style="background-color:#c5dad2;" id="newItemQty">
+                            <span class="input-group-text" style="background-color:#c5dad2;" id="newItemCategory">
                                 <p>Quantity</p>
                             </span>
-                            <input type="number" v-model="newItemQty" class="form-control" placeholder="Qty. No"
+                            <input type="number"  class="form-control" placeholder="Qty. No"
                                 aria-label="newItemQty" aria-describedby="basic-addon1">
                         </div>
                     </div>
@@ -168,8 +168,11 @@ export default {
             depItems : [],
             department: "Finance",
             organization: "SMU",
-            newItem: "",
-            newItemQty: 0,
+            newItemName: "",
+            newItemCategory : "",
+            newItemId: "",
+
+
         }
     },
     components: {
@@ -179,14 +182,47 @@ export default {
     },
     methods: {
         addItem: function () {
-            this.items.push({
-                "name": this.newItem,
-                "Quantity": this.newItemQty
-            })
-            console.log(this.depItems)
+            var data = {
+                "itemName" : this.newItemName,
+                "itemCategory" : this.newItemCategory,
+                "isListed": false,
+                "itemPicture": "Random Picture",
+                "itemDescription": "Random Description",
+                "carbonEmission": 0,
+                "buyerIds": [],
+                "companyId": "64227d8d2a884bf918c3d709",
+                "departmentId": "641d7448835767ff182d7c43"
+            }
 
-            this.newItem = "";
-            this.newItemQty = 0;
+            carbonRetrieverService.getCarbonAmt("chair", "furniture")
+            .then((response) =>{
+                console.log("carbonRetrieve called");
+                data[carbonEmission] = response;
+            })
+            .catch((error) => {
+                return error;
+            })
+
+
+            itemService.createItem(data)
+            .then((response) =>{
+                console.log("ITEM SUCCESSFULLY Created")
+                console.log("NEW ITEM")
+                this.newItemId = response.data.data.item._id.$oid;
+                console.log(this.newItemId.$oid)
+            })
+            .catch((error) =>{
+                console.log("Item not created" + error)
+            })
+
+            // this.depItems.push({
+            //     "itemName": this.newItemName,
+            //     "itemCategory": this.newItemCategory
+            // })
+            // console.log(this.depItems)
+
+            this.newItemName = "";
+            this.newItemCategory = "";
         },
 
     }
