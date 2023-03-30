@@ -24,7 +24,6 @@ TOPIC_NAME = 'slack'
 def getSlackMsg():
     if request.is_json:
         data = request.get_json()
-        print(data)
         #get channelId from MongoDB
         channel = channelCollection.find_one({"departmentID": data["buyerId"]})
         channel = json.loads(json_util.dumps(channel))
