@@ -35,7 +35,9 @@ def getSlackMsg():
             channel = json.loads(json_util.dumps(channel))
             
         else:
-            print('department do not have a channel ID')
+            err_msg = 'department do not have a channel ID'
+            print(err_msg)
+            return err_msg
 
         #decide if message should be accepted or rejected
         accepted_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "token":channel["token"], "message": "accepted"}
