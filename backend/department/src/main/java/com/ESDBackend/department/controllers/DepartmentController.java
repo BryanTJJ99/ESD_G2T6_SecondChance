@@ -52,35 +52,17 @@ public class DepartmentController {
         return departmentService.deleteDepartmentItemId(departmentID, itemID);
     }
 
-    @GetMapping("/departmentCarbon/{departmentID}")
+    @GetMapping("/getDepartmentCarbon/{departmentID}")
     @CrossOrigin
-    public double getDepartmentCarbonSaved(@PathVariable String departmentID) {
-        return departmentService.getDepartmentCarbonSaved(departmentID);
+    public double getDepartmentCarbon(@PathVariable String departmentID) {  
+        return departmentService.getDepartmentCarbon(departmentID);
     }
 
-    @PutMapping("/departmentCarbon/{departmentID}/{carbonAmount}")
+    @PutMapping("/addDepartmentCarbon/{departmentID}/{carbonAmount}")
     @CrossOrigin
-    public void addDepartmentCarbonSaved(@PathVariable("departmentID") String departmentID,
+    public void addDepartmentCarbon(@PathVariable("departmentID") String departmentID,
             @PathVariable("carbonAmount") double carbonAmt) {
-        departmentService.addDepartmentCarbonSaved(departmentID, carbonAmt);
+        departmentService.addDepartmentCarbon(departmentID, carbonAmt);
     }
-
-    // @PutMapping("/department/{departmentID}")
-    // public int removeItem(@PathVariable String departmentID, @RequestBody String
-    // itemID) {
-    // return departmentService.removeItem(departmentID, itemID);
-    // }
-
-    // @PutMapping("/departments/{departmentID}")
-    // public int addItem(@PathVariable String departmentID, @RequestBody String
-    // itemID) {
-    // return departmentService.addItem(departmentID, itemID);
-    // }
-
-    // @PutMapping("/department/{departmentID}")
-    // public int transferItem(@PathVariable String departmentID, @RequestBody
-    // String itemID) {
-    // return departmentService.removeItem(departmentID, itemID);
-    // }
 
 }
