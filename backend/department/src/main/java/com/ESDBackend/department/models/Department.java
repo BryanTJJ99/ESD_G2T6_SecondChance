@@ -20,7 +20,7 @@ public class Department {
     private String companyId;
     private List<String> itemIdArrayList;
     private String postalCode;
-    private double totalCarbonSaved;
+    private double totalCarbon;
 
     // public Department() {
     // // Default constructor
