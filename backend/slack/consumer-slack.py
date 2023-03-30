@@ -13,7 +13,7 @@ def send_message_to_channel(message):
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": f"{message['message']} for item ID, {message['item_id']}: {message['item_name']}"
+                "text": f"{message['message']} for item ID, {message['itemId']}: {message['itemName']}"
             }
         },
         {

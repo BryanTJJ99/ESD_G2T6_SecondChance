@@ -15,7 +15,6 @@ db = client['ESDProject']
 channelCollection = db['channels']
 
 
-
 KAFKA_SERVER = 'localhost:9092'
 TOPIC_NAME = 'slack'
 
