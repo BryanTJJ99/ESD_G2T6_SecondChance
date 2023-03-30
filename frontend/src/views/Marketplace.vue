@@ -83,14 +83,6 @@ import 'aos/dist/aos.css';
 
 
 export default {
-    // beforeCreate(){
-    //     const auth = getAuth;
-    //     onAuthStateChanged(auth, user =>{
-    //         if (!user){
-    //             this.$router.push("/")
-    //         }
-    //     })
-    // },
     mounted() {
         AOS.init({
             duration: 1300,

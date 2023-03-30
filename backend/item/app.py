@@ -1,6 +1,7 @@
 from bson import ObjectId
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 import pymongo
 import os
 from error import *
@@ -15,6 +16,7 @@ client = pymongo.MongoClient(mongodb)
 db = client['ESDProject']
 itemCollection = db['items']
 userCollection = db['users']
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # insert new item
 @app.route('/create', methods=['POST'])

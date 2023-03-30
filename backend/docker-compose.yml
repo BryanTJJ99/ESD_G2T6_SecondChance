@@ -73,11 +73,11 @@ services:
   ####################################
   # Carbon Calculator microservice
   ####################################
-  carbon_calculator:
+  carbon_retriever:
     build:
-      context: ./carbon_calculator
-      dockerfile: carbon_calculator.Dockerfile
-    image: vickyyqu/carbon_calculator:esd
+      context: ./carbon_retriever
+      dockerfile: carbon_retriever.Dockerfile
+    image: vickyyqu/carbon_retriever:esd
     restart: always
     environment:
       PYTHONUNBUFFERED: 1
