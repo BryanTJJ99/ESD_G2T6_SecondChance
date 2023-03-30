@@ -20,15 +20,18 @@ import json
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-department_url = 'http://localhost:5004/department'
+department_url = 'http://localhost:8080/department'
 item_url = 'http://localhost:5007/item'
 slack_url = 'http://localhost:5008/slack'
 
-@app.route("/reject_item/<itemId>/<departmentId>", methods=["POST"])
+@app.route("/reject_item", methods=["POST"])
 @cross_origin()
-def reject_item(itemId,departmentId):
+def reject_item():
     try:
-        return process_reject_item(itemId, departmentId)
+        itemId = request.args.get('itemId')
+        rejectedDepartmentId = request.args.get('departmentId')
+        return process_reject_item(itemId, rejectedDepartmentId)
+    
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -40,17 +43,19 @@ def reject_item(itemId,departmentId):
             "message": f"reject_item.py internal error: {ex_str}"
         })
     
-def process_reject_item(itemId, departmentId):
+def process_reject_item(itemId, rejectedDepartmentId):
     #------------------------------------------------------------------------------
     #get data from department
     department_result = invoke_http(
-        f"{department_url}/{departmentId}",
+        f"{department_url}/{rejectedDepartmentId}",
         method="GET",
     )
     
+    print(department_result)
     department_data = department_result["data"]
+    
     if department_result['code'] not in range(200,300):
-        print('\n\n-----Publishing the (buyer department error) message with routing_key=department.error-----')
+        print('\n\n-----Publishing the message with routing_key=department.error-----')
 
         message = {
             "code": 400,
@@ -73,6 +78,7 @@ def process_reject_item(itemId, departmentId):
 
 #------------------------------------------------------------------------------
 #get data from item
+
     item_result = invoke_http(
         f"{item_url}/{itemId}",
         method="GET",
@@ -80,7 +86,7 @@ def process_reject_item(itemId, departmentId):
     
     item_data = item_result["data"]
     if item_result['code'] not in range(200,300):
-        print('\n\n-----Publishing the (buyer department error) message with routing_key=department.error-----')
+        print('\n\n-----Publishing the message with routing_key=department.error-----')
 
         message = {
             "code": 400,
@@ -104,15 +110,13 @@ def process_reject_item(itemId, departmentId):
     #------------------------------------------------------------------------------
     #slack notification for rejected list
 
-    
-    rejected_slack_item = {"item_id": itemId, "item_name": item_data["itemName"], "buyer_id": departmentId, "isAccept":False}
+    rejected_slack_item = {"item_id": itemId, "item_name": item_data["itemName"], "buyer_id": rejectedDepartmentId, "isAccept":False}
 
     rejected_slack_result = invoke_http(
             f"{slack_url}",
             method="POST",
             json=rejected_slack_item
         )
-    
     if rejected_slack_result['code'] not in range(200, 300):
         print('\n\n-----Publishing the (slack error) message with routing_key=slack.error-----')
             
@@ -138,3 +142,5 @@ def process_reject_item(itemId, departmentId):
 
 
 
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5102, debug=True)
