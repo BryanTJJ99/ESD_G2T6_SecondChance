@@ -38,8 +38,8 @@ def getSlackMsg():
             print('department do not have a channel ID')
 
         #decide if message should be accepted or rejected
-        accepted_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "message": "Hi, you are accepted!"}
-        rejected_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "message": "Hi, you are rejected!"}
+        accepted_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "token":channel["token"], "message": "Hi, you are accepted!"}
+        rejected_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "token":channel["token"], "message": "Hi, you are rejected!"}
 
         if data["isAccept"]:
             message = accepted_message

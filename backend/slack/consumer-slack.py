@@ -1,14 +1,13 @@
 from kafka import KafkaConsumer
 from slack_bolt import App
 import json
-app = App(token="xoxb-4901815051863-4909773123750-W8qerAt5FpLnKWBOukmkOrzH")
-
 
 KAFKA_SERVER = 'localhost:9092'
 TOPIC_NAME = 'slack'
 
 def send_message_to_channel(message):
-    print(message)
+
+    app = App(token=message["token"])
     blocks = [
         {
             "type": "section",
