@@ -1,38 +1,38 @@
 Java HotSpot(TM) 64-Bit Server VM (25.361-b09) for bsd-amd64 JRE (1.8.0_361-b09), built on Jan  9 2023 08:31:35 by "java_re" with gcc 4.2.1 Compatible Apple LLVM 11.0.0 (clang-1100.0.33.17)
-Memory: 4k page, physical 16777216k(17528k free)
+Memory: 4k page, physical 16777216k(17036k free)
 
 /proc/meminfo:
 
 CommandLine flags: -XX:+ExplicitGCInvokesConcurrent -XX:GCLogFileSize=104857600 -XX:InitialHeapSize=536870912 -XX:InitiatingHeapOccupancyPercent=35 -XX:+ManagementServer -XX:MaxGCPauseMillis=20 -XX:MaxHeapSize=536870912 -XX:MaxInlineLevel=15 -XX:NumberOfGCLogFiles=10 -XX:+PrintGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC -XX:+UseGCLogFileRotation 
-2023-03-29T17:06:41.202-0800: 0.773: [GC pause (G1 Evacuation Pause) (young), 0.0117156 secs]
-   [Parallel Time: 9.4 ms, GC Workers: 8]
-      [GC Worker Start (ms): Min: 773.7, Avg: 774.0, Max: 774.6, Diff: 0.9]
-      [Ext Root Scanning (ms): Min: 0.0, Avg: 0.5, Max: 2.4, Diff: 2.4, Sum: 3.8]
+2023-03-30T12:24:16.601-0800: 0.966: [GC pause (G1 Evacuation Pause) (young), 0.0121526 secs]
+   [Parallel Time: 10.0 ms, GC Workers: 8]
+      [GC Worker Start (ms): Min: 966.5, Avg: 966.7, Max: 967.1, Diff: 0.6]
+      [Ext Root Scanning (ms): Min: 0.0, Avg: 0.9, Max: 3.1, Diff: 3.1, Sum: 6.9]
       [Update RS (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]
          [Processed Buffers: Min: 0, Avg: 0.0, Max: 0, Diff: 0, Sum: 0]
-      [Scan RS (ms): Min: 0.0, Avg: 0.0, Max: 0.3, Diff: 0.3, Sum: 0.3]
-      [Code Root Scanning (ms): Min: 0.0, Avg: 3.8, Max: 8.0, Diff: 8.0, Sum: 30.8]
-      [Object Copy (ms): Min: 0.0, Avg: 1.6, Max: 3.3, Diff: 3.3, Sum: 13.0]
-      [Termination (ms): Min: 0.0, Avg: 2.8, Max: 3.9, Diff: 3.9, Sum: 22.1]
-         [Termination Attempts: Min: 1, Avg: 4.5, Max: 15, Diff: 14, Sum: 36]
-      [GC Worker Other (ms): Min: 0.0, Avg: 0.1, Max: 0.2, Diff: 0.2, Sum: 1.1]
-      [GC Worker Total (ms): Min: 8.4, Avg: 8.9, Max: 9.2, Diff: 0.8, Sum: 71.2]
-      [GC Worker End (ms): Min: 782.8, Avg: 782.9, Max: 783.0, Diff: 0.1]
+      [Scan RS (ms): Min: 0.0, Avg: 0.1, Max: 0.3, Diff: 0.3, Sum: 0.7]
+      [Code Root Scanning (ms): Min: 0.0, Avg: 3.6, Max: 8.5, Diff: 8.5, Sum: 28.9]
+      [Object Copy (ms): Min: 0.0, Avg: 1.5, Max: 3.2, Diff: 3.2, Sum: 11.8]
+      [Termination (ms): Min: 0.0, Avg: 3.3, Max: 4.3, Diff: 4.3, Sum: 26.2]
+         [Termination Attempts: Min: 1, Avg: 2.4, Max: 8, Diff: 7, Sum: 19]
+      [GC Worker Other (ms): Min: 0.0, Avg: 0.1, Max: 0.2, Diff: 0.2, Sum: 0.5]
+      [GC Worker Total (ms): Min: 9.0, Avg: 9.4, Max: 9.6, Diff: 0.6, Sum: 75.1]
+      [GC Worker End (ms): Min: 976.0, Avg: 976.1, Max: 976.2, Diff: 0.1]
    [Code Root Fixup: 0.0 ms]
    [Code Root Purge: 0.0 ms]
-   [Clear CT: 0.1 ms]
-   [Other: 2.2 ms]
+   [Clear CT: 0.2 ms]
+   [Other: 1.9 ms]
       [Choose CSet: 0.0 ms]
-      [Ref Proc: 1.6 ms]
+      [Ref Proc: 0.9 ms]
       [Ref Enq: 0.0 ms]
-      [Redirty Cards: 0.0 ms]
+      [Redirty Cards: 0.3 ms]
       [Humongous Register: 0.1 ms]
       [Humongous Reclaim: 0.0 ms]
-      [Free CSet: 0.0 ms]
-   [Eden: 25.0M(25.0M)->0.0B(21.0M) Survivors: 0.0B->4096.0K Heap: 25.0M(512.0M)->5266.5K(512.0M)]
- [Times: user=0.01 sys=0.01, real=0.01 secs] 
+      [Free CSet: 0.1 ms]
+   [Eden: 25.0M(25.0M)->0.0B(21.0M) Survivors: 0.0B->4096.0K Heap: 25.0M(512.0M)->5313.0K(512.0M)]
+ [Times: user=0.02 sys=0.01, real=0.01 secs] 
 Heap
- garbage-first heap   total 524288K, used 16530K [0x00000007a0000000, 0x00000007a0101000, 0x00000007c0000000)
-  region size 1024K, 16 young (16384K), 4 survivors (4096K)
- Metaspace       used 11996K, capacity 12304K, committed 12544K, reserved 1060864K
+ garbage-first heap   total 524288K, used 19649K [0x00000007a0000000, 0x00000007a0101000, 0x00000007c0000000)
+  region size 1024K, 19 young (19456K), 4 survivors (4096K)
+ Metaspace       used 12196K, capacity 12496K, committed 12800K, reserved 1060864K
   class space    used 1384K, capacity 1454K, committed 1536K, reserved 1048576K
