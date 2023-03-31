@@ -65,4 +65,18 @@ public class DepartmentController {
         departmentService.addDepartmentCarbon(departmentID, carbonAmt);
     }
 
+    @GetMapping("/getDepartmentIdByEmail/{email}")
+    @CrossOrigin
+    public String getDepartmentIdByEmail(@PathVariable String email) {
+    return departmentService.getDepartmentIdByEmail(email);
+    }
+
+    @GetMapping("/getCompanyIdByDepartmentNameAndPostalCode/{departmentName}/{postalCode}")
+    @CrossOrigin
+    public String getCompanyIdByDepartmentNameAndPostalCode(@PathVariable("departmentName") String departmentName, 
+            @PathVariable("postalCode") String postalCode) {
+    return departmentService.getCompanyIdByDepartmentNameAndPostalCode(departmentName,postalCode);
+    }
+
+
 }
