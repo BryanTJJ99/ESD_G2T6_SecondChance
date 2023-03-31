@@ -17,4 +17,9 @@ public interface DepartmentService {
 
     public void addDepartmentCarbon(String departmentID, double carbonAmt);
 
+    public String getDepartmentIdByEmail(String email);
+
+    public String getCompanyIdByDepartmentNameAndPostalCode(String departmentName, String postalCode);
+
+
 }

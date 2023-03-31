@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.ESDBackend.department.models.Department;
 import com.ESDBackend.department.repositories.DepartmentRepository;
@@ -103,5 +104,34 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         
     }
+
+
+    @Override
+    @CrossOrigin
+    public String getDepartmentIdByEmail(String email) {
+        Optional<Department> department = departmentRepository.findByEmail(email);
+        if (department.isPresent()) {
+            System.out.println("Retrieved departmentID by email successfully");
+            return department.get().getDepartmentId();
+        } else {
+            System.out.println("Failed retrieval of departmentID by email");
+            return null;
+        }
+    }
+
+
+    @Override
+    @CrossOrigin
+    public String getCompanyIdByDepartmentNameAndPostalCode(String departmentName, String postalCode) {
+        Optional<Department> department = departmentRepository.findByDepartmentNameAndPostalCode(departmentName, postalCode);
+        if (department.isPresent()) {
+            System.out.println("Retrieved departmentID by department name and postal code successfully");
+            return department.get().getCompanyId();
+        } else {
+            System.out.println("Failed retrieval of departmentID by department name and postal code");
+            return null;
+        }
+    }
+    
 
 }
