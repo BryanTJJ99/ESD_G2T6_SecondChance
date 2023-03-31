@@ -9,8 +9,15 @@
                 <div class="d-flex px-3 py-2 justify-content-between align-items-end" data-aos="fade-down">
                   
                     <h3 data-aos="fade-down">Inventory Management</h3>
-                    <button class="btn btn-dark" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" data-aos="fade-down"><span>Add Item</span></button>
+
+                    <div class="d-flex justify-content-end">
+
+                        <button class="btn btn-dark" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal" data-aos="fade-down"><span>Add Item</span></button>
+                        <button class="btn btn-dark" data-bs-toggle="modal"
+                        data-bs-target="#channelModal" data-aos="fade-down"><span>Enable Notifications</span></button>
+
+                    </div>
    
                 </div>
 
@@ -111,6 +118,40 @@
             </div>
         </div>
 
+        <div class="modal fade" id="channelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 title" id="exampleModalLabel">Enable Slack Notifications</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <small>Receive notifications to your Slack channel on your listings and offers.</small>
+                        
+                        <div class="input-group my-3">
+                            <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
+                                <p>Channel ID:</p>
+                            </span>
+                            <input type="text" v-model="channelId" class="form-control" 
+                                aria-label="itemName" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" style="background-color:#c5dad2;" id="newItemQty">
+                                <p>Key:</p>
+                            </span>
+                            <input type="text" v-model="channelKey" class="form-control" 
+                                aria-label="newItemQty" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-dark" type="button" @click="addChannel">Enable</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <Footer style="margin-left:4.5rem;"></Footer>
     </div>
 </template>
@@ -127,6 +168,7 @@ import itemService from "../../services/items/itemService";
 import carbonRetrieverService from "../../services/carbonretriever/carbonRetrieverService"
 import axios from "axios";
 
+import { getAuth, onAuthStateChanged} from "firebase/auth";
 
 export default {
    
@@ -134,6 +176,9 @@ export default {
         AOS.init({
             duration: 1300,
         })
+
+        this.checkuser()
+        this.deptId = sessionStorage.getItem("deptId")
 
 
         departmentService.getDepartmentById("641d7448835767ff182d7c43")
@@ -158,18 +203,19 @@ export default {
                 })
             }
         });
-
-        
       
     },
     data() {
         return {
+            deptId:'',
             depDetails : undefined,
             depItems : [],
             department: "Finance",
             organization: "SMU",
             newItem: "",
             newItemQty: 0,
+            channelId: "",
+            channelKey: ""
         }
     },
     components: {
@@ -188,7 +234,34 @@ export default {
             this.newItem = "";
             this.newItemQty = 0;
         },
+        checkuser(){
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                    console.log('user is not logged in')
+                    window.location.href = `/`;
+                }
+            });
+        },
+        addChannel(){
 
+            // direct call to slack MS
+
+            var url = ''
+
+            axios.post(url, {
+                deptId: this.deptId,
+                channelId: this.channelId,
+                channelKey: this.channelKey
+            })
+            .then(response => {
+                console.log("yay")
+            })
+            .catch(error => {
+                console.log(error.message)
+                
+            })
+        }
     }
 }
 

@@ -18,6 +18,7 @@
     import Sidebar from "@/components/Navbar/Sidebar.vue"
     import Footer from "@/components/Footer.vue";
     
+    import { getAuth, onAuthStateChanged} from "firebase/auth";
 
     export default {
         components: {
@@ -25,7 +26,16 @@
             Sidebar,
             Footer
         },
+        data(){
+          return {
+            deptId: ''
+          }
+        },
         async mounted() {
+          this.deptId = sessionStorage.getItem("deptId")
+
+          this.checkuser()
+
           await Talk.ready
           const me = new Talk.User({
             id: 1,
@@ -61,6 +71,17 @@
           inbox.select(conversation2)
           inbox.mount(this.$refs.talkjs);
   
+        },
+        methods: {
+          checkuser(){
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                    console.log('user is not logged in')
+                    window.location.href = `/`;
+                }
+            });
+        },
         }
     }
 </script>
