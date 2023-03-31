@@ -1,5 +1,7 @@
 from kafka import KafkaProducer
 import json
+from json import dumps
+from os import environ
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -18,8 +20,6 @@ client = pymongo.MongoClient(mongodb)
 db = client['ESDProject']
 channelCollection = db['channels']
 
-
-KAFKA_SERVER = 'localhost:9092'
 TOPIC_NAME = 'slack'
 
 #get channel ID and send data from producer
@@ -28,8 +28,9 @@ TOPIC_NAME = 'slack'
 def getSlackMsg():
     if request.is_json:
         data = request.get_json()
+
         #get channelId from MongoDB
-        channel = channelCollection.find_one({"departmentID": data["buyerId"]})
+        channel = channelCollection.find_one({"departmentID": '641d7448835767ff182d7c43'})
         
         if channel is not None:
             channel = json.loads(json_util.dumps(channel))
@@ -40,22 +41,24 @@ def getSlackMsg():
             return err_msg
 
         #decide if message should be accepted or rejected
-        accepted_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "token":channel["token"], "message": "accepted"}
-        rejected_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "token":channel["token"], "message": "rejected"}
+        accepted_message = {"itemId": data['item_id'], "itemName": data['item_name'], "channelId": channel["channelID"], "token":channel["token"], "message": "accepted"}
+        rejected_message = {"itemId": data['item_id'], "itemName": data['item_name'], "channelId": channel["channelID"], "token":channel["token"], "message": "rejected"}
 
         if data["isAccept"]:
             message = accepted_message
         else:
             message = rejected_message
 
+        print(f'Message: ', message)
+
         #slack configuration
-        producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER,
-                         value_serializer=lambda x: json.dumps(x).encode('utf-8'))
-
-        print('==================')
-
+        producer = KafkaProducer(bootstrap_servers=['broker:9092'],
+                         value_serializer=lambda x: 
+                         dumps(x).encode('utf-8'))
+        
+        message = json.dumps(message)
         producer.send(TOPIC_NAME, message)
-        producer.flush()
+        print('==================')
 
         return message
     else:
