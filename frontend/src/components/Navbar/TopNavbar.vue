@@ -33,6 +33,7 @@
         const auth = getAuth()
         signOut(auth).then(() => {
           console.log('Sign out complete')
+          window.location.href = `/`;
         })
       }
     },

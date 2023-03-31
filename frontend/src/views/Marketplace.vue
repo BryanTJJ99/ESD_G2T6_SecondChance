@@ -77,10 +77,10 @@ import Sidebar from "@/components/Navbar/Sidebar.vue"
 import ListingCard from "@/components/ListingCard.vue"
 import Footer from "@/components/Footer.vue";
 import ScrollToTop from "@/components/ScrollToTop.vue";
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import AOS from 'aos'
 import 'aos/dist/aos.css';
 
+import { getAuth, onAuthStateChanged} from "firebase/auth";
 
 export default {
     mounted() {
@@ -88,9 +88,13 @@ export default {
             duration: 1300,
         })
         this.getListings()
+        this.checkuser()
+
+        this.deptId = sessionStorage.getItem("deptId")
     },
     data() {
         return {
+            deptId: '',
             company: "SMU",
             department: "Finance",
             search: "",
@@ -153,7 +157,16 @@ export default {
                 console.log(error.message)
                 
             })
-        }
+        },
+        checkuser(){
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                    console.log('user is not logged in')
+                    window.location.href = `/`;
+                }
+            });
+        },
     }
 
 }

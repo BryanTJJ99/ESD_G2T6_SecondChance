@@ -26,7 +26,7 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
                         <h3 class="mt-1 text-center">SecondChance</h3>
 
                     </div>
-                    <form class="mt-5 px-5">
+                    <form class="my-5 px-5">
                         <div class="group">
                             <input type="text" v-model="email" required>
                             <span class="highlight"></span>
@@ -68,9 +68,17 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
                     </form>
                 </div>
 
-                <div class="my-5 pt-2">
-                    <button class="btn btn-dark d-block mx-auto" style="width:250px;" v-on:click="register()"><span>Register Now</span></button>
+                <div class="pb-5">
+                    <div class="pt-2">
+                        <button class="btn btn-dark d-block mx-auto" style="width:250px;" v-on:click="register()"><span>Register Now</span></button>
+                    </div>
+    
+                    <div v-if="valid"></div>
+                    <div v-else class="text-center pt-2 mx-5"><small style="color:#b00b16;font-style:italic;">{{errMsg.valid}}</small>
+                    </div>
+                    
                 </div>
+
             </div>
         </div>
 
@@ -84,14 +92,6 @@ import Footer from "@/components/Footer.vue";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 
 export default {
-    // beforeCreate(){
-    //     const auth = getAuth();
-    //     onAuthStateChanged(auth, user =>{
-    //         if (!user){
-    //             this.$router.push("/")
-    //         }
-    //     })
-    // },
     data() {
         return {
             errMsg: {email:'', password:'', companyName:'', companyDept: '', officeLocation:'',valid:''},
@@ -111,25 +111,40 @@ export default {
             if (check) {
                 console.log("no input error")
 
-                this.validateAccount()
+                // this.validateAccount()
+
+                const auth = getAuth();
+
+                createUserWithEmailAndPassword(getAuth(), this.email, this.password)
+                .then(() => {
+                    console.log("yay")
+                    this.$router.push('/')
+                })
+                .catch((err) => {
+                    console.log("nay")
+                    console.log(err)
+
+                    const errorCode = err.code;
+                    console.log(errorCode)
+
+                    if (errorCode == "auth/email-already-in-use"){
+                        this.errMsg['valid'] = "Registration failed. Email entered is already in use."
+
+                        this.valid = false
+
+                    } else if (errorCode == "auth/invalid-email") {
+                        this.errMsg['valid'] = "Registration failed. You have entered an invalid email address."
+
+                        this.valid = false
+                    }
+
+                        
+                })
 
             } else {
                 console.log("input error")
 
             }
-
-
-            createUserWithEmailAndPassword(getAuth(), this.email, this.password)
-                .then(() => {
-                    this.$router.push('/')
-                })
-                .catch((err) => {
-                    switch (err.code) {
-                        case "auth/email-already-in-use":
-                            this.errMsg['valid'] = 'Email is already in use'
-                            break
-                    }
-                })
         },
         // check if company dept is alr registered
         validateAccount(){
@@ -148,9 +163,6 @@ export default {
                 if (length(response) == 0){
                     
                     this.valid = true // no account registered yet
-                    auth.createUserWithEmailAndPassword(email, this.password)
-                    console.log("SUCCESSFUL User Update")
-
 
                 } else {
                     
@@ -160,8 +172,6 @@ export default {
                 }
 
                 return this.valid
-
-
 
             })
             .catch(error => {

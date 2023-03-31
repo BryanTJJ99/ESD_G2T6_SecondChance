@@ -114,11 +114,15 @@ import Footer from "@/components/Footer.vue"
 import AOS from 'aos'
 import 'aos/dist/aos.css';
 
+import { getAuth, onAuthStateChanged} from "firebase/auth";
+
 export default {
     mounted() {
         AOS.init({
             duration: 1300,
         })
+        this.checkuser()
+        this.deptId = sessionStorage.getItem("deptId")
     },
     data() {
         return {
@@ -133,8 +137,8 @@ export default {
             emission: "500",
             img: "",
 
-            creatorId: ""
-
+            creatorId: "",
+            deptId: ""
 
         }
     },
@@ -180,7 +184,16 @@ export default {
                 
                 })
         
-        }
+        },
+        checkuser(){
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                    console.log('user is not logged in')
+                    window.location.href = `/`;
+                }
+            });
+        },
         
     },
     beforeMount() {

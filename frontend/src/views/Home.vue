@@ -134,24 +134,27 @@ table {
     import Footer from "@/components/Footer.vue";
     import ListingCard from "@/components/ListingCard.vue";
     import ScrollToTop from "@/components/ScrollToTop.vue"
-    // import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-    // import 'bootstrap/dist/css/bootstrap.css'
-    // import 'bootstrap-vue/dist/bootstrap-vue.css'
     import AOS from 'aos'
     import 'aos/dist/aos.css';
 
+    import { getAuth, onAuthStateChanged} from "firebase/auth";
 
     export default {
         mounted() {
             AOS.init({
                 duration: 1300,
             })
+            
+            this.checkuser()
+
+            this.deptId = sessionStorage.getItem("deptId")
         },
         data(){
             return {
                 department : "Finance",
                 organization : "SMU",
                 offer: true,
+                deptId: ''
             }
         },
         components: {
@@ -162,6 +165,17 @@ table {
             ScrollToTop
             // BootstrapVue
         },
+        methods: {
+            checkuser(){
+                const auth = getAuth();
+                onAuthStateChanged(auth, (user) => {
+                    if (!user) {
+                        console.log('user is not logged in')
+                        window.location.href = `/`;
+                    }
+                });
+        },
+        }
         
     }
 
