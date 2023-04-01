@@ -32,22 +32,45 @@
                 </div> -->
 
                 <div class="list-group px-3" data-aos="fade-up">
-                    <button v-for="item in depItems" type="button" :key="item.id"
-                        class="list-group-item list-group-item-action d-flex justify-content-between p-3 pt-3 ps-3">
+                    <template v-for="item in depItems">
+                        <!--LISTED-->
+                        <button v-if="item.isListed" type="button" :value="item.id"
+                            class="list-group-item list-group-item-action d-flex justify-content-between p-3 pt-3 ps-3">
 
-                        <p>{{ item.itemName }} &nbsp; </p>
+                            <p>{{ item.itemName }} &nbsp; </p>
 
-                        <div class="align-items-center">
-                            <small class="mx-3">{{ item.itemCategory.toUpperCase() }}</small>
+                            <div class="align-items-center">
+                                <small class="mx-3">{{ item.itemCategory.toUpperCase() }}</small>
 
-                            <!-- <span class="badge mx-3" style="background-color:#c5dad2; color: black; width: 100px;">
-                                <p>Quantity : {{ item['Quantity'] }}</p>
-                            </span> -->
-                            <i class="fa-regular fa-store mr-3" data-bs-toggle="modal"
-                            data-bs-target="#marketModal" style="color: grey;"></i>
-                        </div>
-                        
-                    </button>
+                                <!-- <span class="badge mx-3" style="background-color:#c5dad2; color: black; width: 100px;">
+                                    <p>Quantity : {{ item['Quantity'] }}</p>
+                                </span> -->
+                                <!-- <i class="fa-regular fa-store mr-3" data-bs-toggle="modal"
+                                data-bs-target="#marketModal" style="color: grey;"></i> -->
+                                <i class="fa-solid fa-store-slash mr-3" data-bs-toggle="modal"
+                                data-bs-target="#removeMarketModal" style="color: grey;" ></i>
+                                
+                            </div>
+                            
+                        </button>
+                        <!--NOT LISTED-->
+                        <button  v-else type="button" :value="item.id"
+                            class="list-group-item list-group-item-action d-flex justify-content-between p-3 pt-3 ps-3">
+
+                            <p>{{ item.itemName }} &nbsp; </p>
+
+                            <div class="align-items-center">
+                                <small class="mx-3">{{ item.itemCategory.toUpperCase() }}</small>
+
+                                <!-- <span class="badge mx-3" style="background-color:#c5dad2; color: black; width: 100px;">
+                                    <p>Quantity : {{ item['Quantity'] }}</p>
+                                </span> -->
+                                <i class="fa-regular fa-store mr-3" data-bs-toggle="modal"
+                                data-bs-target="#marketModal" style="color: grey;"></i>
+                            </div>
+                            
+                        </button>
+                    </template>
 
 
                 </div>
@@ -88,16 +111,16 @@
                               <img :src="img" alt="image" style="width: 200px; height: 200px;">
                             </div>
                         </div>
-                        <div class="input-group mb-3" style="position:relative">
+                        <!-- <div class="input-group mb-3" style="position:relative">
                             <label for="image" class="input-group-text" style="background-color: #c5dad2; z-index: 2; width: 25%; height: 100%; position: absolute; top: 0; left: 0;">Choose file</label>
                             <input id="image" class="form-control"  @change="selectFile" style="z-index:1" type="file" multiple>
-                        </div>
-                        <div v-if="images.length">
+                        </div> -->
+                        <!-- <div v-if="images.length">
                             <p>Uploaded Images:</p>
                             <div v-for="(img, index) in images" :key="index">
                               <img :src="img" alt="image" style="width: 200px; height: 200px;">
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -106,7 +129,7 @@
                 </div>
             </div>
         </div>
-
+        <!--MARKET MODAL-->
         <div class="modal fade" id="marketModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -138,6 +161,7 @@
             </div>
         </div>
 
+        <!--CHANNEL MODAL-->
         <div class="modal fade" id="channelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -172,6 +196,27 @@
             </div>
         </div>
 
+        <!--REMOVE FROM MARKET-->
+        <div class="modal fade" id="removeMarketModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 title" id="exampleModalLabel">Remove Item from Market</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <select name="" class="form-control" v-model="itemToRemoveFromMarket">
+                            <option v-for="item in listedItems" :value="item">{{ item.itemName }}</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-dark" type="button" @click="removeItemFromMarketPlace(item)">Remove From Marketplace</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <Footer style="margin-left:4.5rem;"></Footer>
     </div>
 </template>
@@ -200,6 +245,8 @@ export default {
         this.checkuser()
         this.deptId = sessionStorage.getItem("deptId")
 
+        console.log(this.deptId)
+
 
         departmentService.getDepartmentById("641d7448835767ff182d7c43")
         .then(response =>{
@@ -212,8 +259,11 @@ export default {
                 console.log("getting " + response.itemIdArrayList[i])
                 itemService.getItem(response.itemIdArrayList[i])
                 .then(response => {
+                    if(response.data['isListed']){
+                        this.listedItems.push(response.data)
+                    }
                     this.depItems.push(response.data);
-                    console.log(this.depItems)
+                    console.log(this.listedItems)
 
                     // carbonRetrieverService.getCarbonAmt(response.data.itemName, response.data.itemCategory)
                     // .then(response =>{
@@ -227,14 +277,16 @@ export default {
     },
     data() {
         return {
-            deptId:'',
+            itemToRemoveFromMarket:"",
+            listedItems:[],
+            deptId:"641d7448835767ff182d7c43",
             depDetails : undefined,
             depItems : [],
             department: "Finance",
             organization: "SMU",
             newItemName: "",
             newItemCategory : "",
-            newItemId: "",
+            newItemId: undefined,
 
             channelId: "",
             channelKey: "",
@@ -246,9 +298,12 @@ export default {
         Sidebar,
         Footer
     },
+
     methods: {
-        addItem: function () {
-            var data = {
+        addItem: async function () {
+            try{
+                var data = {
+                "itemId": "",
                 "itemName" : this.newItemName,
                 "itemCategory" : this.newItemCategory,
                 "isListed": false,
@@ -258,38 +313,66 @@ export default {
                 "buyerIds": [],
                 "companyId": "64227d8d2a884bf918c3d709",
                 "departmentId": "641d7448835767ff182d7c43"
+                }
+
+                var carbon_response = await carbonRetrieverService.getCarbonAmt("chair", "furniture")
+                var carbon_amt = carbon_response.data
+                data['carbonEmission'] = carbon_amt;
+                console.log(carbon_amt)
+
+                var item_response = await itemService.createItem(data)
+                console.log(item_response)
+                var itemId = item_response.data.data.item._id.$oid;
+
+                departmentService.addItemToDept("641d7448835767ff182d7c43", itemId )
+                .then((response) =>{
+                    console.log("ITEM Added to dept" + response)
+                })
+                .catch((error)=>{
+                    console.log("Item not added to dept " + error)
+                })
+
+                this.depItems.push({
+                    "itemName": this.newItemName,
+                    "itemCategory": this.newItemCategory
+                })
+                console.log(this.depItems)
+                this.newItemName = "";
+                this.newItemCategory = "";
+            }
+            catch(error){
+                console.log(error)
+                return error
             }
 
-            carbonRetrieverService.getCarbonAmt("chair", "furniture")
-            .then((response) =>{
-                console.log("carbonRetrieve called");
-                data[carbonEmission] = response;
-            })
-            .catch((error) => {
-                return error;
-            })
-
-
-            itemService.createItem(data)
-            .then((response) =>{
-                console.log("ITEM SUCCESSFULLY Created")
-                console.log("NEW ITEM")
-                this.newItemId = response.data.data.item._id.$oid;
-                console.log(this.newItemId.$oid)
-            })
-            .catch((error) =>{
-                console.log("Item not created" + error)
-            })
-
-            // this.depItems.push({
-            //     "itemName": this.newItemName,
-            //     "itemCategory": this.newItemCategory
-            // })
-            // console.log(this.depItems)
-
-            this.newItemName = "";
-            this.newItemCategory = "";
+           
         },
+
+        removeItemFromMarketPlace(){
+            // console.log(this.itemToRemoveFromMarket)
+            // this.itemToRemoveFromMarket['isListed'] = false;
+            var data = {   "buyerIds" : this.itemToRemoveFromMarket['buyerIds'],
+                            "carbonEmission" : this.itemToRemoveFromMarket['carbonEmission'],
+                            "companyId" : this.itemToRemoveFromMarket['companyId'],
+                            "departmentId" : this.itemToRemoveFromMarket['departmentId'],
+                            "isListed" : false,
+                            "itemCategory" : this.itemToRemoveFromMarket['itemCategory'],
+                            "itemDescription":this.itemToRemoveFromMarket['itemDescription'],
+                            "itemName" : this.itemToRemoveFromMarket['itemName'],
+                            "itemPicture" : this.itemToRemoveFromMarket['itemPicture']
+                        }
+
+
+            itemService.editItem(data, this.itemToRemoveFromMarket['_id'].$oid)
+            .then((response) =>{
+                console.log("ITEM SUCCESSFULLY REMOVED FROM MARKET")
+            })
+            .catch((error)=>{
+                console.log("Item NOT removed from market")
+            })
+            location.reload()
+        },
+
         selectFile(e) {
             const files = e.target.files
             for (let i = 0; i < files.length; i++) {
@@ -301,6 +384,7 @@ export default {
                 }
             }
         },
+
         checkuser(){
             const auth = getAuth();
             onAuthStateChanged(auth, (user) => {
@@ -310,6 +394,7 @@ export default {
                 }
             });
         },
+
         addChannel(){
 
             // direct call to slack MS

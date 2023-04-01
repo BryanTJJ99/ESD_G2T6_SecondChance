@@ -38,5 +38,20 @@ class departmentService{
             return response
     }
 
+    addItemToDept(departmentID, itemID){
+      const response = axios.post(API_URL + "/addItemID/" + departmentID + "/" + itemID)
+      .then((response)=>{
+        console.log("ITEM LIST changed successfully");
+        return response.data
+      })
+      .catch((error)=>{
+        console.log("ITEM LIST NOT CHANGED")
+        return error
+      })
+      return response
+    }
+    
+
+
 }
 export default new departmentService()

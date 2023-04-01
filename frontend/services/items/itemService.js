@@ -46,5 +46,18 @@ class itemService{
         return response
     }
 
+    editItem(data, itemId){
+        const response = axios.put(API_URL + "edit/" + itemId, data)
+        .then((response) => {
+            console.log("Item edited successfully")
+            return response
+        })
+        .catch((error)=>{
+            console.log("Item edited unsuccessfully" + error)
+            return error
+        })
+        return response
+    }
+
 }
 export default new itemService()
