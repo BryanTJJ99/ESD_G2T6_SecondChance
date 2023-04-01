@@ -135,10 +135,10 @@
                         <h1 class="modal-title fs-5 title" id="exampleModalLabel">Enable Slack Notifications</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    
+
                     <div class="modal-body">
                         <small>Receive notifications to your Slack channel on your listings and offers.</small>
-                        
+
                         <div class="input-group my-3">
                             <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
                                 <p>Channel ID:</p>
