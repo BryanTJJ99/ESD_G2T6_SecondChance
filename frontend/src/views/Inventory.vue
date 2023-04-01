@@ -138,24 +138,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
-                                <p>Item Name</p>
-                            </span>
-                            <input type="text" class="form-control" placeholder="Item Name"
-                                aria-label="itemName" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" style="background-color:#c5dad2;" id="newItemCategory">
-                                <p>Quantity</p>
-                            </span>
-                            <input type="number"  class="form-control" placeholder="Qty. No"
-                                aria-label="newItemQty" aria-describedby="basic-addon1">
-                        </div>
+                        <select name="" class="form-control" v-model="itemToChange">
+                            <option v-for="item in unlistedItems" :value="item">{{ item.itemName }}</option>
+                        </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        <button class="btn btn-dark" type="button" @click="addItem">Post On Marketplace</button>
+                        <button class="btn btn-dark" type="button" @click="changeMarketPlace(true)">Post On Marketplace</button>
                     </div>
                 </div>
             </div>
@@ -205,13 +194,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <select name="" class="form-control" v-model="itemToRemoveFromMarket">
+                        <select name="" class="form-control" v-model="itemToChange">
                             <option v-for="item in listedItems" :value="item">{{ item.itemName }}</option>
                         </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        <button class="btn btn-dark" type="button" @click="removeItemFromMarketPlace(item)">Remove From Marketplace</button>
+                        <button class="btn btn-dark" type="button" @click="changeMarketPlace(false)">Remove From Marketplace</button>
                     </div>
                 </div>
             </div>
@@ -262,8 +251,12 @@ export default {
                     if(response.data['isListed']){
                         this.listedItems.push(response.data)
                     }
+                    else{
+                        this.unlistedItems.push(response.data)
+                    }
                     this.depItems.push(response.data);
                     console.log(this.listedItems)
+                    console.log(this.unlistedItems)
 
                     // carbonRetrieverService.getCarbonAmt(response.data.itemName, response.data.itemCategory)
                     // .then(response =>{
@@ -277,7 +270,8 @@ export default {
     },
     data() {
         return {
-            itemToRemoveFromMarket:"",
+            unlistedItems : [],
+            itemToChange:"",
             listedItems:[],
             deptId:"641d7448835767ff182d7c43",
             depDetails : undefined,
@@ -350,22 +344,22 @@ export default {
            
         },
 
-        removeItemFromMarketPlace(){
+        changeMarketPlace(changeTo){
             // console.log(this.itemToRemoveFromMarket)
             // this.itemToRemoveFromMarket['isListed'] = false;
-            var data = {   "buyerIds" : this.itemToRemoveFromMarket['buyerIds'],
-                            "carbonEmission" : this.itemToRemoveFromMarket['carbonEmission'],
-                            "companyId" : this.itemToRemoveFromMarket['companyId'],
-                            "departmentId" : this.itemToRemoveFromMarket['departmentId'],
-                            "isListed" : false,
-                            "itemCategory" : this.itemToRemoveFromMarket['itemCategory'],
-                            "itemDescription":this.itemToRemoveFromMarket['itemDescription'],
-                            "itemName" : this.itemToRemoveFromMarket['itemName'],
-                            "itemPicture" : this.itemToRemoveFromMarket['itemPicture']
+            var data = {   "buyerIds" : this.itemToChange['buyerIds'],
+                            "carbonEmission" : this.itemToChange['carbonEmission'],
+                            "companyId" : this.itemToChange['companyId'],
+                            "departmentId" : this.itemToChange['departmentId'],
+                            "isListed" : changeTo,
+                            "itemCategory" : this.itemToChange['itemCategory'],
+                            "itemDescription":this.itemToChange['itemDescription'],
+                            "itemName" : this.itemToChange['itemName'],
+                            "itemPicture" : this.itemToChange['itemPicture']
                         }
 
 
-            itemService.editItem(data, this.itemToRemoveFromMarket['_id'].$oid)
+            itemService.editItem(data, this.itemToChange['_id'].$oid)
             .then((response) =>{
                 console.log("ITEM SUCCESSFULLY REMOVED FROM MARKET")
             })
