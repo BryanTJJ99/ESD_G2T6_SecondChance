@@ -81,8 +81,6 @@ import departmentService from "../../services/department/departmentService";
 import AOS from 'aos'
 import 'aos/dist/aos.css';
 
-import { getAuth, onAuthStateChanged} from "firebase/auth";
-
 export default {
     mounted() {
         AOS.init({
