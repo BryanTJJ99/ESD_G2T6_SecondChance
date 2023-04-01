@@ -59,13 +59,15 @@ export default {
     mounted(){
         console.log(this.listingInfo)
 
-        this.listingId = this.listingInfo._id
-        this.itemName = this.listingInfo.itemName
-        this.company = this.listingInfo.company.companyName 
-        this.department = this.listingInfo.department.departmentName 
-        this.emission =  this.listingInfo.carbonEmission
-        this.img = this.listingInfo.itemPicture
-        this.listing = {}
+        if (this.listingInfo) {
+            this.listingId = this.listingInfo._id
+            this.itemName = this.listingInfo.itemName
+            this.company = this.listingInfo.company.companyName 
+            this.department = this.listingInfo.department.departmentName 
+            this.emission =  this.listingInfo.carbonEmission
+            this.img = this.listingInfo.itemPicture
+            this.listing = {}
+        }
 
     },
     props: ["listingInfo", "offer"],
