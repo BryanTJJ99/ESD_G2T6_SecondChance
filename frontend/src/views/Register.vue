@@ -124,7 +124,7 @@ export default {
                     .then(() => {
                         console.log("yay")
 
-
+                        // ADD NEW COMPANY
                         var COMPANY_URL = 'http://localhost:5001/'
                         axios.post(COMPANY_URL, {
                             params: {
@@ -140,6 +140,7 @@ export default {
 
                             })
                         
+                        // ADD NEW DEPARTMENT
                         var DEPT_URL = ''
                         axios.post(DEPT_URL, {
                         params: {
