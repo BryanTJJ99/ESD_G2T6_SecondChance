@@ -255,6 +255,7 @@ export default {
             channelKey: "",
             newItemImage:[],
             items: [],
+            images: []
         }
     },
     components: {
