@@ -30,11 +30,6 @@
                 <i class="fa-solid fa-message" style="color:black"></i>
             </router-link>
         </li>
-        <li>
-            <a href="#" class="nav-link py-4" title="" data-bs-placement="right" data-bs-original-title="Customers">
-                <i class="fa-solid fa-gear" style="color:black"></i>
-            </a>
-        </li>
         </ul>
     </div>
 </template>

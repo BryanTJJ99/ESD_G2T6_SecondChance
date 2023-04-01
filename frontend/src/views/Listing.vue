@@ -75,7 +75,6 @@
                 </div>
 
             </div>
-            <i class="fa-solid fa-location-dot mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ address }}</span></i>
             <i class="fa-solid fa-building d-block mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ company }}, {{
                 department }}</span></i>
             <hr>
@@ -130,7 +129,6 @@ export default {
 
             listingId: "",
             itemName: "IKEA Chair",
-            address: "Bras Basah",
             company: "SMU",
             department: "Finance",
             desc: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
@@ -154,7 +152,7 @@ export default {
             this.sent = true
         },
         contactSeller(){
-
+            
         },
         getListing(){
             var url = ""
@@ -171,7 +169,6 @@ export default {
                 // retrieve item details + creatorId
 
                 this.itemName = "IKEA Chair",
-                this.address = "Bras Basah", // might have to use geolocation to retrieve this
                 this.company = "SMU",
                 this.department = "Finance",
                 this.emission = "500",

@@ -127,7 +127,6 @@ export default {
             }
         },
         getListings() {
-            var url = ""
             var all = true
             this.gotListings = true
 
@@ -135,21 +134,17 @@ export default {
                 all = false
             }
 
-            axios.get(url, {
-                params: {
-                    search: this.search, // search input, can be ""
-                    all: all, // if this.search = "", all listings returned
-                    category: this.category, // category
-                    outsideCompany: this.outsideCompany // toggle on or off
-                }
-            })
+            var url = "http://localhost:3004/"
+
+            axios.get(url)
             .then(response => {
 
-                if (response.length == 0){
-                    this.gotListings = false
-                } else {
-                    // return list of listingIds
-                }
+                console.log(response.data)
+                // if (response.length == 0){
+                //     this.gotListings = false
+                // } else {
+                //     // return list of listingIds
+                // }
 
             })
             .catch(error => {

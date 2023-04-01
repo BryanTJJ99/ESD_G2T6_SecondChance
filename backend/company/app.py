@@ -22,7 +22,9 @@ def insert():
     errMsg = handleError(data)
     if errMsg == '':
         companyCollection.insert_one(data)
-        return "Created company"
+        company = companyCollection.find_one({"companyName": data["companyName"]})
+        company = json.loads(json_util.dumps(company))
+        return company
     return errMsg
 
 # read company
