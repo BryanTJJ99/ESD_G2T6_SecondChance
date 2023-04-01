@@ -5,17 +5,17 @@
         <div class="container-flex p-3" style="margin-left:4.5rem;min-height:100vh">
             <div class="row px-3 py-2">
                 <div class="col-lg-2">
-                    <h3 class="pt-3 ps-3" data-aos="fade-down">{{ header }} <span>
-                            <h4>{{ category }}</h4>
+                    <h3 class="pt-3 ps-3" data-aos="fade-down">Marketplace<span>
                         </span></h3>
                 </div>
-                <div class="col-lg-10 d-flex justify-content-lg-end justify-content-start pe-lg-4 ps-4">
+                <div data-aos="fade-down" class="col-lg-10 d-flex justify-content-lg-end justify-content-start pe-lg-4 ps-4">
                     <div>
+                        
                         <ul id="growing-search-freebie" class="pt-3 mt-2 mb-0">
                             <li style="background-color:#a3a0a0;" class="rounded-3 p-1 my-0">
                                 <div class="growing-search">
                                     <div class="input">
-                                        <input type="text" placeholder="Enter item" v-model="search" />
+                                        <input type="text" placeholder="Enter item" v-model="search" v-on:keyup.enter="getListings()" />
                                     </div><!-- Space hack -->
                                     <div class="submit">
                                         <button type="submit" name="go_search" v-on:click="getListings()">
@@ -28,7 +28,7 @@
                         <div class="form-check form-switch">
                             <div>
                                 <input class="form-check-input" type="checkbox" role="switch" v-on:click="changeOption()">
-                                <small>Include other organisations</small>
+                                <small>View listings from your company only</small>
                             </div>
                         </div>
 
@@ -37,31 +37,15 @@
 
             </div>
 
-            <div class="mt-3 pb-0" style="overflow: scroll;">
-                <div class="d-flex justify-content-start">
-                    <small class=" d-flex align-self-center pe-2 ps-3">Categories:</small>
-                    <button v-for="category of categories" class="btn btn-none" v-bind:value="category" :key="category.id"
-                        v-on:click="setCategory()">{{ category }}</button>
-                </div>
-            </div>
-            <hr class="my-0">
+            <hr class="mb-0">
             <div v-if="gotListings" class="row py-3" data-aos="fade-up">
 
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer" v-for="each of allListings" :listingInfo="each"></ListingCard>
 
             </div>
             <div v-else class="row py-3" data-aos="fade-up">
 
-                <p class="text-center my-5">Sorry, but there are no listings found. Try another category or search input.</p>
+                <p class="text-center my-5">Sorry, no listings were found.</p>
 
             </div>
         </div>
@@ -91,18 +75,17 @@ export default {
         this.checkuser()
 
         this.deptId = sessionStorage.getItem("deptId")
+        this.companyId = sessionStorage.getItem("companyId")
     },
     data() {
         return {
             deptId: '',
+            companyId: '',
             company: "SMU",
             department: "Finance",
             search: "",
-            header: "Marketplace,",
-            categories: ["Furniture", "Office Supplies", "Equipment", "Electronics", "Others"],
-            category: "Furniture",
             offer: false,
-            outsideCompany: false,
+            outsideCompany: true,
             allListings: [],
             gotListings: true
         }
@@ -115,20 +98,18 @@ export default {
         ScrollToTop
     },
     methods: {
-        setCategory() {
-            console.log(event.target.value)
-            this.category = event.target.value
-        },
         changeOption(){
             if (this.outsideCompany){
-                this.outsideCompany = true
-            } else {
                 this.outsideCompany = false
+            } else {
+                this.outsideCompany = true
             }
+            this.getListings()
         },
         getListings() {
             var all = true
             this.gotListings = true
+            this.allListings = []
 
             if (this.search != ""){
                 all = false
@@ -140,11 +121,44 @@ export default {
             .then(response => {
 
                 console.log(response.data)
-                // if (response.length == 0){
-                //     this.gotListings = false
-                // } else {
-                //     // return list of listingIds
-                // }
+
+                var listings = response.data
+
+                // View within company only
+                if (!this.outsideCompany){
+
+                    listings = []
+
+                    for (let each of listings){
+                        if (each.companyId == this.companyId){
+                            listings.push(each)
+                        }
+                    }
+                }
+
+                // Search not empty
+                if (this.search != ""){
+                    var temp = []
+
+                    for (let each of listings){
+                        if (each.itemName.toLowerCase() == this.search.toLowerCase()){
+                            temp.push(each)
+                        }
+                    }
+
+                    listings = temp
+
+                    this.search = ""
+                }
+
+                this.allListings = listings
+
+                if (this.allListings.length == 0){
+                    this.gotListings = false
+                } else {
+                    this.gotListings = true
+                }
+
 
             })
             .catch(error => {
