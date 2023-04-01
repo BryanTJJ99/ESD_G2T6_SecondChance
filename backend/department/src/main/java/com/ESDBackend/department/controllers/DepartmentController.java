@@ -67,8 +67,8 @@ public class DepartmentController {
 
     @GetMapping("/getDepartmentIdByEmail/{email}")
     @CrossOrigin
-    public String getDepartmentIdByEmail(@PathVariable String email) {
-    return departmentService.getDepartmentIdByEmail(email);
+    public Department getDepartmentIdByEmail(@PathVariable String email) {
+    return departmentService.getDepartmentByEmail(email);
     }
 
     @GetMapping("/getCompanyIdByDepartmentNameAndPostalCode/{departmentName}/{postalCode}")
