@@ -72,6 +72,19 @@
                             <input type="number" v-model="newItemQty" class="form-control" placeholder="Qty. No"
                                 aria-label="newItemQty" aria-describedby="basic-addon1">
                         </div>
+<<<<<<< Updated upstream
+=======
+                        <div class="input-group mb-3" style="position:relative">
+                            <label for="newItemImage" class="input-group-text" style="background-color: #c5dad2; z-index: 2; width: 25%; height: 100%; position: absolute; top: 0; left: 0;">Choose file</label>
+                            <input id="newItemImage" class="form-control"  @change="selectFile" style="z-index:1" type="file" multiple>
+                        </div>
+                        <div v-if="newItemImage.length">
+                            <p>Uploaded Images:</p>
+                            <div v-for="(img, index) in newItemImage" :key="index">
+                              <img :src="img" alt="image" style="width: 200px; height: 200px;">
+                            </div>
+                        </div>
+>>>>>>> Stashed changes
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -100,7 +113,7 @@
                             <span class="input-group-text" style="background-color:#c5dad2;" id="newItemQty">
                                 <p>Quantity</p>
                             </span>
-                            <input type="number" v-model="newItemQty" class="form-control" placeholder="Qty. No"
+                            <input type="number" v-model="newItemQty" class="form-control" placeholder="Qty. No" 
                                 aria-label="newItemQty" aria-describedby="basic-addon1">
                         </div>
                     </div>
@@ -134,6 +147,7 @@ export default {
             organization: "SMU",
             newItem: "",
             newItemQty: 0,
+<<<<<<< Updated upstream
             items: [
                 {
                     "name": "Ikea Dalgon",
@@ -161,6 +175,12 @@ export default {
                     "Quantity": 1
                 },
             ]
+=======
+            channelId: "",
+            channelKey: "",
+            newItemImage:[],
+            items: [],
+>>>>>>> Stashed changes
         }
     },
     components: {
@@ -169,6 +189,7 @@ export default {
     },
     methods: {
         addItem: function () {
+<<<<<<< Updated upstream
             this.items.push({
                 "name": this.newItem,
                 "Quantity": this.newItemQty
@@ -176,6 +197,58 @@ export default {
 
             this.newItem = "";
             this.newItemQty = 0;
+=======
+        this.items.push({
+            "name": this.newItem,
+            "Quantity": this.newItemQty,
+            "image": this.newItemImage
+        })
+
+        console.log(this.items)
+
+        this.newItem = "";
+        this.newItemQty = 0;
+        this.newItemImage = []
+        },
+        selectFile(e) {
+            const files = e.target.files
+            for (let i = 0; i < files.length; i++) {
+                const image = files[i]
+                const reader = new FileReader()
+                reader.readAsDataURL(image)
+                reader.onload = e => {
+                this.newItemImage.push(e.target.result)
+                }
+            }
+        },
+        checkuser(){
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                    console.log('user is not logged in')
+                    window.location.href = `/`;
+                }
+            });
+        },
+        addChannel(){
+
+            // direct call to slack MS
+
+            var url = ''
+
+            axios.post(url, {
+                deptId: this.deptId,
+                channelId: this.channelId,
+                channelKey: this.channelKey
+            })
+            .then(response => {
+                console.log("yay")
+            })
+            .catch(error => {
+                console.log(error.message)
+                
+            })
+>>>>>>> Stashed changes
         }
     }
 
