@@ -98,15 +98,15 @@ export default {
 
                         // get deptId of current user with email 
                         // call department MS
-                        var url = ""
+                        var url = "http://localhost:8080/department/getDepartmentIdByEmail"
 
-                        axios.get(url, {
-                            email: this.email
-                        })
+                        axios.get(url + '/' + this.email)
                         .then(response => {
                             console.log("yay")
 
                             this.deptId = response.data
+
+                            console.log(this.deptId)
 
                             // set deptId in session
                             sessionStorage.setItem("deptId", this.deptId);

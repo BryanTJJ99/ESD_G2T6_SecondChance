@@ -75,7 +75,6 @@
                 </div>
 
             </div>
-            <i class="fa-solid fa-location-dot mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ address }}</span></i>
             <i class="fa-solid fa-building d-block mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ company }}, {{
                 department }}</span></i>
             <hr>
@@ -122,19 +121,31 @@ export default {
             duration: 1300,
         })
         this.checkuser()
+
         this.deptId = sessionStorage.getItem("deptId")
+
+        this.listingInfo = JSON.parse(sessionStorage.getItem("viewListing"));
+        console.log(this.listingInfo)
+
+        this.listingId = this.listingInfo._id
+        this.itemName = this.listingInfo.itemName
+        this.company = this.listingInfo.company.companyName 
+        this.department = this.listingInfo.department.departmentName 
+        this.emission =  this.listingInfo.carbonEmission
+        this.img = this.listingInfo.itemPicture
+        this.desc = this.listingInfo.itemDescription
+
     },
     data() {
         return {
             sent: false,
 
-            listingId: "",
-            itemName: "IKEA Chair",
-            address: "Bras Basah",
-            company: "SMU",
-            department: "Finance",
-            desc: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-            emission: "500",
+            listingInfo: "",
+            itemName: "",
+            company: "",
+            department: "",
+            desc: "",
+            emission: "",
             img: "",
 
             creatorId: "",
@@ -157,32 +168,38 @@ export default {
 
         },
         getListing(){
-            var url = ""
 
-            this.listingId = sessionStorage.getItem("viewListing");
-            console.log(this.listingId);
+            this.listingId = this.listingInfo._id
+            this.itemName = this.listingInfo.itemName
+            this.company = this.listingInfo.company.companyName 
+            this.department = this.listingInfo.department.departmentName 
+            this.emission =  this.listingInfo.carbonEmission
+            this.img = this.listingInfo.itemPicture
+            this.desc = this.listingInfo.itemDescription
 
-            axios.get(url, {
-                params: {
-                    listingId: this.listingId
-                }
-            })
-            .then(response => {
-                // retrieve item details + creatorId
 
-                this.itemName = "IKEA Chair",
-                this.address = "Bras Basah", // might have to use geolocation to retrieve this
-                this.company = "SMU",
-                this.department = "Finance",
-                this.emission = "500",
-                this.img = ""
+            // console.log(this.listingId);
+
+            // axios.get(url, {
+            //     params: {
+            //         listingId: this.listingId
+            //     }
+            // })
+            // .then(response => {
+            //     // retrieve item details + creatorId
+
+            //     this.itemName = "IKEA Chair",
+            //     this.company = "SMU",
+            //     this.department = "Finance",
+            //     this.emission = "500",
+            //     this.img = ""
                 
-            })
-            .catch(error => {
+            // })
+            // .catch(error => {
 
-                console.log(error.message)
+            //     console.log(error.message)
                 
-                })
+            //     })
         
         },
         checkuser(){
@@ -196,9 +213,20 @@ export default {
         },
         
     },
-    beforeMount() {
-        this.getListing()
-    },
+    // beforeMount() {
+    //     this.listingInfo = sessionStorage.getItem("viewListing");
+    //     console.log(this.listingInfo)
+
+    //     // this.listingId = this.listingInfo._id
+    //     // this.itemName = this.listingInfo.itemName
+    //     // this.company = this.listingInfo.company.companyName 
+    //     // this.department = this.listingInfo.department.departmentName 
+    //     // this.emission =  this.listingInfo.carbonEmission
+    //     // this.img = this.listingInfo.itemPicture
+    //     // this.desc = this.listingInfo.itemDescription
+
+    //     // this.getListing()
+    // },
         
 
 

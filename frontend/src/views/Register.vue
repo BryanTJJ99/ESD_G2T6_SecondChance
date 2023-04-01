@@ -32,51 +32,56 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Your Email:</label>
-                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.email}}</small>
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{ errMsg.email }}</small>
                         </div>
                         <div class="group mt-5">
                             <input type="password" v-model="password" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Your Password:</label>
-                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.password}}</small>
-                       
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{ errMsg.password }}</small>
+
                         </div>
                         <div class="group mt-5">
                             <input type="text" v-model="companyName" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Your Company Name:</label>
-                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.companyName}}</small>
-                       
+                            <small class="text-start"
+                                style="color:#b00b16;font-style:italic;">{{ errMsg.companyName }}</small>
+
                         </div>
                         <div class="group mt-5">
                             <input type="text" v-model="companyDept" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Your Company Department:</label>
-                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.companyDept}}</small>
-                       
+                            <small class="text-start"
+                                style="color:#b00b16;font-style:italic;">{{ errMsg.companyDept }}</small>
+
                         </div>
                         <div class="group mt-5">
                             <input type="text" v-model="officeLocation" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Your Office Location:</label>
-                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.officeLocation}}</small>
+                            <small class="text-start"
+                                style="color:#b00b16;font-style:italic;">{{ errMsg.officeLocation }}</small>
                         </div>
                     </form>
                 </div>
 
                 <div class="pb-5">
                     <div class="pt-2">
-                        <button class="btn btn-dark d-block mx-auto" style="width:250px;" v-on:click="register()"><span>Register Now</span></button>
+                        <button class="btn btn-dark d-block mx-auto" style="width:250px;"
+                            v-on:click="register()"><span>Register Now</span></button>
                     </div>
-    
+
                     <div v-if="valid"></div>
-                    <div v-else class="text-center pt-2 mx-5"><small style="color:#b00b16;font-style:italic;">{{errMsg.valid}}</small>
+                    <div v-else class="text-center pt-2 mx-5"><small
+                            style="color:#b00b16;font-style:italic;">{{ errMsg.valid }}</small>
                     </div>
-                    
+
                 </div>
 
             </div>
@@ -84,7 +89,6 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
 
     </div>
     <Footer></Footer>
-
 </template>
 
 <script>
@@ -94,18 +98,19 @@ import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from 'fir
 export default {
     data() {
         return {
-            errMsg: {email:'', password:'', companyName:'', companyDept: '', officeLocation:'',valid:''},
+            errMsg: { email: '', password: '', companyName: '', companyDept: '', officeLocation: '', valid: '' },
             email: '',
             password: '',
             companyName: '',
             companyDept: '',
             officeLocation: '',
-            valid: true
+            valid: true,
+            companyId: ''
         }
     },
     methods: {
         register() {
-            
+
             var check = this.checkInputs()
 
             if (check) {
@@ -116,30 +121,69 @@ export default {
                 const auth = getAuth();
 
                 createUserWithEmailAndPassword(getAuth(), this.email, this.password)
-                .then(() => {
-                    console.log("yay")
-                    this.$router.push('/')
-                })
-                .catch((err) => {
-                    console.log("nay")
-                    console.log(err)
+                    .then(() => {
+                        console.log("yay")
 
-                    const errorCode = err.code;
-                    console.log(errorCode)
+                        // ADD NEW COMPANY
+                        var COMPANY_URL = 'http://localhost:5001/'
+                        axios.post(COMPANY_URL, {
+                            params: {
+                                companyName: this.companyName,
+                                departments: [this.companyDept]
+                            }
+                        })
+                            .then(response => {
+                                console.log(response)
+                            })
+                            .catch(error => {
+                                console.log(error.message)
 
-                    if (errorCode == "auth/email-already-in-use"){
-                        this.errMsg['valid'] = "Registration failed. Email entered is already in use."
-
-                        this.valid = false
-
-                    } else if (errorCode == "auth/invalid-email") {
-                        this.errMsg['valid'] = "Registration failed. You have entered an invalid email address."
-
-                        this.valid = false
-                    }
-
+                            })
                         
-                })
+                        // ADD NEW DEPARTMENT
+                        var DEPT_URL = ''
+                        axios.post(DEPT_URL, {
+                        params: {
+
+                            departmentName: this.companyDept,
+                            postalCode: this.officeLocation,
+                            email: this.email,
+                            companyId: this.companyId
+
+                        }
+                        })
+                            .then(response => {
+                                console.log("dept added successfully")
+                            })
+                            .catch(error => {
+                                console.log(error.message)
+
+                            })
+
+
+
+                        this.$router.push('/')
+                    })
+                    .catch((err) => {
+                        console.log("nay")
+                        console.log(err)
+
+                        const errorCode = err.code;
+                        console.log(errorCode)
+
+                        if (errorCode == "auth/email-already-in-use") {
+                            this.errMsg['valid'] = "Registration failed. Email entered is already in use."
+
+                            this.valid = false
+
+                        } else if (errorCode == "auth/invalid-email") {
+                            this.errMsg['valid'] = "Registration failed. You have entered an invalid email address."
+
+                            this.valid = false
+                        }
+
+
+                    })
 
             } else {
                 console.log("input error")
@@ -147,7 +191,7 @@ export default {
             }
         },
         // check if company dept is alr registered
-        validateAccount(){
+        validateAccount() {
 
             var url = ''
 
@@ -158,56 +202,56 @@ export default {
                     officeLocation: this.officeLocation
                 }
             })
-            .then(response => {
+                .then(response => {
 
-                if (length(response) == 0){
-                    
-                    this.valid = true // no account registered yet
+                    if (length(response) == 0) {
 
-                } else {
-                    
-                    this.valid = false
-                    this.errMsg.valid = "Your company department already has a valid account."
+                        this.valid = true // no account registered yet
 
-                }
+                    } else {
 
-                return this.valid
+                        this.valid = false
+                        this.errMsg.valid = "Your company department already has a valid account."
 
-            })
-            .catch(error => {
-                console.log(error.message)
-                
-            })
+                    }
+
+                    return this.valid
+
+                })
+                .catch(error => {
+                    console.log(error.message)
+
+                })
         },
         // check user inputs
-        checkInputs(){
+        checkInputs() {
             var check = true
 
-            if (this.email == ""){
+            if (this.email == "") {
                 this.errMsg.email = "Please enter an email."
                 check = false
             } else {
                 this.errMsg['email'] = ""
             }
-            if (this.password.length < 8){
+            if (this.password.length < 8) {
                 this.errMsg['password'] = "Please enter a password that is at least 8 characters long."
                 check = false
             } else {
                 this.errMsg['password'] = ""
             }
-            if (this.companyDept == ""){
+            if (this.companyDept == "") {
                 this.errMsg['companyDept'] = "Please enter your company's department."
                 check = false
             } else {
                 this.errMsg['companyDept'] = ""
             }
-            if (this.companyName == ""){
+            if (this.companyName == "") {
                 this.errMsg['companyName'] = "Please enter your company's name."
                 check = false
             } else {
                 this.errMsg['companyName'] = ""
             }
-            if (this.officeLocation == ""){
+            if (this.officeLocation == "") {
                 this.errMsg['officeLocation'] = "Please enter your office location."
                 check = false
             } else {

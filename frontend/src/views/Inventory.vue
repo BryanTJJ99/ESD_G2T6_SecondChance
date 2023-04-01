@@ -32,7 +32,7 @@
                 </div> -->
 
                 <div class="list-group px-3" data-aos="fade-up">
-                    <button v-for="item in depItems" type="button"
+                    <button v-for="item in depItems" type="button" :key="item.id"
                         class="list-group-item list-group-item-action d-flex justify-content-between p-3 pt-3 ps-3">
 
                         <p>{{ item.itemName }} &nbsp; </p>
@@ -77,6 +77,16 @@
                             </span>
                             <input type="number" v-model="newItemQty" class="form-control" placeholder="Qty. No"
                                 aria-label="newItemQty" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3" style="position:relative">
+                            <label for="image" class="input-group-text" style="background-color: #c5dad2; z-index: 2; width: 25%; height: 100%; position: absolute; top: 0; left: 0;">Choose file</label>
+                            <input id="image" class="form-control"  @change="selectFile" style="z-index:1" type="file" multiple>
+                        </div>
+                        <div v-if="images.length">
+                            <p>Uploaded Images:</p>
+                            <div v-for="(img, index) in images" :key="index">
+                              <img :src="img" alt="image" style="width: 200px; height: 200px;">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -125,10 +135,10 @@
                         <h1 class="modal-title fs-5 title" id="exampleModalLabel">Enable Slack Notifications</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    
+
                     <div class="modal-body">
                         <small>Receive notifications to your Slack channel on your listings and offers.</small>
-                        
+
                         <div class="input-group my-3">
                             <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
                                 <p>Channel ID:</p>
@@ -214,8 +224,38 @@ export default {
             organization: "SMU",
             newItem: "",
             newItemQty: 0,
+            items: [
+                {
+                    "name": "Ikea Dalgon",
+                    "category": "Furniture",
+                    "Quantity": 4
+                },
+                {
+                    "name": "Swiss Candace",
+                    "category": "Furniture",
+                    "Quantity": 10
+                },
+                {
+                    "name": "Woo Jablomi",
+                    "category": "Equipment",
+                    "Quantity": 5
+                },
+                {
+                    "name": "Big ForceKin",
+                    "category": "Electronics",
+                    "Quantity": 10
+                },
+                {
+                    "name": "Vicky",
+                    "category": "Office Supplies",
+                    "Quantity": 1
+                },
+            ],
             channelId: "",
-            channelKey: ""
+            channelKey: "",
+            newItemImage:[],
+            items: [],
+            images: []
         }
     },
     components: {
@@ -225,14 +265,28 @@ export default {
     },
     methods: {
         addItem: function () {
-            this.items.push({
-                "name": this.newItem,
-                "Quantity": this.newItemQty
-            })
-            console.log(this.depItems)
+        this.items.push({
+            "name": this.newItem,
+            "Quantity": this.newItemQty,
+            "image": this.newItemImage
+        })
 
-            this.newItem = "";
-            this.newItemQty = 0;
+        console.log(this.items)
+
+        this.newItem = "";
+        this.newItemQty = 0;
+        this.newItemImage = []
+        },
+        selectFile(e) {
+            const files = e.target.files
+            for (let i = 0; i < files.length; i++) {
+                const image = files[i]
+                const reader = new FileReader()
+                reader.readAsDataURL(image)
+                reader.onload = e => {
+                this.images.push(e.target.result)
+                }
+            }
         },
         checkuser(){
             const auth = getAuth();

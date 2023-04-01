@@ -108,11 +108,11 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     @CrossOrigin
-    public String getDepartmentIdByEmail(String email) {
-        Optional<Department> department = departmentRepository.findByEmail(email);
-        if (department.isPresent()) {
+    public Department getDepartmentByEmail(String email) {
+        Department department = departmentRepository.findByEmail(email).get();
+        if (department != null) {
             System.out.println("Retrieved departmentID by email successfully");
-            return department.get().getDepartmentId();
+            return department;
         } else {
             System.out.println("Failed retrieval of departmentID by email");
             return null;
