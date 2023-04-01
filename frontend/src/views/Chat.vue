@@ -36,10 +36,12 @@
 
           this.checkuser()
 
+          var sellerInfo = JSON.parse(sessionStorage.getItem("newChat"))
+
           await Talk.ready
           const me = new Talk.User({
-            id: 1,
-            name: 'Tan Aloysius',
+            id: this.deptId,
+            name: 'Company, Department',
             email: 'aloysius@test.com',
           })
                 
@@ -48,15 +50,10 @@
             me: me,
           });
 
-          const other = new Talk.User({
-            id: '654321',
-            name: 'Sebastian',
-            email: 'Sebastian@example.com',
-          });
 
           const other2 = new Talk.User({
-            id: 2,
-            name: 'Analisa',
+            id: sellerInfo.sellerId,
+            name: sellerInfo.company + ", " + sellerInfo.department,
             email: 'Jesus@example.com',
           });
 

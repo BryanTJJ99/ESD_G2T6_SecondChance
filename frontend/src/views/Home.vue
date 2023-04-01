@@ -111,10 +111,10 @@ table {
                 <small class="pt-3 ps-3 mt-2"><i>Accept or decline your offers here</i></small>
             </div>
             <div class="row pb-4" data-aos="fade-up">
+                <!-- <ListingCard :offer="offer"></ListingCard>
                 <ListingCard :offer="offer"></ListingCard>
                 <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard> -->
             </div>
         </div>
      
