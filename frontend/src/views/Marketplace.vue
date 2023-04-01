@@ -81,6 +81,7 @@ import departmentService from "../../services/department/departmentService";
 import AOS from 'aos'
 import 'aos/dist/aos.css';
 
+import { getAuth, onAuthStateChanged} from "firebase/auth";
 
 export default {
     mounted() {
@@ -136,9 +137,13 @@ export default {
             console.log(error)
         })
 
+        this.checkuser()
+
+        this.deptId = sessionStorage.getItem("deptId")
     },
     data() {
         return {
+            deptId: '',
             allItems : undefined,
             listedItems: [],
             company: "SMU",
@@ -191,11 +196,11 @@ export default {
         //     })
         //     .then(response => {
 
-        //         if (response.length == 0){
-        //             this.gotListings = false
-        //         } else {
-        //             // return list of listingIds
-        //         }
+                // if (response.length == 0){
+                //     this.gotListings = false
+                // } else {
+                //     // return list of listingIds
+                // }
 
         //     })
         //     .catch(error => {
@@ -203,7 +208,16 @@ export default {
         //         console.log(error.message)
                 
         //     })
-        // }
+        // },
+        checkuser(){
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                    console.log('user is not logged in')
+                    window.location.href = `/`;
+                }
+            });
+        },
     }
 
 }

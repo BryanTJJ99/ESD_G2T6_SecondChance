@@ -1,38 +1,38 @@
 Java HotSpot(TM) 64-Bit Server VM (25.361-b09) for bsd-amd64 JRE (1.8.0_361-b09), built on Jan  9 2023 08:31:35 by "java_re" with gcc 4.2.1 Compatible Apple LLVM 11.0.0 (clang-1100.0.33.17)
-Memory: 4k page, physical 16777216k(12224k free)
+Memory: 4k page, physical 16777216k(25640k free)
 
 /proc/meminfo:
 
 CommandLine flags: -XX:+ExplicitGCInvokesConcurrent -XX:GCLogFileSize=104857600 -XX:InitialHeapSize=536870912 -XX:InitiatingHeapOccupancyPercent=35 -XX:+ManagementServer -XX:MaxGCPauseMillis=20 -XX:MaxHeapSize=536870912 -XX:MaxInlineLevel=15 -XX:NumberOfGCLogFiles=10 -XX:+PrintGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC -XX:+UseGCLogFileRotation 
-2023-03-30T18:39:29.919-0800: 0.794: [GC pause (G1 Evacuation Pause) (young), 0.0133127 secs]
-   [Parallel Time: 11.5 ms, GC Workers: 8]
-      [GC Worker Start (ms): Min: 794.8, Avg: 794.9, Max: 795.0, Diff: 0.1]
-      [Ext Root Scanning (ms): Min: 0.3, Avg: 0.4, Max: 0.8, Diff: 0.6, Sum: 3.2]
+2023-03-31T01:16:25.285-0800: 0.776: [GC pause (G1 Evacuation Pause) (young), 0.0117560 secs]
+   [Parallel Time: 10.2 ms, GC Workers: 8]
+      [GC Worker Start (ms): Min: 775.8, Avg: 775.9, Max: 776.0, Diff: 0.2]
+      [Ext Root Scanning (ms): Min: 0.2, Avg: 0.5, Max: 2.0, Diff: 1.8, Sum: 4.3]
       [Update RS (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]
          [Processed Buffers: Min: 0, Avg: 0.0, Max: 0, Diff: 0, Sum: 0]
-      [Scan RS (ms): Min: 0.0, Avg: 0.1, Max: 0.3, Diff: 0.3, Sum: 0.9]
-      [Code Root Scanning (ms): Min: 0.9, Avg: 4.1, Max: 10.1, Diff: 9.1, Sum: 32.7]
-      [Object Copy (ms): Min: 0.1, Avg: 2.0, Max: 4.0, Diff: 3.9, Sum: 15.7]
-      [Termination (ms): Min: 0.0, Avg: 4.3, Max: 5.7, Diff: 5.7, Sum: 34.5]
-         [Termination Attempts: Min: 1, Avg: 42.1, Max: 117, Diff: 116, Sum: 337]
-      [GC Worker Other (ms): Min: 0.0, Avg: 0.2, Max: 0.4, Diff: 0.4, Sum: 1.3]
-      [GC Worker Total (ms): Min: 10.9, Avg: 11.0, Max: 11.1, Diff: 0.2, Sum: 88.2]
-      [GC Worker End (ms): Min: 805.9, Avg: 805.9, Max: 806.0, Diff: 0.1]
+      [Scan RS (ms): Min: 0.0, Avg: 0.1, Max: 0.3, Diff: 0.3, Sum: 0.5]
+      [Code Root Scanning (ms): Min: 0.0, Avg: 3.6, Max: 9.2, Diff: 9.2, Sum: 28.9]
+      [Object Copy (ms): Min: 0.1, Avg: 1.6, Max: 2.9, Diff: 2.9, Sum: 12.5]
+      [Termination (ms): Min: 0.0, Avg: 3.9, Max: 4.9, Diff: 4.9, Sum: 31.5]
+         [Termination Attempts: Min: 1, Avg: 66.6, Max: 133, Diff: 132, Sum: 533]
+      [GC Worker Other (ms): Min: 0.0, Avg: 0.1, Max: 0.3, Diff: 0.3, Sum: 1.1]
+      [GC Worker Total (ms): Min: 9.7, Avg: 9.9, Max: 9.9, Diff: 0.2, Sum: 78.9]
+      [GC Worker End (ms): Min: 785.7, Avg: 785.8, Max: 785.9, Diff: 0.1]
    [Code Root Fixup: 0.0 ms]
    [Code Root Purge: 0.0 ms]
-   [Clear CT: 0.2 ms]
-   [Other: 1.7 ms]
+   [Clear CT: 0.1 ms]
+   [Other: 1.4 ms]
       [Choose CSet: 0.0 ms]
-      [Ref Proc: 1.1 ms]
+      [Ref Proc: 1.0 ms]
       [Ref Enq: 0.0 ms]
-      [Redirty Cards: 0.1 ms]
+      [Redirty Cards: 0.0 ms]
       [Humongous Register: 0.1 ms]
       [Humongous Reclaim: 0.0 ms]
       [Free CSet: 0.0 ms]
-   [Eden: 25.0M(25.0M)->0.0B(21.0M) Survivors: 0.0B->4096.0K Heap: 25.0M(512.0M)->5292.5K(512.0M)]
- [Times: user=0.03 sys=0.01, real=0.02 secs] 
+   [Eden: 25.0M(25.0M)->0.0B(21.0M) Survivors: 0.0B->4096.0K Heap: 25.0M(512.0M)->5219.0K(512.0M)]
+ [Times: user=0.02 sys=0.01, real=0.01 secs] 
 Heap
- garbage-first heap   total 524288K, used 17580K [0x00000007a0000000, 0x00000007a0101000, 0x00000007c0000000)
-  region size 1024K, 17 young (17408K), 4 survivors (4096K)
- Metaspace       used 12083K, capacity 12368K, committed 12544K, reserved 1060864K
+ garbage-first heap   total 524288K, used 19555K [0x00000007a0000000, 0x00000007a0101000, 0x00000007c0000000)
+  region size 1024K, 19 young (19456K), 4 survivors (4096K)
+ Metaspace       used 12198K, capacity 12496K, committed 12800K, reserved 1060864K
   class space    used 1384K, capacity 1454K, committed 1536K, reserved 1048576K

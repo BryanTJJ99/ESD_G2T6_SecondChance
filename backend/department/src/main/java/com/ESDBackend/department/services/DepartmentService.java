@@ -13,8 +13,13 @@ public interface DepartmentService {
 
     public Department deleteDepartmentItemId(String departmentID, String itemID);
 
-    public double getDepartmentCarbonSaved(String departmentID);
+    public double getDepartmentCarbon(String departmentID);
 
-    public void addDepartmentCarbonSaved(String departmentID, double carbonAmt);
+    public void addDepartmentCarbon(String departmentID, double carbonAmt);
+
+    public Department getDepartmentByEmail(String email);
+
+    public String getCompanyIdByDepartmentNameAndPostalCode(String departmentName, String postalCode);
+
 
 }

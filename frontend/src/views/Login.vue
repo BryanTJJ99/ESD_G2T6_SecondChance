@@ -16,7 +16,7 @@
 
             </div>
             <div class="col-lg-5 col-12" style="background-color:white;border-radius: 0px 0px 0px 15px;">
-                <div class="px-3" style="margin-top:25%;">
+                <div class="px-3" style="margin-top:30%;">
                     <div class="text-center">
                         <img src="../assets/logo.png" style="height:50px;opacity:50%;">
                         <h3 class="mt-1 text-center">SecondChance</h3>
@@ -28,51 +28,49 @@
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Enter Your Email:</label>
-                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.email}}</small>
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{ errMsg.email }}</small>
                         </div>
                         <div class="group mt-5">
-                            <input type="text" v-model="password" required>
+                            <input type="password" v-model="password" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Enter Your Password:</label>
-                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{errMsg.password}}</small>
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{ errMsg.password }}</small>
                         </div>
                     </form>
                 </div>
 
-                <div class="mb-5 pb-5">
-                    <button class="btn btn-none d-block mx-auto mt-5" style="width:250px;"
-                        @click="signInWithGoogle"><span>Sign In With Google</span></button>
-                    <button class="btn btn-dark d-block mx-auto mb-5" style="width:250px;" v-on:click="logIn()"><span>Log In</span></button>
+                <div class="my-5 pb-5">
 
-                    <hr style="width:250px;" class="mx-auto my-0">
+                    <button class="btn btn-dark d-block mx-auto" style="width:250px;" v-on:click="logIn()"><span>Log
+                            In</span></button>
 
-                    <small class="d-block text-center mt-4" style="font-style:italic;">Don't have an account?</small>
+                    <div v-if="loginError" class="text-center mt-4 mx-5"><small
+                            style="color:#b00b16;font-style:italic;">{{ errMsg.login }}</small>
+                    </div>
+                    <div v-else></div>
+
+                    <hr style="width:250px;" class="mx-auto my-4">
+
+                    <small class="d-block text-center" style="font-style:italic;">Don't have an account?</small>
                     <router-link to="/register">
-                        <button class="btn btn-light d-block mx-auto" style="width:250px;" v-on:click="register()"><span>Register
+                        <button class="btn btn-light d-block mx-auto" style="width:250px;"
+                            v-on:click="register()"><span>Register
                                 Here</span></button></router-link>
                 </div>
             </div>
         </div>
     </div>
     <Footer></Footer>
-
 </template>
 
 <script>
 import Footer from "@/components/Footer.vue";
 import { getAuth, signInWithEmailAndPassword, updateProfile, onAuthStateChanged } from 'firebase/auth';
-
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set } from "firebase/database";
 
 export default {
-    beforeCreate() {
-        const auth = getAuth()
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                this.$router.push('/')
-            }
-        })
-    },
     data() {
         return {
             email: '',
@@ -80,40 +78,88 @@ export default {
             companyName: '',
             companyDept: '',
             officeLocation: '',
-            errMsg: {email:'', password:''},
-            
+            errMsg: { email: '', password: '', login: '' },
+            loginError: false,
+            deptId: ""
+
         }
     },
     methods: {
-        logIn(){
+        logIn() {
             console.log("login")
 
-            if (this.checkInputs()){
+            if (this.checkInputs()) {
                 console.log("no input error")
+
+                const auth = getAuth();
+                signInWithEmailAndPassword(getAuth(), this.email, this.password)
+                    .then(() => {
+                        console.log("yay")
+
+                        // get deptId of current user with email 
+                        // call department MS
+                        var url = "http://localhost:8080/department/getDepartmentIdByEmail"
+
+                        axios.get(url + '/' + this.email)
+                        .then(response => {
+                            console.log("yay")
+
+                            this.deptId = response.data
+
+                            console.log(this.deptId)
+
+                            // set deptId in session
+                            sessionStorage.setItem("deptId", this.deptId);
+
+                        })
+                        .catch(error => {
+                            console.log(error.message)
+                        })
+
+                        this.$router.push('/home')
+                    })
+                    .catch((error) => {
+                        console.log("nay")
+                        const errorCode = error.code;
+
+                        console.log(error.message)
+                        let msg = error.message.slice(22, (error.message.length) - 2)
+
+                        if (msg == 'wrong-password') {
+                            this.errMsg.login = 'Password is invalid. Please try again.'
+                        } else if (msg == 'user-not-found') {
+                            this.errMsg.login = 'No account registered. Please register for one first.'
+                            this.email = ""
+                            this.password = ""
+                        } else if (msg == 'invalid-email') {
+                            this.errMsg.login = 'Email is invalid. Please enter a valid email address.'
+                            this.email = ""
+                            this.password = ""
+                        } else {
+                            this.errMsg.login = 'Unsuccessful login. Please try again.'
+                        }
+                        this.loginError = true
+                    });
+
+
             } else {
+
                 console.log("input error")
+                this.loginError = true
             }
 
         },
-        signInWithGoogle(){
-            console.log("sign in with google")
-
-            signInWithEmailAndPassword(getAuth(), this.email, this.password)
-            .then(() => {
-                this.$router.push('/')
-            })
-        },
         // check user inputs
-        checkInputs(){
+        checkInputs() {
             var check = true
 
-            if (this.email == ""){
+            if (this.email == "") {
                 this.errMsg.email = "Please enter an email."
                 check = false
             } else {
                 this.errMsg['email'] = ""
             }
-            if (this.password == ""){
+            if (this.password == "") {
                 this.errMsg['password'] = "Please enter a password."
                 check = false
             } else {

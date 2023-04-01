@@ -18,9 +18,10 @@ public class Department {
     private String departmentId;
     private String departmentName;
     private String companyId;
+    private String email;
     private List<String> itemIdArrayList;
     private String postalCode;
-    private double totalCarbonSaved;
+    private double totalCarbon;
 
     // public Department() {
     // // Default constructor

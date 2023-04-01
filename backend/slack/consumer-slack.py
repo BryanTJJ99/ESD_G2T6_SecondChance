@@ -1,6 +1,6 @@
 from kafka import KafkaConsumer
 from slack_bolt import App
-import json
+from json import loads
 
 KAFKA_SERVER = 'localhost:9092'
 TOPIC_NAME = 'slack'
@@ -13,7 +13,7 @@ def send_message_to_channel(message):
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": f"Hi your offer for item name: {message['itemName']} (Item ID: {message['itemId']}) is {message['message']}!"
+                "text": f"Hello your offer for item name: {message['itemName']} (Item ID: {message['itemId']}) is {message['message']}!"
             }
         },
         {
@@ -37,7 +37,13 @@ def send_message_to_channel(message):
         print("Error sending message: ", e)
 
 
-consumer = KafkaConsumer(TOPIC_NAME, bootstrap_servers=KAFKA_SERVER, value_deserializer=lambda m: json.loads(m.decode('utf-8')))
+consumer = KafkaConsumer(
+    TOPIC_NAME,
+     bootstrap_servers=['broker:9092'],
+     auto_offset_reset='earliest',
+     enable_auto_commit=True,
+     group_id='my-group',
+     value_deserializer=lambda x: loads(x.decode('utf-8')))
 
 
 for message in consumer:

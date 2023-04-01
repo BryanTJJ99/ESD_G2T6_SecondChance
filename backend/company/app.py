@@ -25,7 +25,9 @@ def insert():
     errMsg = handleError(data)
     if errMsg == '':
         companyCollection.insert_one(data)
-        return "Created company"
+        company = companyCollection.find_one({"companyName": data["companyName"]})
+        company = json.loads(json_util.dumps(company))
+        return company
     return errMsg
 
 # read company
@@ -56,6 +58,14 @@ def delete(company_id):
         companyCollection.delete_one({"_id": ObjectId(company_id)})
         return "Company deleted"
     return errMsg
+
+@app.route('/<company_name>', methods=['GET'])
+def getCompanyByCompanyName(companyName):
+    company = companyCollection.find_one({"companyName" : companyName})
+    company = json.loads(json_util.dumps(company))
+    return company
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)

@@ -35,8 +35,6 @@ table {
                 </div>
                 <div class="col-md-5 col-sm-auto py-3">
                     <h4 data-aos="fade-down">Leaderboard</h4>
-                    <!-- to insert link below -->
-                    <small><a href="/" class="pt-3 mt-2" style="color:grey" data-aos="fade-down">View all</a></small> 
                     <div class="pt-1">
                         <table style="text-align:center">
                             <tr>
@@ -48,32 +46,32 @@ table {
                             <tr>
                             <th scope="row">1</th>
                             <td>Finance</td>
-                            <td>Facebook</td>
-                            <td>38</td>
+                            <td>SMU</td>
+                            <td>3800</td>
                             </tr>
                             <tr>
                             <th scope="row">2</th>
                             <td>Marketing</td>
-                            <td>Twitter</td>
-                            <td>23</td>
+                            <td>SMU</td>
+                            <td>2300</td>
                             </tr>
                             <tr>
                             <th scope="row">3</th>
                             <td>Customer Service</td>
-                            <td>Apple</td>
-                            <td>16</td>
+                            <td>SMU</td>
+                            <td>1600</td>
                             </tr>
                             <tr>
-                            <th scope="row">...</th>
-                            <td>...</td>
-                            <td>...</td>
-                            <td>...</td>
+                            <th scope="row">4</th>
+                            <td>Security</td>
+                            <td>SMU</td>
+                            <td>1550</td>
                             </tr>
                             <tr>
-                            <th scope="row">42</th>
-                            <td>Finance&nbsp;<lead>(Me)</lead></td>
-                            <td>Apple</td>
-                            <td>4</td>
+                            <th scope="row">5</th>
+                            <td>Finance&nbsp;<lead>Operations</lead></td>
+                            <td>SMU</td>
+                            <td>1400</td>
                             </tr>
                         </table>
                     </div>
@@ -134,24 +132,28 @@ table {
     import Footer from "@/components/Footer.vue";
     import ListingCard from "@/components/ListingCard.vue";
     import ScrollToTop from "@/components/ScrollToTop.vue"
-    // import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-    // import 'bootstrap/dist/css/bootstrap.css'
-    // import 'bootstrap-vue/dist/bootstrap-vue.css'
     import AOS from 'aos'
     import 'aos/dist/aos.css';
 
+    import { getAuth, onAuthStateChanged} from "firebase/auth";
 
     export default {
         mounted() {
             AOS.init({
                 duration: 1300,
             })
+            
+            this.checkuser()
+
+            this.deptId = sessionStorage.getItem("deptId")
+            console.log(this.deptId)
         },
         data(){
             return {
                 department : "Finance",
                 organization : "SMU",
                 offer: true,
+                deptId: ''
             }
         },
         components: {
@@ -162,6 +164,17 @@ table {
             ScrollToTop
             // BootstrapVue
         },
+        methods: {
+            checkuser(){
+                const auth = getAuth();
+                onAuthStateChanged(auth, (user) => {
+                    if (!user) {
+                        console.log('user is not logged in')
+                        window.location.href = `/`;
+                    }
+                });
+        },
+        }
         
     }
 

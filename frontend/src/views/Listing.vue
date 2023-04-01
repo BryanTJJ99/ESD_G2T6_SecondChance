@@ -75,7 +75,6 @@
                 </div>
 
             </div>
-            <i class="fa-solid fa-location-dot mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ address }}</span></i>
             <i class="fa-solid fa-building d-block mt-1" style="color:#a3a0a0"><span class="desc ps-1">{{ company }}, {{
                 department }}</span></i>
             <hr>
@@ -114,11 +113,15 @@ import Footer from "@/components/Footer.vue"
 import AOS from 'aos'
 import 'aos/dist/aos.css';
 
+import { getAuth, onAuthStateChanged} from "firebase/auth";
+
 export default {
     mounted() {
         AOS.init({
             duration: 1300,
         })
+        this.checkuser()
+        this.deptId = sessionStorage.getItem("deptId")
     },
     data() {
         return {
@@ -126,15 +129,14 @@ export default {
 
             listingId: "",
             itemName: "IKEA Chair",
-            address: "Bras Basah",
             company: "SMU",
             department: "Finance",
             desc: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
             emission: "500",
             img: "",
 
-            creatorId: ""
-
+            creatorId: "",
+            deptId: ""
 
         }
     },
@@ -150,7 +152,7 @@ export default {
             this.sent = true
         },
         contactSeller(){
-
+            
         },
         getListing(){
             var url = ""
@@ -167,7 +169,6 @@ export default {
                 // retrieve item details + creatorId
 
                 this.itemName = "IKEA Chair",
-                this.address = "Bras Basah", // might have to use geolocation to retrieve this
                 this.company = "SMU",
                 this.department = "Finance",
                 this.emission = "500",
@@ -180,7 +181,16 @@ export default {
                 
                 })
         
-        }
+        },
+        checkuser(){
+            const auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                    console.log('user is not logged in')
+                    window.location.href = `/`;
+                }
+            });
+        },
         
     },
     beforeMount() {
