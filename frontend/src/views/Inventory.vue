@@ -224,9 +224,37 @@ export default {
             organization: "SMU",
             newItem: "",
             newItemQty: 0,
+            items: [
+                {
+                    "name": "Ikea Dalgon",
+                    "category": "Furniture",
+                    "Quantity": 4
+                },
+                {
+                    "name": "Swiss Candace",
+                    "category": "Furniture",
+                    "Quantity": 10
+                },
+                {
+                    "name": "Woo Jablomi",
+                    "category": "Equipment",
+                    "Quantity": 5
+                },
+                {
+                    "name": "Big ForceKin",
+                    "category": "Electronics",
+                    "Quantity": 10
+                },
+                {
+                    "name": "Vicky",
+                    "category": "Office Supplies",
+                    "Quantity": 1
+                },
+            ],
             channelId: "",
             channelKey: "",
-            images:[],
+            newItemImage:[],
+            items: [],
         }
     },
     components: {
@@ -236,14 +264,17 @@ export default {
     },
     methods: {
         addItem: function () {
-            this.items.push({
-                "name": this.newItem,
-                "Quantity": this.newItemQty
-            })
-            console.log(this.depItems)
+        this.items.push({
+            "name": this.newItem,
+            "Quantity": this.newItemQty,
+            "image": this.newItemImage
+        })
 
-            this.newItem = "";
-            this.newItemQty = 0;
+        console.log(this.items)
+
+        this.newItem = "";
+        this.newItemQty = 0;
+        this.newItemImage = []
         },
         selectFile(e) {
             const files = e.target.files
