@@ -86,7 +86,7 @@
                     <button v-if="sent" class="btn btn-dark text-center" disabled><span><i class="fa-solid fa-paper-plane" style="color:#c5dad2"></i> &nbsp; Offer Sent</span></button>
                     <button v-else class="btn btn-dark text-center" v-on:click="sendOffer()"><span><i class="fa-solid fa-paper-plane" style="color:#c5dad2"></i> &nbsp; Send Offer</span></button>
 
-                    <button class="btn btn-light text-center"><span><i class="fa-regular fa-comment" style="color:#6e9190" v-on:click="contactSeller">
+                    <button class="btn btn-light text-center" v-on:click="contactSeller()"><span><i class="fa-regular fa-comment" style="color:#6e9190">
                             </i> &nbsp; Contact Seller</span></button>
                 </div>
             </div>
@@ -94,11 +94,6 @@
             <div class="mt-4">
                 <p>{{ desc }}</p>
             </div>
-
-            <!-- <div class="d-flex justify-content-center mt-3 mb-4">
-                <button class="btn btn-light text-center"><span><i class="fa-regular fa-comment" style="color:#6e9190">
-                        </i> &nbsp; Contact Seller</span></button>
-            </div> -->
 
         </div>
     </div>
@@ -122,7 +117,7 @@ export default {
         })
         this.checkuser()
 
-        this.deptId = sessionStorage.getItem("deptId")
+        this.myId = sessionStorage.getItem("deptId")
 
         this.listingInfo = JSON.parse(sessionStorage.getItem("viewListing"));
         console.log(this.listingInfo)
@@ -134,6 +129,8 @@ export default {
         this.emission =  this.listingInfo.carbonEmission
         this.img = this.listingInfo.itemPicture
         this.desc = this.listingInfo.itemDescription
+
+        this.sellerId = this.listingInfo.departmentId
 
     },
     data() {
@@ -148,8 +145,8 @@ export default {
             emission: "",
             img: "",
 
-            creatorId: "",
-            deptId: ""
+            sellerId: "",
+            myId: ""
 
         }
     },
@@ -166,6 +163,17 @@ export default {
         },
         contactSeller(){
 
+            console.log("contact seller")
+
+            var sellerInfo = {
+                sellerId: this.sellerId,
+                company: this.company,
+                department: this.department
+            }
+
+            sessionStorage.setItem("newChat", JSON.stringify(sellerInfo))
+
+            this.$router.push({path: '/chat'})
         },
         getListing(){
 
