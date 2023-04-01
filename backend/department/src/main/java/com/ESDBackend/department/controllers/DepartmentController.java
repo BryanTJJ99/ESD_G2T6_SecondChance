@@ -3,13 +3,16 @@ package com.ESDBackend.department.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ESDBackend.department.models.Department;
@@ -54,7 +57,7 @@ public class DepartmentController {
 
     @GetMapping("/getDepartmentCarbon/{departmentID}")
     @CrossOrigin
-    public double getDepartmentCarbon(@PathVariable String departmentID) {  
+    public double getDepartmentCarbon(@PathVariable String departmentID) {
         return departmentService.getDepartmentCarbon(departmentID);
     }
 
@@ -68,15 +71,23 @@ public class DepartmentController {
     @GetMapping("/getDepartmentIdByEmail/{email}")
     @CrossOrigin
     public Department getDepartmentIdByEmail(@PathVariable String email) {
-    return departmentService.getDepartmentByEmail(email);
+        return departmentService.getDepartmentByEmail(email);
     }
 
     @GetMapping("/getCompanyIdByDepartmentNameAndPostalCode/{departmentName}/{postalCode}")
     @CrossOrigin
-    public String getCompanyIdByDepartmentNameAndPostalCode(@PathVariable("departmentName") String departmentName, 
+    public String getCompanyIdByDepartmentNameAndPostalCode(@PathVariable("departmentName") String departmentName,
             @PathVariable("postalCode") String postalCode) {
-    return departmentService.getCompanyIdByDepartmentNameAndPostalCode(departmentName,postalCode);
+        return departmentService.getCompanyIdByDepartmentNameAndPostalCode(departmentName, postalCode);
     }
 
+    @PostMapping("/create")
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.CREATED)
+    public Department addDepartment(@RequestBody Department department) {
+        return departmentService.addDepartment(department);
+    }
+
+    // 
 
 }

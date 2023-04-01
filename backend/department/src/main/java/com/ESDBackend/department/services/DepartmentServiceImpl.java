@@ -66,18 +66,18 @@ public class DepartmentServiceImpl implements DepartmentService {
                 System.out.println("This item does not exist inside the department");
                 return null;
             }
-            
+
         }
         return null;
     }
 
     // @Override
     // public double getDepartmentCarbon(String departmentID) {
-    //     Department department = departmentRepository.findById(departmentID).get();
-    //     if (department != null) {
-    //         return department.getTotalCarbon();
-    //     }
-    //     return -1;
+    // Department department = departmentRepository.findById(departmentID).get();
+    // if (department != null) {
+    // return department.getTotalCarbon();
+    // }
+    // return -1;
     // }
     @Override
     public double getDepartmentCarbon(String departmentID) {
@@ -85,12 +85,12 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (department.isPresent()) {
             return department.get().getTotalCarbon();
         }
-    // Alternatively, you could throw an exception here to indicate that the department was not found.
-    // throw new IllegalArgumentException("Department not found for ID: " + departmentID);
-    return -1;
+        // Alternatively, you could throw an exception here to indicate that the
+        // department was not found.
+        // throw new IllegalArgumentException("Department not found for ID: " +
+        // departmentID);
+        return -1;
     }
-
-
 
     @Override
     public void addDepartmentCarbon(String departmentID, double carbonAmt) {
@@ -100,11 +100,11 @@ public class DepartmentServiceImpl implements DepartmentService {
             departmentRepository.save(department);
             System.out.println("Added carbon saved of " + carbonAmt + "kgco2e to department " + departmentID);
         } else {
-            System.out.println("Error: unable to add carbon saved of " + carbonAmt + "kgco2e to department " + departmentID);
+            System.out.println(
+                    "Error: unable to add carbon saved of " + carbonAmt + "kgco2e to department " + departmentID);
         }
-        
-    }
 
+    }
 
     @Override
     @CrossOrigin
@@ -119,11 +119,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
     }
 
-
     @Override
     @CrossOrigin
     public String getCompanyIdByDepartmentNameAndPostalCode(String departmentName, String postalCode) {
-        Optional<Department> department = departmentRepository.findByDepartmentNameAndPostalCode(departmentName, postalCode);
+        Optional<Department> department = departmentRepository.findByDepartmentNameAndPostalCode(departmentName,
+                postalCode);
         if (department.isPresent()) {
             System.out.println("Retrieved departmentID by department name and postal code successfully");
             return department.get().getCompanyId();
@@ -132,6 +132,16 @@ public class DepartmentServiceImpl implements DepartmentService {
             return null;
         }
     }
-    
+
+    @Override
+    public Department addDepartment(Department department) {
+        try {
+            return departmentRepository.save(department);
+        }
+        catch (Exception e){
+            System.out.println("ERROR: Cannot add department");
+            return null;
+        }
+    }
 
 }

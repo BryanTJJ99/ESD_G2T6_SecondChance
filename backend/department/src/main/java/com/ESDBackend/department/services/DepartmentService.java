@@ -21,5 +21,6 @@ public interface DepartmentService {
 
     public String getCompanyIdByDepartmentNameAndPostalCode(String departmentName, String postalCode);
 
+    public Department addDepartment(Department department);
 
 }
