@@ -79,8 +79,14 @@
                                 aria-label="newItemQty" aria-describedby="basic-addon1">
                         </div>
                         <div class="input-group mb-3" style="position:relative">
-                            <label for="image" class="input-group-text" style="background-color: #c5dad2; z-index: 2; width: 23%; height: 100%; position: absolute; top: 0; left: 0;">Choose file</label>
-                            <input id="image" class="form-control"  @change="selectFile" style="z-index:1" type="file">
+                            <label for="image" class="input-group-text" style="background-color: #c5dad2; z-index: 2; width: 25%; height: 100%; position: absolute; top: 0; left: 0;">Choose file</label>
+                            <input id="image" class="form-control"  @change="selectFile" style="z-index:1" type="file" multiple>
+                        </div>
+                        <div v-if="images.length">
+                            <p>Uploaded Images:</p>
+                            <div v-for="(img, index) in images" :key="index">
+                              <img :src="img" alt="image" style="width: 200px; height: 200px;">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -219,7 +225,8 @@ export default {
             newItem: "",
             newItemQty: 0,
             channelId: "",
-            channelKey: ""
+            channelKey: "",
+            images:[],
         }
     },
     components: {
@@ -238,12 +245,15 @@ export default {
             this.newItem = "";
             this.newItemQty = 0;
         },
-        selectFile(e){
-            const image = e.target.files[0]
-            const reader = new FileReader()
-            reader.readAsDataURL(image)
-            reader.onload = e => {
-                this.image = e.target.result
+        selectFile(e) {
+            const files = e.target.files
+            for (let i = 0; i < files.length; i++) {
+                const image = files[i]
+                const reader = new FileReader()
+                reader.readAsDataURL(image)
+                reader.onload = e => {
+                this.images.push(e.target.result)
+                }
             }
         },
         checkuser(){
