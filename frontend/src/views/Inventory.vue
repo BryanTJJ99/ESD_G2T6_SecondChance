@@ -32,7 +32,7 @@
                 </div> -->
 
                 <div class="list-group px-3" data-aos="fade-up">
-                    <button v-for="item in depItems" type="button"
+                    <button v-for="item in depItems" type="button" :key="item.id"
                         class="list-group-item list-group-item-action d-flex justify-content-between p-3 pt-3 ps-3">
 
                         <p>{{ item.itemName }} &nbsp; </p>
@@ -77,6 +77,10 @@
                             </span>
                             <input type="number" v-model="newItemQty" class="form-control" placeholder="Qty. No"
                                 aria-label="newItemQty" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3" style="position:relative">
+                            <label for="image" class="input-group-text" style="background-color: #c5dad2; z-index: 2; width: 23%; height: 100%; position: absolute; top: 0; left: 0;">Choose file</label>
+                            <input id="image" class="form-control"  @change="selectFile" style="z-index:1" type="file">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -233,6 +237,14 @@ export default {
 
             this.newItem = "";
             this.newItemQty = 0;
+        },
+        selectFile(e){
+            const image = e.target.files[0]
+            const reader = new FileReader()
+            reader.readAsDataURL(image)
+            reader.onload = e => {
+                this.image = e.target.result
+            }
         },
         checkuser(){
             const auth = getAuth();
