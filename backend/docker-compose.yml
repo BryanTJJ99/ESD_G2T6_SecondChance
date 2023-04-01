@@ -292,3 +292,23 @@ services:
       company_URL: http://company:5001
     ports:
       - "3003:3003"
+
+  #########################################
+  # Get Items Details
+  ###############################################
+  item_details:
+    build:
+      context: ./complex
+      dockerfile: item_details.Dockerfile
+    image: vickyyqu/item_details:esd
+    restart: always
+    depends_on:
+      - department
+      - item
+      - company
+    environment:
+      department_URL: http://department:8080/department
+      item_URL: http://item:5000
+      company_URL: http://company:5001
+    ports:
+      - "3004:3004"
