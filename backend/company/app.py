@@ -64,7 +64,17 @@ def getCompanyByCompanyName(company_name):
     company = json.loads(json_util.dumps(company))
     return company
 
-
+# get company from departmentId
+@app.route('/departmentId/<deptId>', methods=['GET'])
+def getCompanyByDeptId(deptId):
+    companies = companyCollection.find()
+    
+    for each in companies:
+        for did in each.departments:
+            if did == deptId:
+                return json.loads(json_util.dumps(each))
+    
+    return {}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)

@@ -45,8 +45,8 @@
                     <button class="btn btn-dark d-block mx-auto" style="width:250px;" v-on:click="logIn()"><span>Log
                             In</span></button>
 
-                    <div v-if="loginError" class="text-center mt-4 mx-5"><small
-                            style="color:#b00b16;font-style:italic;">{{ errMsg.login }}</small>
+                    <div v-if="loginError" class="text-center mt-4 mx-5"><small style="color:#b00b16;font-style:italic;">{{
+                        errMsg.login }}</small>
                     </div>
                     <div v-else></div>
 
@@ -80,7 +80,8 @@ export default {
             officeLocation: '',
             errMsg: { email: '', password: '', login: '' },
             loginError: false,
-            deptId: ""
+            deptId: "",
+            deptName: ""
 
         }
     },
@@ -98,23 +99,46 @@ export default {
 
                         // get deptId of current user with email 
                         // call department MS
-                        var url = "http://localhost:8080/department/getDepartmentIdByEmail"
+                        var url1 = "http://localhost:8080/department/getDepartmentIdByEmail"
 
-                        axios.get(url + '/' + this.email)
-                        .then(response => {
-                            console.log("yay")
+                        axios.get(url1 + '/' + this.email)
+                            .then(response => {
 
-                            this.deptId = response.data
+                                console.log("department MS invoked")
+                                console.log(response.data)
 
-                            console.log(this.deptId)
+                                this.deptId = response.data.departmentId
+                                this.deptName = response.data.departmentName
 
-                            // set deptId in session
-                            sessionStorage.setItem("deptId", this.deptId);
+                                console.log(this.deptId)
 
-                        })
-                        .catch(error => {
-                            console.log(error.message)
-                        })
+                                // set deptId in session
+                                sessionStorage.setItem("deptId", this.deptId)
+                                sessionStorage.setItem("deptName", this.deptName)
+
+                                // get companyId of current user
+                                // call company MS
+                                var url2 = "http://localhost:5001/departmentId"
+
+                                axios.get(url2 + '/' + this.deptId)
+                                    .then(response => {
+                                        console.log("company MS invoked")
+
+                                        console.log(response.data)
+
+                                        // set companyId in session
+                                        // sessionStorage.setItem("deptId", this.deptId);
+
+                                    })
+                                    .catch(error => {
+                                        console.log(error.message)
+                                    })
+
+                            })
+                            .catch(error => {
+                                console.log("boo")
+                                console.log(error.message)
+                            })
 
                         this.$router.push('/home')
                     })

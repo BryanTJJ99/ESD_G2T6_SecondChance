@@ -47,8 +47,8 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Your Company Name:</label>
-                            <small class="text-start"
-                                style="color:#b00b16;font-style:italic;">{{ errMsg.companyName }}</small>
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{ errMsg.companyName
+                            }}</small>
 
                         </div>
                         <div class="group mt-5">
@@ -56,8 +56,8 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Your Company Department:</label>
-                            <small class="text-start"
-                                style="color:#b00b16;font-style:italic;">{{ errMsg.companyDept }}</small>
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{ errMsg.companyDept
+                            }}</small>
 
                         </div>
                         <div class="group mt-5">
@@ -65,8 +65,8 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Your Office Location:</label>
-                            <small class="text-start"
-                                style="color:#b00b16;font-style:italic;">{{ errMsg.officeLocation }}</small>
+                            <small class="text-start" style="color:#b00b16;font-style:italic;">{{ errMsg.officeLocation
+                            }}</small>
                         </div>
                     </form>
                 </div>
@@ -78,8 +78,8 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
                     </div>
 
                     <div v-if="valid"></div>
-                    <div v-else class="text-center pt-2 mx-5"><small
-                            style="color:#b00b16;font-style:italic;">{{ errMsg.valid }}</small>
+                    <div v-else class="text-center pt-2 mx-5"><small style="color:#b00b16;font-style:italic;">{{
+                        errMsg.valid }}</small>
                     </div>
 
                 </div>
@@ -105,7 +105,8 @@ export default {
             companyDept: '',
             officeLocation: '',
             valid: true,
-            companyId: ''
+            companyId: '',
+            deptId: ''
         }
     },
     methods: {
@@ -116,70 +117,77 @@ export default {
             if (check) {
                 console.log("no input error")
 
-                if (this.validateAccount()){
+                if (this.validateAccount()) {
 
-                const auth = getAuth();
-                createUserWithEmailAndPassword(getAuth(), this.email, this.password)
-                    .then(() => {
-                        console.log("yay")
+                    const auth = getAuth();
+                    createUserWithEmailAndPassword(getAuth(), this.email, this.password)
+                        .then(() => {
+                            console.log("yay")
 
-                        // ADD NEW COMPANY
-                        var COMPANY_URL = 'http://localhost:5001/'
-                        axios.post(COMPANY_URL, {
-                            params: {
-                                companyName: this.companyName,
-                                departments: [this.companyDept]
+                            // ADD NEW DEPARTMENT
+                            var DEPT_URL = 'http://localhost:8080/department/create'
+                            axios.post(DEPT_URL, {
+                                params: {
+
+                                    departmentName: this.companyDept,
+                                    postalCode: this.officeLocation,
+                                    email: this.email,
+                                    companyId: this.companyId
+
+                                }
+                            })
+                                .then(response => {
+
+                                    console.log(response.data)
+                                    this.deptId = response.data._id
+                                    
+                                    console.log(response.data)
+                                    console.log("dept added successfully")
+                                })
+                                .catch(error => {
+                                    console.log(error.message)
+
+                                })
+
+                            // ADD NEW COMPANY
+                            var COMPANY_URL = 'http://localhost:5001/create'
+                            axios.post(COMPANY_URL, {
+                                params: {
+                                    companyName: this.companyName,
+                                    departments: [this.deptId]
+                                }
+                            })
+                                .then(response => {
+                                    console.log(response.data)
+                                    console.log("company added successfully")
+                                })
+                                .catch(error => {
+                                    console.log(error.message)
+                                })
+
+                            this.$router.push('/')
+                        })
+                        .catch((err) => {
+                            console.log("nay")
+                            console.log(err)
+
+                            const errorCode = err.code;
+                            console.log(errorCode)
+
+                            if (errorCode == "auth/email-already-in-use") {
+                                this.errMsg['valid'] = "Registration failed. Email entered is already in use."
+
+                                this.valid = false
+
+                            } else if (errorCode == "auth/invalid-email") {
+                                this.errMsg['valid'] = "Registration failed. You have entered an invalid email address."
+
+                                this.valid = false
                             }
+
                         })
-                            .then(response => {
-                                console.log(response)
-                            })
-                            .catch(error => {
-                                console.log(error.message)
-                            })
-                        
-                        // ADD NEW DEPARTMENT
-                        var DEPT_URL = ''
-                        axios.post(DEPT_URL, {
-                        params: {
-
-                            departmentName: this.companyDept,
-                            postalCode: this.officeLocation,
-                            email: this.email,
-                            companyId: this.companyId
-
-                        }
-                        })
-                            .then(response => {
-                                console.log("dept added successfully")
-                            })
-                            .catch(error => {
-                                console.log(error.message)
-
-                            })
-
-                        this.$router.push('/')
-                    })
-                    .catch((err) => {
-                        console.log("nay")
-                        console.log(err)
-
-                        const errorCode = err.code;
-                        console.log(errorCode)
-
-                        if (errorCode == "auth/email-already-in-use") {
-                            this.errMsg['valid'] = "Registration failed. Email entered is already in use."
-
-                            this.valid = false
-
-                        } else if (errorCode == "auth/invalid-email") {
-                            this.errMsg['valid'] = "Registration failed. You have entered an invalid email address."
-
-                            this.valid = false
-                        }
-
-                    })
                 } else {
+                    console.log("company dept alr registered")
                     this.errMsg.valid = "Your company department already has a valid account."
                 }
 
@@ -212,7 +220,7 @@ export default {
                     console.log(error.message)
 
                 })
-            
+
             // CALL DEPARTMENT MS 
             var url2 = 'http://localhost:8080/department/getCompanyIdByDepartmentNameAndPostalCode'
 
@@ -232,8 +240,8 @@ export default {
                 .catch(error => {
                     console.log(error.message)
                 })
-            
-            if (id1 != "" && id1 == id2){
+
+            if (id1 != "" && id1 == id2) {
                 this.valid = false
             }
 
