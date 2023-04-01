@@ -30,7 +30,7 @@ table {
             <!-- Welcome back -->
             <div class="row px-3 pt-2 pb-4">
                 <div class="col-md-7 col-sm-auto" data-aos="fade-down">
-                    <h3 class="pt-3 ps-3">Welcome back,</h3>
+                    <h3 class="pt-3 ps-3">Welcome back, {{organization}} {{department}}</h3>
                     <h5 class="pt-1 ps-3">&nbsp;what would you look like to do today?</h5>
                 </div>
                 <div class="col-md-5 col-sm-auto py-3">
@@ -81,7 +81,7 @@ table {
             <hr>
 
             <!-- Shortcuts -->
-            <div class="px-3 pt-2">
+            <!-- <div class="px-3 pt-2">
                 <h3 class=" ps-3 mb-2" data-aos="fade-down">Shortcuts</h3>
             </div>
             
@@ -103,7 +103,7 @@ table {
                     </div>
                 </div>
             </div>
-            <hr>
+            <hr> -->
             
             <!-- Your listings -->
             <div class="px-3 py-2" data-aos="fade-down">
@@ -111,10 +111,10 @@ table {
                 <small class="pt-3 ps-3 mt-2"><i>Accept or decline your offers here</i></small>
             </div>
             <div class="row pb-4" data-aos="fade-up">
+                <!-- <ListingCard :offer="offer"></ListingCard>
                 <ListingCard :offer="offer"></ListingCard>
                 <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
+                <ListingCard :offer="offer"></ListingCard> -->
             </div>
         </div>
      
@@ -153,7 +153,8 @@ table {
                 department : "Finance",
                 organization : "SMU",
                 offer: true,
-                deptId: ''
+                deptId: '',
+                name: ''
             }
         },
         components: {

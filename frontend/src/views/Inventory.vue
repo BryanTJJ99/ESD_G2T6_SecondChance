@@ -290,7 +290,9 @@ export default {
 
             channelId: "",
             channelKey: "",
-            images:[],
+            newItemImage:[],
+            items: [],
+            images: []
         }
     },
     components: {

@@ -86,7 +86,7 @@
                     <button v-if="sent" class="btn btn-dark text-center" disabled><span><i class="fa-solid fa-paper-plane" style="color:#c5dad2"></i> &nbsp; Offer Sent</span></button>
                     <button v-else class="btn btn-dark text-center" v-on:click="sendOffer()"><span><i class="fa-solid fa-paper-plane" style="color:#c5dad2"></i> &nbsp; Send Offer</span></button>
 
-                    <button class="btn btn-light text-center"><span><i class="fa-regular fa-comment" style="color:#6e9190" v-on:click="contactSeller">
+                    <button class="btn btn-light text-center" v-on:click="contactSeller()"><span><i class="fa-regular fa-comment" style="color:#6e9190">
                             </i> &nbsp; Contact Seller</span></button>
                 </div>
             </div>
@@ -94,11 +94,6 @@
             <div class="mt-4">
                 <p>{{ desc }}</p>
             </div>
-
-            <!-- <div class="d-flex justify-content-center mt-3 mb-4">
-                <button class="btn btn-light text-center"><span><i class="fa-regular fa-comment" style="color:#6e9190">
-                        </i> &nbsp; Contact Seller</span></button>
-            </div> -->
 
         </div>
     </div>
@@ -121,22 +116,37 @@ export default {
             duration: 1300,
         })
         this.checkuser()
-        this.deptId = sessionStorage.getItem("deptId")
+
+        this.myId = sessionStorage.getItem("deptId")
+
+        this.listingInfo = JSON.parse(sessionStorage.getItem("viewListing"));
+        console.log(this.listingInfo)
+
+        this.listingId = this.listingInfo._id
+        this.itemName = this.listingInfo.itemName
+        this.company = this.listingInfo.company.companyName 
+        this.department = this.listingInfo.department.departmentName 
+        this.emission =  this.listingInfo.carbonEmission
+        this.img = this.listingInfo.itemPicture
+        this.desc = this.listingInfo.itemDescription
+
+        this.sellerId = this.listingInfo.departmentId
+
     },
     data() {
         return {
             sent: false,
 
-            listingId: "",
-            itemName: "IKEA Chair",
-            company: "SMU",
-            department: "Finance",
-            desc: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-            emission: "500",
+            listingInfo: "",
+            itemName: "",
+            company: "",
+            department: "",
+            desc: "",
+            emission: "",
             img: "",
 
-            creatorId: "",
-            deptId: ""
+            sellerId: "",
+            myId: ""
 
         }
     },
@@ -152,34 +162,52 @@ export default {
             this.sent = true
         },
         contactSeller(){
-            
+
+            console.log("contact seller")
+
+            var sellerInfo = {
+                sellerId: this.sellerId,
+                company: this.company,
+                department: this.department
+            }
+
+            sessionStorage.setItem("newChat", JSON.stringify(sellerInfo))
+
+            this.$router.push({path: '/chat'})
         },
         getListing(){
-            var url = ""
 
-            this.listingId = sessionStorage.getItem("viewListing");
-            console.log(this.listingId);
+            this.listingId = this.listingInfo._id
+            this.itemName = this.listingInfo.itemName
+            this.company = this.listingInfo.company.companyName 
+            this.department = this.listingInfo.department.departmentName 
+            this.emission =  this.listingInfo.carbonEmission
+            this.img = this.listingInfo.itemPicture
+            this.desc = this.listingInfo.itemDescription
 
-            axios.get(url, {
-                params: {
-                    listingId: this.listingId
-                }
-            })
-            .then(response => {
-                // retrieve item details + creatorId
 
-                this.itemName = "IKEA Chair",
-                this.company = "SMU",
-                this.department = "Finance",
-                this.emission = "500",
-                this.img = ""
+            // console.log(this.listingId);
+
+            // axios.get(url, {
+            //     params: {
+            //         listingId: this.listingId
+            //     }
+            // })
+            // .then(response => {
+            //     // retrieve item details + creatorId
+
+            //     this.itemName = "IKEA Chair",
+            //     this.company = "SMU",
+            //     this.department = "Finance",
+            //     this.emission = "500",
+            //     this.img = ""
                 
-            })
-            .catch(error => {
+            // })
+            // .catch(error => {
 
-                console.log(error.message)
+            //     console.log(error.message)
                 
-                })
+            //     })
         
         },
         checkuser(){
@@ -193,9 +221,20 @@ export default {
         },
         
     },
-    beforeMount() {
-        this.getListing()
-    },
+    // beforeMount() {
+    //     this.listingInfo = sessionStorage.getItem("viewListing");
+    //     console.log(this.listingInfo)
+
+    //     // this.listingId = this.listingInfo._id
+    //     // this.itemName = this.listingInfo.itemName
+    //     // this.company = this.listingInfo.company.companyName 
+    //     // this.department = this.listingInfo.department.departmentName 
+    //     // this.emission =  this.listingInfo.carbonEmission
+    //     // this.img = this.listingInfo.itemPicture
+    //     // this.desc = this.listingInfo.itemDescription
+
+    //     // this.getListing()
+    // },
         
 
 

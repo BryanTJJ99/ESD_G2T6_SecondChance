@@ -19,7 +19,7 @@ userCollection = db['users']
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # insert new item
-@app.route('/create', methods=['POST'])
+@app.route('/create', methods=['PUT'])
 def insert():
 
     ## format as follows

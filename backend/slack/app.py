@@ -8,7 +8,7 @@ from flask_cors import CORS
 import pymongo
 from bson import json_util, ObjectId
 from dotenv import load_dotenv
-
+from error import *
 
 load_dotenv()  # load environment variables from .env file
 
@@ -22,8 +22,26 @@ channelCollection = db['channels']
 
 TOPIC_NAME = 'slack'
 
-#get channel ID and send data from producer
+#post slack channel to channel collection
+@app.route('/slack/add/<department_id>', methods=['POST'])
+def addSlackChannel(department_id):
+    data = request.json
+    errMsg = handleError(data)
+    if errMsg == '':
+        originalQuery = channelCollection.find_one({"departmentID": ObjectId(department_id)})
+        newValues = { "$set": data }
+        channelCollection.update_one(originalQuery, newValues)
 
+        return jsonify({
+            "code": 200,
+            "data": {
+                "item": json.loads(json_util.dumps(data))
+            }
+        })
+    return errMsg
+    
+
+#get channel ID and send data from producer
 @app.route('/slack', methods=['POST'])
 def getSlackMsg():
     if request.is_json:
@@ -41,8 +59,8 @@ def getSlackMsg():
             return err_msg
 
         #decide if message should be accepted or rejected
-        accepted_message = {"itemId": data['item_id'], "itemName": data['item_name'], "channelId": channel["channelID"], "token":channel["token"], "message": "accepted"}
-        rejected_message = {"itemId": data['item_id'], "itemName": data['item_name'], "channelId": channel["channelID"], "token":channel["token"], "message": "rejected"}
+        accepted_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "token":channel["token"], "message": "accepted"}
+        rejected_message = {"itemId": data['itemId'], "itemName": data['itemName'], "channelId": channel["channelID"], "token":channel["token"], "message": "rejected"}
 
         if data["isAccept"]:
             message = accepted_message

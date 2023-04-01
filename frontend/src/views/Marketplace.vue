@@ -5,17 +5,17 @@
         <div class="container-flex p-3" style="margin-left:4.5rem;min-height:100vh">
             <div class="row px-3 py-2">
                 <div class="col-lg-2">
-                    <h3 class="pt-3 ps-3" data-aos="fade-down">{{ header }} <span>
-                            <h4>{{ category }}</h4>
+                    <h3 class="pt-3 ps-3" data-aos="fade-down">Marketplace<span>
                         </span></h3>
                 </div>
-                <div class="col-lg-10 d-flex justify-content-lg-end justify-content-start pe-lg-4 ps-4">
+                <div data-aos="fade-down" class="col-lg-10 d-flex justify-content-lg-end justify-content-start pe-lg-4 ps-4">
                     <div>
+                        
                         <ul id="growing-search-freebie" class="pt-3 mt-2 mb-0">
                             <li style="background-color:#a3a0a0;" class="rounded-3 p-1 my-0">
                                 <div class="growing-search">
                                     <div class="input">
-                                        <input type="text" placeholder="Enter item" v-model="search" />
+                                        <input type="text" placeholder="Enter item" v-model="search" v-on:keyup.enter="getListings()" />
                                     </div><!-- Space hack -->
                                     <div class="submit">
                                         <button type="submit" name="go_search" v-on:click="getListings()">
@@ -28,7 +28,7 @@
                         <div class="form-check form-switch">
                             <div>
                                 <input class="form-check-input" type="checkbox" role="switch" v-on:click="changeOption()">
-                                <small>Include other organisations</small>
+                                <small>View listings from your company only</small>
                             </div>
                         </div>
 
@@ -58,7 +58,7 @@
             </div>
             <div v-else class="row py-3" data-aos="fade-up">
 
-                <p class="text-center my-5">Sorry, but there are no listings found. Try another category or search input.</p>
+                <p class="text-center my-5">Sorry, no listings were found.</p>
 
             </div>
         </div>
@@ -138,6 +138,7 @@ export default {
         this.checkuser()
 
         this.deptId = sessionStorage.getItem("deptId")
+        this.companyId = sessionStorage.getItem("companyId")
     },
     data() {
         return {
@@ -147,11 +148,8 @@ export default {
             company: "SMU",
             department: "Finance",
             search: "",
-            header: "Marketplace,",
-            categories: ["Furniture", "Office Supplies", "Equipment", "Electronics", "Others"],
-            category: "Furniture",
             offer: false,
-            outsideCompany: false,
+            outsideCompany: true,
             allListings: [],
             gotListings: true
         }
@@ -164,16 +162,13 @@ export default {
         ScrollToTop
     },
     methods: {
-        setCategory() {
-            console.log(event.target.value)
-            this.category = event.target.value
-        },
         changeOption(){
             if (this.outsideCompany){
-                this.outsideCompany = true
-            } else {
                 this.outsideCompany = false
+            } else {
+                this.outsideCompany = true
             }
+            this.getListings()
         },
         // getListings() {
         //     var url = ""

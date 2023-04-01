@@ -116,10 +116,9 @@ export default {
             if (check) {
                 console.log("no input error")
 
-                // this.validateAccount()
+                if (this.validateAccount()){
 
                 const auth = getAuth();
-
                 createUserWithEmailAndPassword(getAuth(), this.email, this.password)
                     .then(() => {
                         console.log("yay")
@@ -137,7 +136,6 @@ export default {
                             })
                             .catch(error => {
                                 console.log(error.message)
-
                             })
                         
                         // ADD NEW DEPARTMENT
@@ -160,8 +158,6 @@ export default {
 
                             })
 
-
-
                         this.$router.push('/')
                     })
                     .catch((err) => {
@@ -182,8 +178,10 @@ export default {
                             this.valid = false
                         }
 
-
                     })
+                } else {
+                    this.errMsg.valid = "Your company department already has a valid account."
+                }
 
             } else {
                 console.log("input error")
@@ -193,35 +191,54 @@ export default {
         // check if company dept is alr registered
         validateAccount() {
 
-            var url = ''
+            var id1 = ''
+            var id2 = ''
 
-            axios.get(url, {
-                params: {
-                    companyName: this.companyName,
-                    companyDept: this.companyDept,
-                    officeLocation: this.officeLocation
-                }
-            })
+            // CALL COMPANY MS 
+            var url1 = 'http://localhost:5001/companyName'
+            axios.get(url1 + "/" + this.companyName)
                 .then(response => {
 
-                    if (length(response) == 0) {
-
+                    if (response.length == 0) {
                         this.valid = true // no account registered yet
 
                     } else {
-
-                        this.valid = false
-                        this.errMsg.valid = "Your company department already has a valid account."
-
+                        // return companyId
+                        id1 = response.data.companyId
                     }
-
-                    return this.valid
 
                 })
                 .catch(error => {
                     console.log(error.message)
 
                 })
+            
+            // CALL DEPARTMENT MS 
+            var url2 = 'http://localhost:8080/department/getCompanyIdByDepartmentNameAndPostalCode'
+
+            axios.get(url2 + "/" + this.departmentName + "/" + this.officeLocation.toString())
+                .then(response => {
+
+                    if (response.length == 0) {
+                        this.valid = true // no account registered yet
+
+                    } else {
+                        // Return companyId
+                        id2 = response.data
+
+                    }
+
+                })
+                .catch(error => {
+                    console.log(error.message)
+                })
+            
+            if (id1 != "" && id1 == id2){
+                this.valid = false
+            }
+
+            return this.valid
+
         },
         // check user inputs
         checkInputs() {

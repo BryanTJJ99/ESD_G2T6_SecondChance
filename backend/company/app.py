@@ -17,6 +17,7 @@ mongodb = os.getenv('MONGODB')
 client = pymongo.MongoClient(mongodb)
 db = client['ESDProject']
 companyCollection = db['companies']
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # insert new company
 @app.route('/create', methods=['POST'])
@@ -59,9 +60,9 @@ def delete(company_id):
         return "Company deleted"
     return errMsg
 
-@app.route('/<company_name>', methods=['GET'])
-def getCompanyByCompanyName(companyName):
-    company = companyCollection.find_one({"companyName" : companyName})
+@app.route('/companyName/<company_name>', methods=['GET'])
+def getCompanyByCompanyName(company_name):
+    company = companyCollection.find_one({"companyName" : company_name})
     company = json.loads(json_util.dumps(company))
     return company
 

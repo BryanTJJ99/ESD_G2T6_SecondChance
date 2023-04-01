@@ -50,10 +50,29 @@
 export default {
     data(){
         return {
-
+            itemName: "",
+            company: "",
+            department: "",
+            emission: "",
+            img: "",
+            listingId: ""
         }
     },
-    props: ["itemName", "emission",  "offer", "company", "postalCode", "deptName", "itemId"],
+    mounted(){
+        console.log(this.listingInfo)
+
+        if (this.listingInfo) {
+            this.listingId = this.listingInfo._id
+            this.itemName = this.listingInfo.itemName
+            this.company = this.listingInfo.company.companyName 
+            this.department = this.listingInfo.department.departmentName 
+            this.emission =  this.listingInfo.carbonEmission
+            this.img = this.listingInfo.itemPicture
+            this.listing = {}
+        }
+
+    },
+    props: ["listingInfo", "offer"],
     methods: {
 
         // OFFER FUNCTIONS
@@ -69,11 +88,11 @@ export default {
             console.log("view more")
 
             // set session variable to view listing
-            sessionStorage.setItem("viewListing", this.listingId);
+            sessionStorage.setItem("viewListing", JSON.stringify(this.listingInfo));
 
             // re-route to listing page
             this.$router.push({path: '/listing'});
-        },
+        }
     }
 }
 
