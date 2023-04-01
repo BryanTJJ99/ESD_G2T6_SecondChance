@@ -48,15 +48,27 @@
 export default {
     data(){
         return {
-            itemName: "IKEA Chair",
-            company: "SMU",
-            department: "Finance",
-            emission: "500",
+            itemName: "",
+            company: "",
+            department: "",
+            emission: "",
             img: "",
-            listingId: 1
+            listingId: ""
         }
     },
-    props: ["listingId", "offer"],
+    mounted(){
+        console.log(this.listingInfo)
+
+        this.listingId = this.listingInfo._id
+        this.itemName = this.listingInfo.itemName
+        this.company = this.listingInfo.company.companyName 
+        this.department = this.listingInfo.department.departmentName 
+        this.emission =  this.listingInfo.carbonEmission
+        this.img = this.listingInfo.itemPicture
+        this.listing = {}
+
+    },
+    props: ["listingInfo", "offer"],
     methods: {
 
         // OFFER FUNCTIONS
@@ -72,34 +84,10 @@ export default {
             console.log("view more")
 
             // set session variable to view listing
-            sessionStorage.setItem("viewListing", this.listingId);
+            sessionStorage.setItem("viewListing", JSON.stringify(this.listingInfo));
 
             // re-route to listing page
             this.$router.push({path: '/listing'});
-        },
-
-        getListing() {
-            var url = ""
-
-            axios.get(url, {
-                params: {
-                    listingId: this.listingId
-                }
-            })
-            .then(response => {
-
-                this.itemName = "IKEA Chair",
-                this.company = "SMU",
-                this.department = "Finance",
-                this.emission = "500",
-                this.img = ""
-                
-            })
-            .catch(error => {
-
-                console.log(error.message)
-                
-            })
         }
     }
 }
