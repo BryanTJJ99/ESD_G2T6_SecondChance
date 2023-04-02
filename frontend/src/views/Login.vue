@@ -31,7 +31,7 @@
                             <small class="text-start" style="color:#b00b16;font-style:italic;">{{ errMsg.email }}</small>
                         </div>
                         <div class="group mt-5">
-                            <input type="password" v-model="password" required>
+                            <input type="password" v-model="password" required v-on:keyup.enter="logIn()">
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Enter Your Password:</label>
@@ -54,8 +54,7 @@
 
                     <small class="d-block text-center" style="font-style:italic;">Don't have an account?</small>
                     <router-link to="/register">
-                        <button class="btn btn-light d-block mx-auto" style="width:250px;"
-                            v-on:click="register()"><span>Register
+                        <button class="btn btn-light d-block mx-auto" style="width:250px;"><span>Register
                                 Here</span></button></router-link>
                 </div>
             </div>

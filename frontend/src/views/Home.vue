@@ -44,10 +44,10 @@ table {
                                 <th scope="col">Points</th>
                             </tr>
                             <tr v-for="dept,index in myCompany">
-                                <th scope="col">{{ index }}</th>
-                                <th scope="col">{{dept.departmentName}}</th>
-                                <th scope="col">{{this.companyName}}</th>
-                                <th scope="col">{{ dept.totalCarbon }}</th>
+                                <td scope="col">{{ index + 1 }}</td>
+                                <td scope="col">{{dept.departmentName}}</td>
+                                <td scope="col">{{this.companyName}}</td>
+                                <td scope="col">{{ dept.totalCarbon }}</td>
                             </tr>
                             
                         </table>

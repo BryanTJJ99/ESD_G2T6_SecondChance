@@ -74,7 +74,7 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
                 <div class="pb-5">
                     <div class="pt-2">
                         <button class="btn btn-dark d-block mx-auto" style="width:250px;"
-                            v-on:click="register()"><span>Register Now</span></button>
+                            v-on:click="registerMe()"><span>Register Now</span></button>
                     </div>
 
                     <div v-if="valid"></div>
@@ -94,6 +94,7 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
 <script>
 import Footer from "@/components/Footer.vue";
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import registerService from "../../services/register/registerService";
 
 export default {
     data() {
@@ -106,18 +107,21 @@ export default {
             officeLocation: '',
             valid: true,
             companyId: '',
-            deptId: ''
+            deptId: '',
+
+            companyDetails: {},
+            departmentDetails: {}
         }
     },
     methods: {
-        register() {
+        registerMe() {
 
             var check = this.checkInputs()
 
             if (check) {
                 console.log("no input error")
 
-                if (this.validateAccount()) {
+                // if (this.validateAccount()) {
 
                     const auth = getAuth();
                     createUserWithEmailAndPassword(getAuth(), this.email, this.password)
@@ -126,6 +130,7 @@ export default {
                             console.log("yay")
 
                             this.add()
+
                         })
                         .catch((err) => {
                             console.log("nay")
@@ -146,10 +151,10 @@ export default {
                             }
 
                         })
-                } else {
-                    console.log("company dept alr registered")
-                    this.errMsg.valid = "Your company department already has a valid account."
-                }
+                // } else {
+                //     console.log("company dept alr registered")
+                //     this.errMsg.valid = "Your company department already has a valid account."
+                // }
 
             } else {
                 console.log("input error")
@@ -158,10 +163,17 @@ export default {
         },
         add: async function () {
 
-            // ADD NEW DEPARTMENT
-            var DEPT_URL = await 'http://localhost:8080/department/create'
-            axios.post(DEPT_URL, {
+            console.log("-------------------------------")
 
+            var data1 = {
+                companyName: this.companyName,
+                departments: []
+            }
+            var companyResponse = await registerService.addCompany(data1)
+            this.companyDetails = companyResponse.data
+            console.log(this.companyDetails)
+ 
+            var data2 = {
                 departmentName: this.companyDept,
                 postalCode: this.officeLocation,
                 email: this.email,
@@ -169,61 +181,28 @@ export default {
                 itemIdArrayList: [],
                 totalCarbon: 0,
                 companyId: ""
+            }
 
-            })
-                .then(response => {
+            var deptResponse = await registerService.addDepartment(data2)
+            this.departmentDetails = deptResponse.data
+            console.log(this.departmentDetails)
 
-                    console.log(response.data)
-                    this.deptId = response.data["departmentId"]
-                    console.log(this.deptId)
+            var companyId = companyResponse._id.$oid
+            var deptId = deptResponse.departmentId
 
-                    console.log(response.data)
-                    console.log("dept added successfully")
+            data1["departments"].push(deptId)
+            data2.companyId = companyId
 
-                })
-                .catch(error => {
-                    console.log(error.message)
+            // console.log("Update department")
+            // var updateDept = await registerService.updateDepartment(data2, deptId)
+            // console.log(updateDept)
 
-                })
+            // console.log("Update company")
+            // var updateCompany = await registerService.updateCompany(data1, companyId)
+            // console.log(updateCompany)
             
-            // ADD NEW COMPANY
-            var COMPANY_URL = await 'http://localhost:5001/create'
-                axios.post(COMPANY_URL, {
+            console.log("-------------------------------")
 
-                    companyName: this.companyName,
-                    departments: [this.deptId]
-                })
-                    .then(response => {
-                        console.log(response.data)
-                        console.log("company added successfully")
-                    })
-                    .catch(error => {
-                        console.log(error.message)
-                    })
-
-            // UPDATE NEW DEPARTMENT
-            var DEPT_URL = await 'http://localhost:8080/department/update'
-            axios.put(DEPT_URL + "/" + this.deptId,
-                {
-                    departmentName: this.companyDept,
-                    postalCode: this.officeLocation,
-                    email: this.email,
-                    companyId: this.companyId,
-                    itemIdArrayList: [],
-                    totalCarbon: 0,
-                    _class: "com.ESDBackend.department.models.Department",
-                    companyId: ""
-                }
-            )
-                .then(response => {
-
-                    console.log(response.data)
-                    console.log("dept modified successfully")
-                })
-                .catch(error => {
-                    console.log(error.message)
-
-                })
 
             this.$router.push('/')
         },
