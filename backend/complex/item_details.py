@@ -87,19 +87,26 @@ def getDepartmentOffers(deptId):
 
                 companyName = ""
                 departmentName = ""
+                companyId = ""
+                deptId = ""
 
                 curr = invoke_http(f"{department_url}/{id}", method="GET")
                 companyId = curr['data']['companyId']
                 departmentName = curr['data']['departmentName']
+                deptId = curr['data']['departmentId']
 
                 company = invoke_http(f"{company_url}/{companyId}", method="GET")
                 companyName = company['data']['companyName']
+                companyId = company['data']['_id']['$oid']
 
                 offer = {
                     "itemId" : itemDetails['data']['_id']['$oid'],
                     "itemName" : itemDetails['data']['itemName'],
                     "companyName" : companyName,
-                    "departmentName": departmentName
+                    "departmentName": departmentName,
+                    "carbonEmission" : itemDetails['data']['carbonEmission'],
+                    "buyerDeparmtentId" : deptId,
+                    "buyerCompanyId": companyId,
                 }
                 main.append(offer)
                 print(main)
@@ -109,4 +116,4 @@ def getDepartmentOffers(deptId):
     
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3004, debug=True)
+    app.run(host="0.0.0.0", port=8088, debug=True)

@@ -132,6 +132,7 @@ table {
     import Footer from "@/components/Footer.vue";
     import ListingCard from "@/components/ListingCard.vue";
     import ScrollToTop from "@/components/ScrollToTop.vue"
+    import itemDetailsService from "../../services/item_details/itemDetailsService";
     import AOS from 'aos'
     import 'aos/dist/aos.css';
 
@@ -149,9 +150,13 @@ table {
             this.deptName = sessionStorage.getItem("deptName")
             this.companyId = sessionStorage.getItem("companyId")
             this.companyName = sessionStorage.getItem("companyName")
+
+            this.getOffers()
+            
         },
         data(){
             return {
+                offers : undefined,
                 deptName : "",
                 companyName : "",
                 deptId: "",
@@ -178,7 +183,16 @@ table {
                         window.location.href = `/`;
                     }
                 });
-        },
+            },
+
+            getOffers: async function(){
+                var offers = await itemDetailsService.getDepartmentOffers(this.deptId)
+                var complexOffers = offers;
+
+                this.offers = complexOffers.data
+                console.log(this.offers)
+                
+            }
         }
         
     }
