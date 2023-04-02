@@ -19,13 +19,9 @@
    
                 </div>
 
-                <!-- <div class="input-group px-3 py-3">
-                    <span class="input-group-text" style="background-color:#c5dad2;" id="inputGroup-sizing-default" data-aos="fade-up">
-                        <p>Search</p>
-                    </span>
-                    <input type="text" class="form-control pt-3" aria-label="Sizing example input"
-                        aria-describedby="inputGroup-sizing-default" data-aos="fade-up">
-                </div> -->
+                <div v-if="noItems" data-aos="fade-down">
+                    <small class="text-center px-3">There are no items in your inventory.</small>
+                </div>
 
                 <div class="list-group px-3 mt-3" data-aos="fade-up">
                     <button v-for="item in depItems" type="button" :key="item.id"
@@ -124,40 +120,6 @@
             </div>
         </div>
 
-        <div class="modal fade" id="channelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5 title" id="exampleModalLabel">Enable Slack Notifications</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <small>Receive notifications to your Slack channel on your listings and offers.</small>
-
-                        <div class="input-group my-3">
-                            <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
-                                <p>Channel ID:</p>
-                            </span>
-                            <input type="text" v-model="channelId" class="form-control" 
-                                aria-label="itemName" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" style="background-color:#c5dad2;" id="newItemQty">
-                                <p>Key:</p>
-                            </span>
-                            <input type="text" v-model="channelKey" class="form-control" 
-                                aria-label="newItemQty" aria-describedby="basic-addon1">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        <button class="btn btn-dark" type="button" @click="addChannel">Enable</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <Footer style="margin-left:4.5rem;"></Footer>
     </div>
 </template>
@@ -185,16 +147,22 @@ export default {
 
         this.checkuser()
         this.deptId = sessionStorage.getItem("deptId")
+        this.companyId = sessionStorage.getItem("companyId")
+        this.deptName = sessionStorage.getItem("deptName")
+        this.companyName = sessionStorage.getItem("companyName")
 
-
-        departmentService.getDepartmentById("641d7448835767ff182d7c43")
+        departmentService.getDepartmentById(this.deptId)
         .then(response =>{
             console.log("Response Successful")
             this.depDetails = response;
             console.log(this.depDetails)
 
-            for(let i = 0; i < response.itemIdArrayList.length; i++){
+            if (response.itemIdArrayList.length == 0){
+                this.noItems = true
+            }
 
+            for(let i = 0; i < response.itemIdArrayList.length; i++){
+                this.noItems = false
                 console.log("getting " + response.itemIdArrayList[i])
                 itemService.getItem(response.itemIdArrayList[i])
                 .then(response => {
@@ -214,6 +182,10 @@ export default {
     data() {
         return {
             deptId:'',
+            companyId: '',
+            deptName: '',
+            companyId: '',
+            noItems: false,
             depDetails : undefined,
             depItems : [],
             department: "Finance",
