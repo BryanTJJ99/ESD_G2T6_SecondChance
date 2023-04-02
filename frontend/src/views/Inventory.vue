@@ -99,8 +99,14 @@
                             <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
                                 <p>Item Category</p>
                             </span>
-                            <input type="text" v-model="newItemCategory" class="form-control" placeholder="Item Category"
-                                aria-label="itemCategory" aria-describedby="basic-addon1">
+                            <!-- <input type="text" v-model="newItemCategory" class="form-control" placeholder="Item Category"
+                                aria-label="itemCategory" aria-describedby="basic-addon1"> -->
+                            <select class="form-control" v-model="newItemCategory">
+                                <option value="Furniture">Furniture</option>
+                                <option value="Office Supplies">Office Supplies</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Others">Others</option>
+                            </select>
                         </div>
                         <div class="input-group mb-3" style="position:relative">
                             <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
@@ -391,10 +397,10 @@ export default {
                             "itemPicture" : this.itemToChange['itemPicture']
                         }
 
-
+            console.log("Method to be called")
             itemService.editItem(data, this.itemToChange['_id'].$oid)
             .then((response) =>{
-                console.log("ITEM SUCCESSFULLY REMOVED FROM MARKET")
+                console.log("ITEM SUCCESSFULLY CHANGED FROM MARKET")
             })
             .catch((error)=>{
                 console.log("Item NOT removed from market")

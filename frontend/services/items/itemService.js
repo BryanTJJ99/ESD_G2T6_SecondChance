@@ -47,7 +47,7 @@ class itemService{
     }
 
     editItem(data, itemId){
-        const response = axios.put(API_URL + "edit/" + itemId, data)
+        const response = axios.post(API_URL + "edit/" + itemId, data)
         .then((response) => {
             console.log("Item edited successfully")
             return response

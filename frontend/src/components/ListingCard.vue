@@ -5,7 +5,17 @@
 <template>
   <div v-if="offer" class="col-xl-3 col-md-6 py-4 d-flex justify-content-center">
     <div class="card p-1">
-        <img src="https://i.postimg.cc/1X8R7m8y/design.png"/>
+
+        <!--Image Select-->
+        <img v-if="listingInfo['itemCategory'] == 'Furniture'" src="https://res.cloudinary.com/castlery/image/private/w_1000,f_auto,q_auto/b_rgb:F3F3F3,c_fit/v1624964497/crusader/variants/40550131/Seb-Desk-Lifestyle-Crop.jpg" alt="">
+
+        <img v-else-if="listingInfo['itemCategory'] == 'Electronics'" src="https://www.tds-office.com/wp-content/uploads/2018/10/office-electronics-printers-copiers.jpg" alt="">
+        
+        <img v-else-if="listingInfo['itemCategory'] == 'Office Supplies'" src="https://storables.com/wp-content/uploads/2020/06/AdobeStock_221435829-1024x684.jpeg" alt="">
+
+        <img v-else src="../assets/—Pngtree—isometric and colorful warehouse_5511333.png"/>
+
+
         <div class="p-2">
             <div class="d-flex justify-content-between align-items-center">
                 <p style="font-size:20px" class="desc">{{itemName}}</p>
@@ -24,7 +34,16 @@
 
   <div v-else class="col-xl-3 col-md-6 py-4 d-flex justify-content-center">
     <div class="card p-1">
-        <img src="https://i.postimg.cc/1X8R7m8y/design.png"/>
+
+        <img v-if="listingInfo['itemCategory'] == 'Furniture'" src="https://res.cloudinary.com/castlery/image/private/w_1000,f_auto,q_auto/b_rgb:F3F3F3,c_fit/v1624964497/crusader/variants/40550131/Seb-Desk-Lifestyle-Crop.jpg" alt="">
+
+        <img v-else-if="listingInfo['itemCategory'] == 'Electronics'" src="https://www.tds-office.com/wp-content/uploads/2018/10/office-electronics-printers-copiers.jpg" alt="">
+        
+        <img v-else-if="listingInfo['itemCategory'] == 'Office Supplies'" src="https://storables.com/wp-content/uploads/2020/06/AdobeStock_221435829-1024x684.jpeg" alt="">
+
+        <img v-else src="../assets/—Pngtree—isometric and colorful warehouse_5511333.png"/>
+
+
         <div class="p-2">
             <div class="d-flex justify-content-between align-items-center">
                 <p style="font-size:20px" class="desc">{{itemName}}</p>
