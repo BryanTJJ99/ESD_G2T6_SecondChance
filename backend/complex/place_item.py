@@ -205,41 +205,6 @@ def process_place_item(item):
     message = json.dumps(message)
     amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
 
-    addDepartmentCarbon_result = invoke_http(
-        f'{department_url}/addDepartmentCarbon/{department_id}/{carbon_calculator_data}',
-        method='PUT'
-    )
-
-    addDepartmentCarbon_result['data'] = 'Working'
-
-     # if addDepartmentCarbon does not work
-    addDepartmentCarbon_data = addDepartmentCarbon_result['data']
-
-    if addDepartmentCarbon_result["code"] not in range(200,300):
-        print('\n\n-----Publishing the (department error) message with routing_key=department.error-----')
-        code = addDepartmentCarbon_result['code']
-        message = {
-            "code": 400,
-            "message_type": "department_add_carbon_request_error",
-            "data": "Add Department Carbon Data not working"
-        }
-        message = json.dumps(message)
-        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
-        print("\nDepartment error - Code {} - published to the RabbitMQ Exchange:".format(code))
-        return addDepartmentCarbon_data
-
-    # if addDepartmentCarbon works
-    message = {
-        "code": 201,
-        "message_type": 'department_delete_item_id_request_error',
-        "data": addDepartmentCarbon_result
-    }
-
-    message = json.dumps(message)
-    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
-
-    print("------------ DEPARTMENT EDITED SUCCESSFULLY - {} ------------".format(addDepartmentCarbon_result['code']))
-
     return item_data
 
 if __name__ == '__main__':

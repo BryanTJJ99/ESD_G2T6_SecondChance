@@ -1,6 +1,0 @@
-Flask
-Flask-Cors
-kafka-python
-slack-bolt
-pymongo
-python-dotenv

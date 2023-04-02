@@ -86,24 +86,6 @@ services:
       - "5002:5002"
 
   ####################################
-  # Slack microservice
-  ####################################  
-  slack:
-    build:
-      context: ./slack
-      dockerfile: slack.Dockerfile
-    image: vickyyqu/slack:esd
-    restart: always
-    depends_on:
-      - broker
-    environment:
-      PYTHONUNBUFFERED: 1
-    ports:
-      - "5008:5008"
-
-
-
-  ####################################
   # Error microservice
   ####################################  
   error:
@@ -176,7 +158,7 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -235,37 +217,8 @@ services:
       PYTHONUNBUFFERED: 1
       department_URL: http://department:8080/department
       item_URL: http://item:5000
-      slack_URL: http://slack:5008/slack
     ports:
       - "3101:3101"
-
-
-  ###############################################
-  # Reject Item
-  ###############################################
-  reject_item:
-    build:
-      context: ./complex
-      dockerfile: reject_item.Dockerfile
-    image: vickyyqu/reject_item:esd
-    restart: always
-    depends_on:
-      - department
-      - item
-      - activity_log
-      - error
-      - rabbitmq
-    environment:
-      rabbit_host: rabbitmq
-      rabbit_port: 5672
-      PYTHONUNBUFFERED: 1
-      department_URL: http://department:8080/department
-      item_URL: http://item:5000
-      slack_URL: http://slack:5008/slack
-    ports:
-      - "3102:3102"
-
-  
   
   #########################################
   # Get Items By Company
@@ -308,7 +261,7 @@ services:
       - company
     environment:
       department_URL: http://department:8080/department
-      item_URL: http://item:5000
+      item_URL: http://item:5000/all
       company_URL: http://company:5001
     ports:
       - "3004:3004"

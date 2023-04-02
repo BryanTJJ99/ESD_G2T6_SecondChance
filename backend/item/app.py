@@ -26,7 +26,7 @@ def getAll():
     return items
 
 # insert new item
-@app.route('/create', methods=['PUT'])
+@app.route('/create', methods=['POST'])
 def insert():
 
     ## format as follows
