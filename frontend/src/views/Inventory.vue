@@ -315,8 +315,8 @@ export default {
                 "itemDescription": "Random Description",
                 "carbonEmission": 0,
                 "buyerIds": [],
-                "companyId": "64227d8d2a884bf918c3d709",
-                "departmentId": "641d7448835767ff182d7c43"
+                "companyId": this.companyId,
+                "departmentId": this.deptId
                 }
 
                 var carbon_response = await carbonRetrieverService.getCarbonAmt("chair", "furniture")
@@ -330,7 +330,7 @@ export default {
                 var itemId = item_response.data.data.item._id.$oid;
                 console.log(itemId)
 
-                departmentService.addItemToDept("641d7448835767ff182d7c43", itemId )
+                departmentService.addItemToDept(this.deptId, itemId )
                 .then((response) =>{
                     console.log("ITEM Added to dept" + response)
                 })
@@ -345,6 +345,7 @@ export default {
                 console.log(this.depItems)
                 this.newItemName = "";
                 this.newItemCategory = "";
+                location.reload()
             }
             catch(error){
                 console.log(error)
