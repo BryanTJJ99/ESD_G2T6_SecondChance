@@ -299,7 +299,6 @@ export default {
         addItem: async function () {
             try{
                 var data = {
-                "itemId": "",
                 "itemName" : this.newItemName,
                 "itemCategory" : this.newItemCategory,
                 "isListed": false,
@@ -316,9 +315,11 @@ export default {
                 data['carbonEmission'] = carbon_amt;
                 console.log(carbon_amt)
 
+                console.log(data)
                 var item_response = await itemService.createItem(data)
                 console.log(item_response)
                 var itemId = item_response.data.data.item._id.$oid;
+                console.log(itemId)
 
                 departmentService.addItemToDept("641d7448835767ff182d7c43", itemId )
                 .then((response) =>{

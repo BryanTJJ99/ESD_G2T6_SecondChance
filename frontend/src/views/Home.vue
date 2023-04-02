@@ -146,7 +146,8 @@ table {
             this.checkuser()
 
             this.deptId = sessionStorage.getItem("deptId")
-            console.log(this.deptId)
+            console.log(JSON.parse(JSON.stringify(this.deptId)))
+
         },
         data(){
             return {
