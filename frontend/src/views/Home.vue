@@ -43,36 +43,13 @@ table {
                                 <th scope="col">Organisation</th>
                                 <th scope="col">Points</th>
                             </tr>
-                            <tr>
-                            <th scope="row">1</th>
-                            <td>Finance</td>
-                            <td>SMU</td>
-                            <td>3800</td>
+                            <tr v-for="dept,index in myCompany">
+                                <th scope="col">{{ index }}</th>
+                                <th scope="col">{{dept.departmentName}}</th>
+                                <th scope="col">{{this.companyName}}</th>
+                                <th scope="col">{{ dept.totalCarbon }}</th>
                             </tr>
-                            <tr>
-                            <th scope="row">2</th>
-                            <td>Marketing</td>
-                            <td>SMU</td>
-                            <td>2300</td>
-                            </tr>
-                            <tr>
-                            <th scope="row">3</th>
-                            <td>Customer Service</td>
-                            <td>SMU</td>
-                            <td>1600</td>
-                            </tr>
-                            <tr>
-                            <th scope="row">4</th>
-                            <td>Security</td>
-                            <td>SMU</td>
-                            <td>1550</td>
-                            </tr>
-                            <tr>
-                            <th scope="row">5</th>
-                            <td>Finance&nbsp;<lead>Operations</lead></td>
-                            <td>SMU</td>
-                            <td>1400</td>
-                            </tr>
+                            
                         </table>
                     </div>
                 </div>
@@ -114,6 +91,8 @@ table {
     import 'aos/dist/aos.css';
 
     import { getAuth, onAuthStateChanged} from "firebase/auth";
+import { computed } from "@vue/reactivity";
+import departmentService from "../../services/department/departmentService";
 
     export default {
         mounted() {
@@ -130,10 +109,13 @@ table {
 
             console.log(this.deptId)
             this.getOffers()
+            this.leaderBoard()
+
             
         },
         data(){
             return {
+                myCompany: [],
                 offers : undefined,
                 deptName : "",
                 companyName : "",
@@ -176,10 +158,36 @@ table {
                 if (this.offers.length == 0){
                     this.noOffers = true
                 }
+            },
+
+
+            leaderBoard: async function(){
+                var alldepts = await departmentService.getAllDepartments()
+                console.log("COMPANY ID")
+                console.log(this.companyId)
+                console.log("ALL COMPANY")
+                console.log(alldepts)
+
                 
+                for(var dept of alldepts){
+                    if (dept['companyId'] == this.companyId){
+                        this.myCompany.push(dept)
+                        console.log("PUSHED")
+                    }
+                }
+                console.log("BEFORE SORT")
+                console.log(this.myCompany)
+
+
+                this.myCompany.sort((a,b)=>{
+                    return b.totalCarbon - a.totalCarbon
+                })
+                
+                if (this.myCompany.length > 5){
+                    this.myCompany = this.myCompany.slice(4)
+                }
             }
-        }
-        
+        },
     }
 
 </script>

@@ -221,6 +221,7 @@ import 'aos/dist/aos.css';
 import departmentService from "../../services/department/departmentService";
 import itemService from "../../services/items/itemService";
 import carbonRetrieverService from "../../services/carbonretriever/carbonRetrieverService"
+import placeItem from "../../services/itemManagement/placeItem";
 import axios from "axios";
 
 import { getAuth, onAuthStateChanged} from "firebase/auth";
@@ -345,15 +346,33 @@ export default {
                 console.log(this.depItems)
                 this.newItemName = "";
                 this.newItemCategory = "";
-                location.reload()
             }
             catch(error){
                 console.log(error)
                 return error
             }
-
-           
         },
+
+            
+        // addItem : async function(){
+        //     var data = {
+        //         "itemName" : this.newItemName,
+        //         "itemCategory" : this.newItemCategory,
+        //         "isListed": false,
+        //         "itemPicture": "Random Picture",
+        //         "itemDescription": "Random Description",
+        //         "carbonEmission": 0,
+        //         "buyerIds": [],
+        //         "companyId": this.companyId,
+        //         "departmentId": this.deptId
+        //     }
+
+        //     var placeItemResults = await placeItem.placeItem(data)
+        //     console.log(placeItemResults)
+            
+        // },
+           
+        
 
         changeMarketPlace(changeTo){
             // console.log(this.itemToRemoveFromMarket)
