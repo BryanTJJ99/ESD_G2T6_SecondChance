@@ -16,7 +16,7 @@
                 </router-link>
         </div>
         <div class="d-flex align-items-center">
-          <small style="color:#5c7266;">{{ company }} | {{ department }}</small>
+          <small style="color:#5c7266;">{{ company }}  |  {{ department }}</small>
             <button class="btn btn-none logo" @click="signOut">Sign out</button>
         </div>
     </nav>
@@ -27,8 +27,10 @@
   export default {
 
     data(){
-      department: "";
-      company: "";
+      return {
+        department: "",
+        company: ""
+      }
     },
     methods: {
       signOut(){

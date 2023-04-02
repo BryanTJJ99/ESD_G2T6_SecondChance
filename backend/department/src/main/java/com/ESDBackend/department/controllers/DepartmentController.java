@@ -88,6 +88,10 @@ public class DepartmentController {
         return departmentService.addDepartment(department);
     }
 
-    // 
+    @PutMapping("/update/{departmentId}")
+    @CrossOrigin
+    public Department updateDepartment(@PathVariable String departmentId,@RequestBody Department newDepartment) {
+        return departmentService.updateDepartment(departmentId,newDepartment);
+    }
 
 }

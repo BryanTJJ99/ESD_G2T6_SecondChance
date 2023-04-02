@@ -16,7 +16,14 @@ client = pymongo.MongoClient(mongodb)
 db = client['ESDProject']
 itemCollection = db['items']
 userCollection = db['users']
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
+
+# get all item
+@app.route('/', methods=['GET'])
+def getAll():
+    items = itemCollection.find()
+    items = json.loads(json_util.dumps(items))
+    return items
 
 # insert new item
 @app.route('/create', methods=['PUT'])

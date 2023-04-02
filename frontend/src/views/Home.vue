@@ -33,7 +33,7 @@ table {
                     <h3 class="pt-3 ps-3">Welcome back, {{organization}} {{department}}</h3>
                     <h5 class="pt-1 ps-3">&nbsp;what would you look like to do today?</h5>
                 </div>
-                <div class="col-md-5 col-sm-auto py-3">
+                <div class="col-md-5 col-sm-auto py-3" data-aos="fade-down">
                     <h4 data-aos="fade-down">Leaderboard</h4>
                     <div class="pt-1">
                         <table style="text-align:center">
@@ -146,13 +146,16 @@ table {
             this.checkuser()
 
             this.deptId = sessionStorage.getItem("deptId")
-            console.log(JSON.parse(JSON.stringify(this.deptId)))
-
+            this.deptName = sessionStorage.getItem("deptName")
+            this.companyId = sessionStorage.getItem("companyId")
+            this.companyName = sessionStorage.getItem("companyName")
         },
         data(){
             return {
-                department : "Finance",
-                organization : "SMU",
+                deptName : "",
+                companyName : "",
+                deptId: "",
+                companyId: "",
                 offer: true,
                 deptId: '',
                 name: ''

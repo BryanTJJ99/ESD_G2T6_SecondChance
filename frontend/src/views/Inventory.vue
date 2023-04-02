@@ -14,13 +14,14 @@
 
                         <button class="btn btn-dark" data-bs-toggle="modal"
                             data-bs-target="#exampleModal" data-aos="fade-down"><span>Add Item</span></button>
-                        <button class="btn btn-dark" data-bs-toggle="modal"
-                        data-bs-target="#channelModal" data-aos="fade-down"><span>Enable Notifications</span></button>
-
+                        
                     </div>
    
                 </div>
 
+                <div v-if="noItems" data-aos="fade-down">
+                    <small class="text-center px-3">There are no items in your inventory.</small>
+                </div>
 
 
                 <!-- <div class="input-group px-3 py-3">
@@ -233,18 +234,22 @@ export default {
 
         this.checkuser()
         this.deptId = sessionStorage.getItem("deptId")
+        this.companyId = sessionStorage.getItem("companyId")
+        this.deptName = sessionStorage.getItem("deptName")
+        this.companyName = sessionStorage.getItem("companyName")
 
-        console.log(this.deptId)
-
-
-        departmentService.getDepartmentById("641d7448835767ff182d7c43")
+        departmentService.getDepartmentById(this.deptId)
         .then(response =>{
             console.log("Response Successful")
             this.depDetails = response;
             console.log(this.depDetails)
 
-            for(let i = 0; i < response.itemIdArrayList.length; i++){
+            if (response.itemIdArrayList.length == 0){
+                this.noItems = true
+            }
 
+            for(let i = 0; i < response.itemIdArrayList.length; i++){
+                this.noItems = false
                 console.log("getting " + response.itemIdArrayList[i])
                 itemService.getItem(response.itemIdArrayList[i])
                 .then(response => {
@@ -273,7 +278,11 @@ export default {
             unlistedItems : [],
             itemToChange:"",
             listedItems:[],
-            deptId:"641d7448835767ff182d7c43",
+            deptId:"",
+            companyId: '',
+            deptName: '',
+            companyId: '',
+            noItems: false,
             depDetails : undefined,
             depItems : [],
             department: "Finance",
@@ -390,27 +399,7 @@ export default {
                     window.location.href = `/`;
                 }
             });
-        },
-
-        addChannel(){
-
-            // direct call to slack MS
-
-            var url = ''
-
-            axios.post(url, {
-                deptId: this.deptId,
-                channelId: this.channelId,
-                channelKey: this.channelKey
-            })
-            .then(response => {
-                console.log("yay")
-            })
-            .catch(error => {
-                console.log(error.message)
-                
-            })
-        }
+        }   
     }
 }
 

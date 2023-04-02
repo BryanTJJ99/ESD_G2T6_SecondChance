@@ -10,4 +10,6 @@ public interface DepartmentRepository extends MongoRepository<Department, String
     Optional<Department> findByEmail(String email);
 
     Optional<Department> findByDepartmentNameAndPostalCode(String departmentName, String postalCode);
+
+    Optional<Department> findByDepartmentId(String departmentId);
 }
