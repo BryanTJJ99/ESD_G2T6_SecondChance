@@ -99,19 +99,21 @@
                             <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
                                 <p>Item Category</p>
                             </span>
-                            <input type="text" v-model="newItemCategory" class="form-control" placeholder="Item Name"
+                            <input type="text" v-model="newItemCategory" class="form-control" placeholder="Item Category"
                                 aria-label="itemCategory" aria-describedby="basic-addon1">
                         </div>
                         <div class="input-group mb-3" style="position:relative">
-                            <label for="image" class="input-group-text" style="background-color: #c5dad2; z-index: 2; width: 25%; height: 100%; position: absolute; top: 0; left: 0;">Choose file</label>
-                            <input id="image" class="form-control"  @change="selectFile" style="z-index:1" type="file" multiple>
+                            <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
+                                <p>Item Description</p>
+                            </span>
+                            <input id="description" class="form-control" type="text" v-model="newItemDescription">
                         </div>
-                        <div v-if="images.length">
+                        <!-- <div v-if="images.length">
                             <p>Uploaded Images:</p>
                             <div v-for="(img, index) in images" :key="index">
                               <img :src="img" alt="image" style="width: 200px; height: 200px;">
                             </div>
-                        </div>
+                        </div> -->
                         <!-- <div class="input-group mb-3" style="position:relative">
                             <label for="image" class="input-group-text" style="background-color: #c5dad2; z-index: 2; width: 25%; height: 100%; position: absolute; top: 0; left: 0;">Choose file</label>
                             <input id="image" class="form-control"  @change="selectFile" style="z-index:1" type="file" multiple>
@@ -291,6 +293,7 @@ export default {
             newItemName: "",
             newItemCategory : "",
             newItemId: undefined,
+            newItemDescription:"",
 
             channelId: "",
             channelKey: "",
@@ -313,7 +316,7 @@ export default {
                 "itemCategory" : this.newItemCategory,
                 "isListed": false,
                 "itemPicture": "Random Picture",
-                "itemDescription": "Random Description",
+                "itemDescription": this.newItemDescription,
                 "carbonEmission": 0,
                 "buyerIds": [],
                 "companyId": this.companyId,
@@ -399,17 +402,17 @@ export default {
             location.reload()
         },
 
-        selectFile(e) {
-            const files = e.target.files
-            for (let i = 0; i < files.length; i++) {
-                const image = files[i]
-                const reader = new FileReader()
-                reader.readAsDataURL(image)
-                reader.onload = e => {
-                this.images.push(e.target.result)
-                }
-            }
-        },
+        // selectFile(e) {
+        //     const files = e.target.files
+        //     for (let i = 0; i < files.length; i++) {
+        //         const image = files[i]
+        //         const reader = new FileReader()
+        //         reader.readAsDataURL(image)
+        //         reader.onload = e => {
+        //         this.images.push(e.target.result)
+        //         }
+        //     }
+        // },
 
         checkuser(){
             const auth = getAuth();

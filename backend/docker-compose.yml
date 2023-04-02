@@ -261,7 +261,7 @@ services:
       - company
     environment:
       department_URL: http://department:8080/department
-      item_URL: http://item:5000/all
+      item_URL: http://item:5000
       company_URL: http://company:5001
     ports:
       - "3004:3004"

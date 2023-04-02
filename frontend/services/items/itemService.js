@@ -34,7 +34,7 @@ class itemService{
     }
     
     createItem(data){
-        const response = axios.put(API_URL + "create", data)
+        const response = axios.post(API_URL + "create", data)
         .then((response)=>{
             console.log("Item create called successfully")
             return response;
