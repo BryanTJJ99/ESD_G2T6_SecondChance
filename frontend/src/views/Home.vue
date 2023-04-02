@@ -26,11 +26,11 @@ table {
         <TopNavbar/>
         <Sidebar/>
 
-        <div class="container-flex p-3" style="margin-left:4.5rem; height:100vh">
+        <div class="container-flex p-3" style="margin-left:4.5rem;">
             <!-- Welcome back -->
             <div class="row px-3 pt-2 pb-4">
                 <div class="col-md-7 col-sm-auto" data-aos="fade-down">
-                    <h3 class="pt-3 ps-3">Welcome back, {{organization}} {{department}}</h3>
+                    <h3 class="pt-3 ps-3">Welcome back,</h3>
                     <h5 class="pt-1 ps-3">&nbsp;what would you look like to do today?</h5>
                 </div>
                 <div class="col-md-5 col-sm-auto py-3" data-aos="fade-down">
@@ -56,42 +56,19 @@ table {
                 
             </div>
             <hr>
-
-            <!-- Shortcuts -->
-            <!-- <div class="px-3 pt-2">
-                <h3 class=" ps-3 mb-2" data-aos="fade-down">Shortcuts</h3>
-            </div>
-            
-            <div class="shift d-flex-center ps-3">
-                <div class="row pt-3 ps-3 mt-2">
-                    <div class="col col-sm-auto pb-4">
-                        <button type="button" class="btn btn-dark" style="border-radius:10px 0px 0px 10px;padding:0px; margin:0px">
-                            <img src="../assets/clipboard.png" height="81" style="margin:0px;padding:10px">
-                        </button>
-                        <button type="button" class="btn" style="border-radius:0px 10px 10px 0px;padding-top:30px; padding-bottom:30px;margin:0px;border-color:#c5dad2" disabled>
-                        <lead>Add a New Listing</lead></button>
-                    </div>
-                    <div class="col col-sm-auto">
-                        <button type="button" class="btn btn-dark" style="border-radius:10px 0px 0px 10px;padding:0px; margin:0px">
-                            <img src="../assets/dchair.png" height="82" style="margin:0px;padding:10px">
-                        </button>
-                        <button type="button" class="btn" style="border-radius:0px 10px 10px 0px;padding-top:30px; padding-bottom:30px;margin:0px;border-color:#c5dad2" disabled>
-                        <lead>Add a New Inventory</lead></button>
-                    </div>
-                </div>
-            </div>
-            <hr> -->
             
             <!-- Your listings -->
             <div class="px-3 py-2" data-aos="fade-down">
                 <h3 class="ps-3">Your Listing Offers</h3>
                 <small class="pt-3 ps-3 mt-2"><i>Accept or decline your offers here</i></small>
             </div>
-            <div class="row pb-4" data-aos="fade-up">
-                <!-- <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard>
-                <ListingCard :offer="offer"></ListingCard> -->
+            <div class="row pb-4" data-aos="fade-up" style="min-height:50vh">
+                <template v-for="each in offers">
+                    <ListingCard :offer="offer" :listingInfo="each"></ListingCard>
+                </template>
+
+                <div v-if="noOffers" class="text-center mt-3"><small>There are no listings to show.</small></div>
+                
             </div>
         </div>
      
@@ -130,6 +107,7 @@ import departmentService from "../../services/department/departmentService";
             this.companyId = sessionStorage.getItem("companyId")
             this.companyName = sessionStorage.getItem("companyName")
 
+            console.log(this.deptId)
             this.getOffers()
             this.leaderBoard()
 
@@ -145,7 +123,8 @@ import departmentService from "../../services/department/departmentService";
                 companyId: "",
                 offer: true,
                 deptId: '',
-                name: ''
+                name: '',
+                noOffers: false
             }
         },
         components: {
@@ -168,11 +147,17 @@ import departmentService from "../../services/department/departmentService";
             },
 
             getOffers: async function(){
+                this.noOffers = false
+
                 var offers = await itemDetailsService.getDepartmentOffers(this.deptId)
                 var complexOffers = offers;
 
-                this.offers = complexOffers.data
+                this.offers = JSON.parse(JSON.stringify(complexOffers.data))
                 console.log(this.offers)
+
+                if (this.offers.length == 0){
+                    this.noOffers = true
+                }
             },
 
 

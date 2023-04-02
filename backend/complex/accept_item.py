@@ -17,8 +17,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 department_url = environ.get('department_URL') or 'http://localhost:8080/department'
 item_url = environ.get('item_URL') or 'http://localhost:5000'
-slack_url = environ.get('slack_URL') or 'http://localhost:5008/slack'
-
+# slack_url = environ.get('slack_URL') or 'http://localhost:5008/slack'
 
 @app.route("/accept_item", methods=['GET'])
 @cross_origin()
@@ -250,39 +249,39 @@ def process_accept_item(accepted_department_id, item_id):
     
     #---------------------------------------------------------------------------------
     #slack notification for accepted buyer
-    buyer_slack_item = {"item_id": item_id, "item_name": item_data["itemName"], "buyer_id": accepted_department_id, "isAccept":True}
+    # buyer_slack_item = {"item_id": item_id, "item_name": item_data["itemName"], "buyer_id": accepted_department_id, "isAccept":True}
 
-    buyer_slack_result = invoke_http(
-        f"{slack_url}",
-        method="POST",
-        json=buyer_slack_item
-    )
+    # buyer_slack_result = invoke_http(
+    #     f"{slack_url}",
+    #     method="POST",
+    #     json=buyer_slack_item
+    # )
 
-    print(buyer_slack_result)
+    # print(buyer_slack_result)
         
         
-    if buyer_slack_result['code'] not in range(200, 300):
-        print('\n\n-----Publishing the (slack error) message with routing_key=slack.error-----')
+    # if buyer_slack_result['code'] not in range(200, 300):
+    #     print('\n\n-----Publishing the (slack error) message with routing_key=slack.error-----')
                 
-        message = {
-            "code": 400,
-            "message_type": "business_error",
-            "data": "Invalid slack response"
-        }
-        message = json.dumps(message)
-        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
-        print("\nSlack error - Code {} - published to the RabbitMQ Exchange:".format(buyer_slack_result['code']))
-        return buyer_slack_result
+    #     message = {
+    #         "code": 400,
+    #         "message_type": "business_error",
+    #         "data": "Invalid slack response"
+    #     }
+    #     message = json.dumps(message)
+    #     amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.error', body=message, properties=pika.BasicProperties(delivery_mode=2))
+    #     print("\nSlack error - Code {} - published to the RabbitMQ Exchange:".format(buyer_slack_result['code']))
+    #     return buyer_slack_result
         
-    else:
-        message = {
-            "code": 201,
-                "message_type": 'slack_notification',
-                "data": buyer_slack_result['data']
-        }
-        message = json.dumps(message)
-        amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
-        print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(buyer_slack_result['data']))
+    # else:
+    #     message = {
+    #         "code": 201,
+    #             "message_type": 'slack_notification',
+    #             "data": buyer_slack_result['data']
+    #     }
+    #     message = json.dumps(message)
+    #     amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='slack.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
+    #     print("------------ SLACK NOTIFICATION SENT SUCCESSFULLY - {} ------------".format(buyer_slack_result['data']))
 
     # ##################### END OF AMQP code
 
