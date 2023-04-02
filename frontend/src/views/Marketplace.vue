@@ -136,6 +136,8 @@ export default {
                     }
                 }
 
+                // search for items in the marketplace
+
                 // Search not empty
                 if (this.search != ""){
                     var temp = []
