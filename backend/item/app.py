@@ -28,6 +28,19 @@ def getAll():
 # insert new item
 @app.route('/create', methods=['PUT'])
 def insert():
+
+    ## format as follows
+    # {
+    #     "itemName": "Item 1",
+    #     "itemCategory": "printer",
+    #     "isListed": false,
+    #     "itemPicture": "Random Picture",
+    #     "itemDescription": "Random Description",
+    #     "carbonEmission": { "$numberInt": "880" },
+    #     "buyerIds": [],
+    #     "companyId": "64227d8d2a884bf918c3d709",
+    #     "departmentId": "641d7448835767ff182d7c43"
+    # }
     data = request.json
     errMsg = handleError(data)
     if errMsg == '':

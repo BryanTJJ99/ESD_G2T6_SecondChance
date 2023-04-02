@@ -25,6 +25,7 @@
 <script>
   import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
   export default {
+
     data(){
       return {
         department: "",
@@ -44,6 +45,8 @@
     mounted(){
       this.department = sessionStorage.getItem("deptName")
       this.company = sessionStorage.getItem("companyName")
+      console.log(this.department)
+      console.log(this.company)
     }
   }
 </script>

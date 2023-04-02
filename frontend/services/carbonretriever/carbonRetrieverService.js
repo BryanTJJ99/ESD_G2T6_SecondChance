@@ -4,7 +4,7 @@ const API_URL = "http://localhost:5002/search"
 
 class carbonRetrieverService{
     getCarbonAmt(name, category){
-        axios.get(API_URL, {
+        const response = axios.get(API_URL, {
             params:{
                 name : name,
                 category: category
@@ -18,6 +18,8 @@ class carbonRetrieverService{
             console.log("Get Carbon unsuccessful")
             return error
         })
+    return response;
+
     }
 }
 export default new carbonRetrieverService
