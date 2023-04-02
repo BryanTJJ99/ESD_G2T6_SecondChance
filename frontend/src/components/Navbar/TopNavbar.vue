@@ -16,7 +16,7 @@
                 </router-link>
         </div>
         <div class="d-flex align-items-center">
-          <small style="color:#5c7266;">{{ organization }}  |  {{ department }}</small>
+          <small style="color:#5c7266;">{{ company }}  |  {{ department }}</small>
             <button class="btn btn-none logo" @click="signOut">Sign out</button>
         </div>
     </nav>
@@ -26,8 +26,10 @@
   import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
   export default {
     data(){
-      department: "";
-      company: "";
+      return {
+        department: "",
+        company: ""
+      }
     },
     methods: {
       signOut(){

@@ -146,12 +146,16 @@ table {
             this.checkuser()
 
             this.deptId = sessionStorage.getItem("deptId")
-            console.log(this.deptId)
+            this.deptName = sessionStorage.getItem("deptName")
+            this.companyId = sessionStorage.getItem("companyId")
+            this.companyName = sessionStorage.getItem("companyName")
         },
         data(){
             return {
-                department : "Finance",
-                organization : "SMU",
+                deptName : "",
+                companyName : "",
+                deptId: "",
+                companyId: "",
                 offer: true,
                 deptId: '',
                 name: ''
