@@ -14,14 +14,10 @@
 
                         <button class="btn btn-dark" data-bs-toggle="modal"
                             data-bs-target="#exampleModal" data-aos="fade-down"><span>Add Item</span></button>
-                        <button class="btn btn-dark" data-bs-toggle="modal"
-                        data-bs-target="#channelModal" data-aos="fade-down"><span>Enable Notifications</span></button>
-
+                        
                     </div>
    
                 </div>
-
-
 
                 <!-- <div class="input-group px-3 py-3">
                     <span class="input-group-text" style="background-color:#c5dad2;" id="inputGroup-sizing-default" data-aos="fade-up">
@@ -31,7 +27,7 @@
                         aria-describedby="inputGroup-sizing-default" data-aos="fade-up">
                 </div> -->
 
-                <div class="list-group px-3" data-aos="fade-up">
+                <div class="list-group px-3 mt-3" data-aos="fade-up">
                     <button v-for="item in depItems" type="button" :key="item.id"
                         class="list-group-item list-group-item-action d-flex justify-content-between p-3 pt-3 ps-3">
 
@@ -296,26 +292,7 @@ export default {
                     window.location.href = `/`;
                 }
             });
-        },
-        addChannel(){
-
-            // direct call to slack MS
-
-            var url = ''
-
-            axios.post(url, {
-                deptId: this.deptId,
-                channelId: this.channelId,
-                channelKey: this.channelKey
-            })
-            .then(response => {
-                console.log("yay")
-            })
-            .catch(error => {
-                console.log(error.message)
-                
-            })
-        }
+        }   
     }
 }
 

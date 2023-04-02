@@ -136,7 +136,14 @@ export default {
                     }
                 }
 
-                // search for items in the marketplace
+                // Search for items in the marketplace
+                var listed = []
+                for (let each of listings){
+                    if (each.isListed){
+                        listed.push(each)
+                    }
+                }
+                listings = listed
 
                 // Search not empty
                 if (this.search != ""){
@@ -154,13 +161,13 @@ export default {
                 }
 
                 this.allListings = listings
+                console.log(this.allListings)
 
                 if (this.allListings.length == 0){
                     this.gotListings = false
                 } else {
                     this.gotListings = true
                 }
-
 
             })
             .catch(error => {

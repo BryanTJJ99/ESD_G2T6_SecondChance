@@ -160,9 +160,32 @@ export default {
         sendOffer(){
             console.log("offer sent")
             this.sent = true
+
+            if (!this.listingInfo["buyerIds"].includes(this.myId)){
+                this.listingInfo["buyerIds"].push(this.myId)
+            }
+
+            console.log(this.listingInfo["_id"]["$oid"])
+
+            var url = "http://localhost:5000/edit"
+            var updateListing = JSON.parse(JSON.stringify(this.listingInfo))
+            delete updateListing["_id"]
+
+            axios.put(url + "/" + this.listingInfo["_id"]["$oid"], updateListing)
+            .then(response => {
+
+                console.log("Offer sent successfully")
+                console.log(response.data)
+
+            })
+            .catch(error => {
+
+                console.log("Nay")
+                console.log(error.message)
+                
+            })
         },
         contactSeller(){
-
             console.log("contact seller")
 
             var sellerInfo = {
@@ -184,30 +207,6 @@ export default {
             this.emission =  this.listingInfo.carbonEmission
             this.img = this.listingInfo.itemPicture
             this.desc = this.listingInfo.itemDescription
-
-
-            // console.log(this.listingId);
-
-            // axios.get(url, {
-            //     params: {
-            //         listingId: this.listingId
-            //     }
-            // })
-            // .then(response => {
-            //     // retrieve item details + creatorId
-
-            //     this.itemName = "IKEA Chair",
-            //     this.company = "SMU",
-            //     this.department = "Finance",
-            //     this.emission = "500",
-            //     this.img = ""
-                
-            // })
-            // .catch(error => {
-
-            //     console.log(error.message)
-                
-            //     })
         
         },
         checkuser(){
@@ -220,22 +219,7 @@ export default {
             });
         },
         
-    },
-    // beforeMount() {
-    //     this.listingInfo = sessionStorage.getItem("viewListing");
-    //     console.log(this.listingInfo)
-
-    //     // this.listingId = this.listingInfo._id
-    //     // this.itemName = this.listingInfo.itemName
-    //     // this.company = this.listingInfo.company.companyName 
-    //     // this.department = this.listingInfo.department.departmentName 
-    //     // this.emission =  this.listingInfo.carbonEmission
-    //     // this.img = this.listingInfo.itemPicture
-    //     // this.desc = this.listingInfo.itemDescription
-
-    //     // this.getListing()
-    // },
-        
+    }
 
 
 }
