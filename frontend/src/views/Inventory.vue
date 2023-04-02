@@ -1,6 +1,6 @@
 <template>
     <div>
-        <TopNavbar :organization="organization" :department="department" />
+        <TopNavbar/>
         <Sidebar />
         <div class="container-flex d-flex justify-content-center p-3" style="margin-left: 4.5rem;height:100vh;">
 
