@@ -45,7 +45,7 @@
             </div>
             <div v-else class="row py-3" data-aos="fade-up">
 
-                <p class="text-center my-5">Sorry, no listings were found.</p>
+                <small class="text-center my-5">Sorry, no listings were found.</small>
 
             </div>
         </div>
@@ -76,13 +76,15 @@ export default {
 
         this.deptId = sessionStorage.getItem("deptId")
         this.companyId = sessionStorage.getItem("companyId")
+        this.deptName = sessionStorage.getItem("deptName")
+        this.companyName = sessionStorage.getItem("companyName")
     },
     data() {
         return {
             deptId: '',
             companyId: '',
-            company: "SMU",
-            department: "Finance",
+            deptName: '',
+            companyName: '',
             search: "",
             offer: false,
             outsideCompany: true,
@@ -136,7 +138,14 @@ export default {
                     }
                 }
 
-                // search for items in the marketplace
+                // Search for items in the marketplace
+                var listed = []
+                for (let each of listings){
+                    if (each.isListed){
+                        listed.push(each)
+                    }
+                }
+                listings = listed
 
                 // Search not empty
                 if (this.search != ""){
@@ -154,13 +163,13 @@ export default {
                 }
 
                 this.allListings = listings
+                console.log(this.allListings)
 
                 if (this.allListings.length == 0){
                     this.gotListings = false
                 } else {
                     this.gotListings = true
                 }
-
 
             })
             .catch(error => {
