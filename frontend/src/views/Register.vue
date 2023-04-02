@@ -122,50 +122,10 @@ export default {
                     const auth = getAuth();
                     createUserWithEmailAndPassword(getAuth(), this.email, this.password)
                         .then(() => {
+                            
                             console.log("yay")
 
-                            // ADD NEW DEPARTMENT
-                            var DEPT_URL = 'http://localhost:8080/department/create'
-                            axios.post(DEPT_URL, {
-                                params: {
-
-                                    departmentName: this.companyDept,
-                                    postalCode: this.officeLocation,
-                                    email: this.email,
-                                    companyId: this.companyId
-
-                                }
-                            })
-                                .then(response => {
-
-                                    console.log(response.data)
-                                    this.deptId = response.data._id
-                                    
-                                    console.log(response.data)
-                                    console.log("dept added successfully")
-                                })
-                                .catch(error => {
-                                    console.log(error.message)
-
-                                })
-
-                            // ADD NEW COMPANY
-                            var COMPANY_URL = 'http://localhost:5001/create'
-                            axios.post(COMPANY_URL, {
-                                params: {
-                                    companyName: this.companyName,
-                                    departments: [this.deptId]
-                                }
-                            })
-                                .then(response => {
-                                    console.log(response.data)
-                                    console.log("company added successfully")
-                                })
-                                .catch(error => {
-                                    console.log(error.message)
-                                })
-
-                            this.$router.push('/')
+                            this.add()
                         })
                         .catch((err) => {
                             console.log("nay")
@@ -195,6 +155,77 @@ export default {
                 console.log("input error")
 
             }
+        },
+        add: async function () {
+
+            // ADD NEW DEPARTMENT
+            var DEPT_URL = await 'http://localhost:8080/department/create'
+            axios.post(DEPT_URL, {
+
+                departmentName: this.companyDept,
+                postalCode: this.officeLocation,
+                email: this.email,
+                companyId: "",
+                itemIdArrayList: [],
+                totalCarbon: 0,
+                companyId: ""
+
+            })
+                .then(response => {
+
+                    console.log(response.data)
+                    this.deptId = response.data["departmentId"]
+                    console.log(this.deptId)
+
+                    console.log(response.data)
+                    console.log("dept added successfully")
+
+                })
+                .catch(error => {
+                    console.log(error.message)
+
+                })
+            
+            // ADD NEW COMPANY
+            var COMPANY_URL = await 'http://localhost:5001/create'
+                axios.post(COMPANY_URL, {
+
+                    companyName: this.companyName,
+                    departments: [this.deptId]
+                })
+                    .then(response => {
+                        console.log(response.data)
+                        console.log("company added successfully")
+                    })
+                    .catch(error => {
+                        console.log(error.message)
+                    })
+
+            // UPDATE NEW DEPARTMENT
+            var DEPT_URL = await 'http://localhost:8080/department/update'
+            axios.put(DEPT_URL + "/" + this.deptId,
+                {
+                    departmentName: this.companyDept,
+                    postalCode: this.officeLocation,
+                    email: this.email,
+                    companyId: this.companyId,
+                    itemIdArrayList: [],
+                    totalCarbon: 0,
+                    _class: "com.ESDBackend.department.models.Department",
+                    companyId: ""
+                }
+            )
+                .then(response => {
+
+                    console.log(response.data)
+                    console.log("dept modified successfully")
+                })
+                .catch(error => {
+                    console.log(error.message)
+
+                })
+
+            this.$router.push('/')
         },
         // check if company dept is alr registered
         validateAccount() {
