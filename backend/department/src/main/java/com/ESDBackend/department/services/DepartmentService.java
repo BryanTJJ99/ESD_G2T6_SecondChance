@@ -23,4 +23,6 @@ public interface DepartmentService {
 
     public Department addDepartment(Department department);
 
+    public Department updateDepartment(String departmentId, Department department);
+
 }
