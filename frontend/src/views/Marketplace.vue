@@ -170,38 +170,69 @@ export default {
             }
             this.getListings()
         },
-        // getListings() {
-        //     var url = ""
-        //     var all = true
-        //     this.gotListings = true
+        getListings() {
+            var all = true
+            this.gotListings = true
+            this.allListings = []
 
-        //     if (this.search != ""){
-        //         all = false
-        //     }
+            if (this.search != ""){
+                all = false
+            }
 
-        //     axios.get(url, {
-        //         params: {
-        //             search: this.search, // search input, can be ""
-        //             all: all, // if this.search = "", all listings returned
-        //             category: this.category, // category
-        //             outsideCompany: this.outsideCompany // toggle on or off
-        //         }
-        //     })
-        //     .then(response => {
+            var url = "http://localhost:3004/"
 
-                // if (response.length == 0){
-                //     this.gotListings = false
-                // } else {
-                //     // return list of listingIds
-                // }
+            axios.get(url)
+            .then(response => {
 
-        //     })
-        //     .catch(error => {
+                console.log(response.data)
 
-        //         console.log(error.message)
+                var listings = response.data
+
+                // View within company only
+                if (!this.outsideCompany){
+
+                    listings = []
+
+                    for (let each of listings){
+                        if (each.companyId == this.companyId){
+                            listings.push(each)
+                        }
+                    }
+                }
+
+                // search for items in the marketplace
+
+                // Search not empty
+                if (this.search != ""){
+                    var temp = []
+
+                    for (let each of listings){
+                        if (each.itemName.toLowerCase() == this.search.toLowerCase()){
+                            temp.push(each)
+                        }
+                    }
+
+                    listings = temp
+
+                    this.search = ""
+                }
+
+                this.allListings = listings
+
+                if (this.allListings.length == 0){
+                    this.gotListings = false
+                } else {
+                    this.gotListings = true
+                }
+
+
+            })
+            .catch(error => {
+
+                console.log(error.message)
                 
-        //     })
-        // },
+            })
+        },
         checkuser(){
             const auth = getAuth();
             onAuthStateChanged(auth, (user) => {
