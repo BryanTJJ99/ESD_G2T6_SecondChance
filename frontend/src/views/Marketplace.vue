@@ -37,23 +37,10 @@
 
             </div>
 
-            <div class="mt-3 pb-0" style="overflow: scroll;">
-                <div class="d-flex justify-content-start">
-                    <small class=" d-flex align-self-center pe-2 ps-3">Categories:</small>
-                    <button v-for="category of categories" class="btn btn-none" v-bind:value="category" :key="category.id"
-                        v-on:click="setCategory()">{{ category }}</button>
-                </div>
-            </div>
-            <hr class="my-0">
-            <div v-if="this.listedItems.length > 0" class="row py-3" data-aos="fade-up">
+            <hr class="mb-0">
+            <div v-if="gotListings" class="row py-3" data-aos="fade-up">
 
-                <ListingCard 
-                :company="item.companyName" :deptName="item.deptName" 
-                :offer="offer" 
-                :itemName ="item.itemName" :emission="item.carbonEmission"
-                :postalCode="item.postalCode" 
-                v-for="item in listedItems"></ListingCard>
-                
+                <ListingCard :offer="offer" v-for="each of allListings" :listingInfo="each"></ListingCard>
 
             </div>
             <div v-else class="row py-3" data-aos="fade-up">
@@ -74,67 +61,17 @@ import Sidebar from "@/components/Navbar/Sidebar.vue"
 import ListingCard from "@/components/ListingCard.vue"
 import Footer from "@/components/Footer.vue";
 import ScrollToTop from "@/components/ScrollToTop.vue";
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import itemService from "../../services/items/itemService";
-import companyService from "../../services/company/companyService";
-import departmentService from "../../services/department/departmentService";
 import AOS from 'aos'
 import 'aos/dist/aos.css';
+
+import { getAuth, onAuthStateChanged} from "firebase/auth";
 
 export default {
     mounted() {
         AOS.init({
             duration: 1300,
         })
-
-        itemService.getAllItems()
-        .then((response) =>{
-            console.log("Item Service Invoked")
-            this.allItems = response.data;
-            console.log(response.data)
-            console.log(this.allItems);
-
-            for(let i = 0; i < this.allItems.length; i++){
-                if(this.allItems[i].isListed == true){
-
-                    var temp = this.allItems[i];
-                    var deptName = "";
-                    var companyName = "";
-
-                    departmentService.getDepartmentById(this.allItems[i].departmentId)
-                    .then((response) => {
-                        console.log(response)
-                        temp["deptName"] = response.departmentName;
-                        temp["postalCode"] = response.postalCode
-                        console.log(deptName)
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    })
-
-                    // temp["deptName"] = deptName;
-
-                    companyService.getCompanyById(this.allItems[i].companyId)
-                    .then((response)=>{
-                        console.log(response)
-                        temp["companyName"] = response.data.companyName;
-                    })                    
-                    .catch((error) =>{
-                        console.log(error)
-                    })
-
-                    temp["companyName"] = companyName
-
-                    this.listedItems.push(temp)
-                }
-            }
-
-            console.log(this.listedItems)
-        })
-        .catch((error)=>{
-            console.log(error)
-        })
-
+        this.getListings()
         this.checkuser()
 
         this.deptId = sessionStorage.getItem("deptId")
@@ -145,8 +82,7 @@ export default {
     data() {
         return {
             deptId: '',
-            allItems : undefined,
-            listedItems: [],
+            companyId: '',
             deptName: '',
             companyName: '',
             search: "",

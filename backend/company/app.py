@@ -11,7 +11,6 @@ import json
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
 
 mongodb = os.getenv('MONGODB')
 client = pymongo.MongoClient(mongodb)
@@ -72,18 +71,6 @@ def getCompanyByCompanyName(company_name):
     company = companyCollection.find_one({"companyName" : company_name})
     company = json.loads(json_util.dumps(company))
     return company
-
-# get company from departmentId
-# @app.route('/departmentId/<deptId>', methods=['GET'])
-# def getCompanyByDeptId(deptId):
-#     companies = companyCollection.find()
-    
-#     for each in companies:
-#         for did in each.departments:
-#             if did == deptId:
-#                 return json.loads(json_util.dumps(each))
-    
-#     return {}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)

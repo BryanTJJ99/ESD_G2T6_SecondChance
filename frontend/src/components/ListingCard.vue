@@ -33,7 +33,7 @@
                 <small class="desc"><i class="fa-solid fa-smog"></i> {{emission}}</small>
             </div>
             <i class="fa-solid fa-location-dot" style="color:#a3a0a0"><span class="desc ps-1">SG {{postalCode}}</span></i>
-            <i class="fa-solid fa-building d-block" style="color:#a3a0a0"><span class="desc ps-1">{{company}}, {{deptName}}</span></i>
+            <i class="fa-solid fa-building d-block" style="color:#a3a0a0"><span class="desc ps-1">{{company}}, {{department}}</span></i>
         </div>
 
         <div class="card__content">
