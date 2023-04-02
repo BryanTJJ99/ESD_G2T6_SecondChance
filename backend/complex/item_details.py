@@ -12,10 +12,10 @@ import pika
 import json
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
 department_url = environ.get('department_URL') or 'http://localhost:8080/department'
-item_url = environ.get('item_URL') or 'http://localhost:5000/all'
+item_url = environ.get('item_URL') or 'http://localhost:5000'
 company_url = environ.get('company_URL') or 'http://localhost:5001'
 
 @app.route("/", methods = ['GET'])
@@ -25,7 +25,7 @@ def getItemDetails():
     main = []
 
     allItems = invoke_http(
-        item_url, method='GET'
+        f"{item_url}/all", method='GET'
         )
 
     #if allItems does not work
@@ -64,6 +64,48 @@ def getItemDetails():
         main.append(temp)
 
     return main
+
+@app.route("/department/<deptId>", methods = ['GET'])
+@cross_origin()
+def getDepartmentOffers(deptId):
+    main = []
+
+    departmentDetails = invoke_http(f"{department_url}/{deptId}", method="GET")
+    departmentDetails = departmentDetails['data']
+
+    departmentItems = departmentDetails['itemIdArrayList']
+
+    if departmentItems == []:
+        return "NO ITEMS FOUND"
+
+    for item in departmentItems:
+        itemDetails = invoke_http(f"{item_url}/{item}", method="GET")
+
+        if len(itemDetails['data']["buyerIds"]) > 0:
+            
+            for id in itemDetails['data']["buyerIds"]:
+
+                companyName = ""
+                departmentName = ""
+
+                curr = invoke_http(f"{department_url}/{id}", method="GET")
+                companyId = curr['data']['companyId']
+                departmentName = curr['data']['departmentName']
+
+                company = invoke_http(f"{company_url}/{companyId}", method="GET")
+                companyName = company['data']['companyName']
+
+                offer = {
+                    "itemId" : itemDetails['data']['_id']['$oid'],
+                    "itemName" : itemDetails['data']['itemName'],
+                    "companyName" : companyName,
+                    "departmentName": departmentName
+                }
+                main.append(offer)
+                print(main)
+
+    return main
+
     
 
 if __name__ == "__main__":
