@@ -72,7 +72,7 @@ def read(item_id):
     return item
 
 # edit item
-@app.route('/edit/<item_id>', methods=['PUT'])
+@app.route('/edit/<item_id>', methods=['POST'])
 def edit(item_id):
     data = request.json
     errMsg = handleError(data)

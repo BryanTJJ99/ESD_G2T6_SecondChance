@@ -11,13 +11,11 @@
                 <p style="font-size:20px" class="desc">{{itemName}}</p>
                 <small class="desc"><i class="fa-solid fa-smog"></i> {{emission}}</small>
             </div>
-            <i class="fa-solid fa-location-dot" style="color:#a3a0a0"><span class="desc ps-1">SG{{postalCode}}</span></i>
             <i class="fa-solid fa-building d-block" style="color:#a3a0a0"><span class="desc ps-1">{{company}}, {{department}}</span></i>
         </div>
         <div class="card__content">
             <div class="d-flex justify-content-center mt-2">
               <button class="btn btn-light desc" v-on:click="acceptOffer"><span>Accept</span></button>
-              <button class="btn btn-dark desc" v-on:click="declineOffer"><span>Decline</span></button>
             </div>
           </div>
 
@@ -32,7 +30,6 @@
                 <p style="font-size:20px" class="desc">{{itemName}}</p>
                 <small class="desc"><i class="fa-solid fa-smog"></i> {{emission}}</small>
             </div>
-            <i class="fa-solid fa-location-dot" style="color:#a3a0a0"><span class="desc ps-1">SG {{postalCode}}</span></i>
             <i class="fa-solid fa-building d-block" style="color:#a3a0a0"><span class="desc ps-1">{{company}}, {{department}}</span></i>
         </div>
 
@@ -55,22 +52,32 @@ export default {
             department: "",
             emission: "",
             img: "",
-            listingId: ""
+            listingId: "",
+            buyerId: ""
         }
     },
     mounted(){
-        console.log(this.listingInfo)
 
-        if (this.listingInfo) {
+        if (!this.offer && this.listingInfo){
             this.listingId = this.listingInfo._id
-            this.itemName = this.listingInfo.itemName
             this.company = this.listingInfo.company.companyName 
             this.department = this.listingInfo.department.departmentName 
+            this.itemName = this.listingInfo.itemName
             this.emission =  this.listingInfo.carbonEmission
-            this.img = this.listingInfo.itemPicture
-            this.listing = {}
-        }
 
+            this.listing = {}
+
+        }
+        if (this.offer && this.listingInfo) {
+
+            this.listingId = this.listingInfo.itemId
+            this.company = this.listingInfo.companyName 
+            this.department = this.listingInfo.departmentName 
+            this.itemName = this.listingInfo.itemName
+            this.emission =  this.listingInfo.carbonEmission
+            this.buyerId = this.listingInfo.buyerDepartmentId
+
+        }
     },
     props: ["listingInfo", "offer"],
     methods: {
@@ -78,9 +85,22 @@ export default {
         // OFFER FUNCTIONS
         acceptOffer(){
             console.log("accept offer")
-        },
-        declineOffer(){
-            console.log("decline offer")
+
+            var url = "http://localhost:3101/accept_item"
+
+            axios.get(url, {
+                params: {
+                    itemId: this.listingId,
+                    departmentId: this.buyerId
+                }
+            })
+            .then(response => {
+                console.log("item accept")
+                console.log(response.data)
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
         },
 
         // LISTING FUNCTIONS

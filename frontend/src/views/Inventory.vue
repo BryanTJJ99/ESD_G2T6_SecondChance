@@ -32,7 +32,7 @@
                         aria-describedby="inputGroup-sizing-default" data-aos="fade-up">
                 </div> -->
 
-                <div class="list-group px-3" data-aos="fade-up">
+                <div class="list-group px-3 mt-3" data-aos="fade-up">
                     <template v-for="item in depItems">
                         <!--LISTED-->
                         <button v-if="item.isListed" type="button" :value="item.id"

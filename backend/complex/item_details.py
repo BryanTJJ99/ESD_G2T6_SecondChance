@@ -105,7 +105,7 @@ def getDepartmentOffers(deptId):
                     "companyName" : companyName,
                     "departmentName": departmentName,
                     "carbonEmission" : itemDetails['data']['carbonEmission'],
-                    "buyerDeparmtentId" : deptId,
+                    "buyerDepartmentId" : deptId,
                     "buyerCompanyId": companyId,
                 }
                 main.append(offer)
