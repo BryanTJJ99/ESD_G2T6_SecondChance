@@ -109,8 +109,8 @@ export default {
             companyId: '',
             deptId: '',
 
-            companyDetails: {},
-            departmentDetails: {}
+            companyDetails: undefined,
+            departmentDetails: undefined
         }
     },
     methods: {
@@ -170,25 +170,25 @@ export default {
                 departments: []
             }
             var companyResponse = await registerService.addCompany(data1)
-            this.companyDetails = companyResponse.data
-            console.log(this.companyDetails)
+            var companyDetails = companyResponse
+            console.log(companyDetails)
+
+            var companyId = companyDetails.data._id.$oid
  
             var data2 = {
                 departmentName: this.companyDept,
                 postalCode: this.officeLocation,
                 email: this.email,
-                companyId: "",
+                companyId: companyId,
                 itemIdArrayList: [],
                 totalCarbon: 0,
-                companyId: ""
             }
 
             var deptResponse = await registerService.addDepartment(data2)
-            this.departmentDetails = deptResponse.data
-            console.log(this.departmentDetails)
+            var departmentDetails = deptResponse
+            console.log(departmentDetails)
 
-            var companyId = companyResponse._id.$oid
-            var deptId = deptResponse.departmentId
+            var deptId = departmentDetails.data.departmentId
 
             data1["departments"].push(deptId)
             data2.companyId = companyId
@@ -197,9 +197,10 @@ export default {
             // var updateDept = await registerService.updateDepartment(data2, deptId)
             // console.log(updateDept)
 
-            // console.log("Update company")
-            // var updateCompany = await registerService.updateCompany(data1, companyId)
-            // console.log(updateCompany)
+            console.log("Update company")
+            var updateCompany = await registerService.updateCompany(data1, companyId)
+            var updateResponse = updateCompany
+            console.log(updateResponse)
             
             console.log("-------------------------------")
 

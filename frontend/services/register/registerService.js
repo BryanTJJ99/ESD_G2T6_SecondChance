@@ -21,6 +21,7 @@ class registerService{
                 console.log(error.message)
     
             })
+        return response
     }
 
     addCompany(company){
@@ -35,6 +36,7 @@ class registerService{
             .catch(error => {
                 console.log(error.message)
             })
+        return response
     }
 
     updateDepartment(dept, deptId){
@@ -50,13 +52,13 @@ class registerService{
             console.log(error.message)
 
         })
+        return response
 
     }
 
     updateCompany(company, companyId){
         const response = axios
-        .put(COMPANY_URL + "/edit/" + companyId, company
-    )
+        .put(COMPANY_URL + "/edit/" + companyId, company)
         .then(response => {
 
             console.log(response.data)
@@ -66,7 +68,8 @@ class registerService{
             console.log(error.message)
 
         })
-
+        
+        return response
     }
 
 }
