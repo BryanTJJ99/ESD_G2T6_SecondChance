@@ -26,7 +26,8 @@
   import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
   export default {
     data(){
-
+      department: "";
+      company: "";
     },
     methods: {
       signOut(){
@@ -37,6 +38,10 @@
         })
       }
     },
-    props:['organization', 'department']
+    // props: ["company", "department"],
+    mounted(){
+      this.department = sessionStorage.getItem("deptName")
+      this.company = sessionStorage.getItem("companyName")
+    }
   }
 </script>

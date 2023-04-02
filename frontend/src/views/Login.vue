@@ -105,12 +105,10 @@ export default {
                             .then(response => {
 
                                 console.log("department MS invoked")
-                                console.log(response.data)
+                                // console.log(response.data)
 
                                 this.deptId = response.data.departmentId
                                 this.deptName = response.data.departmentName
-
-                                console.log(this.deptId)
 
                                 // set deptId in session
                                 sessionStorage.setItem("deptId", this.deptId)
@@ -118,21 +116,36 @@ export default {
 
                                 // get companyId of current user
                                 // call company MS
-                                var url2 = "http://localhost:5001/departmentId"
+                                var url2 = "http://localhost:5001"
 
-                                axios.get(url2 + '/' + this.deptId)
+                                axios.get(url2 + '/')
                                     .then(response => {
                                         console.log("company MS invoked")
 
-                                        console.log(response.data)
+                                        // console.log(response.data)
 
-                                        // set companyId in session
-                                        // sessionStorage.setItem("deptId", this.deptId);
+                                        for (let company of response.data){
+
+                                            if (company["departments"] != [] & company["departments"].includes(this.deptId)) {
+
+                                                // console.log("found")
+                                                // console.log(company["_id"])
+                                                sessionStorage.setItem("companyId", company["_id"]["$oid"])
+                                                sessionStorage.setItem("companyName", company["companyName"])
+
+                                                break
+                                            }
+                                        }
 
                                     })
                                     .catch(error => {
                                         console.log(error.message)
                                     })
+                                
+                                console.log(sessionStorage.getItem("deptId"))
+                                console.log(sessionStorage.getItem("deptName"))
+                                console.log(sessionStorage.getItem("companyId"))
+                                console.log(sessionStorage.getItem("companyName"))
 
                             })
                             .catch(error => {

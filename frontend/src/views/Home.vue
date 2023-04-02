@@ -23,10 +23,10 @@ table {
 </style>
 <template>
     <div>
-        <TopNavbar :organization="organization" :department="department"/>
+        <TopNavbar/>
         <Sidebar/>
 
-        <div class="container-flex p-3" style="margin-left:4.5rem">
+        <div class="container-flex p-3" style="margin-left:4.5rem; height:100vh">
             <!-- Welcome back -->
             <div class="row px-3 pt-2 pb-4">
                 <div class="col-md-7 col-sm-auto" data-aos="fade-down">

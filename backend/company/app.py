@@ -15,7 +15,14 @@ mongodb = os.getenv('MONGODB')
 client = pymongo.MongoClient(mongodb)
 db = client['ESDProject']
 companyCollection = db['companies']
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
+
+# get all company
+@app.route('/', methods=['GET'])
+def getAll():
+    company = companyCollection.find()
+    company = json.loads(json_util.dumps(company))
+    return company
 
 # insert new company
 @app.route('/create', methods=['POST'])
@@ -65,16 +72,16 @@ def getCompanyByCompanyName(company_name):
     return company
 
 # get company from departmentId
-@app.route('/departmentId/<deptId>', methods=['GET'])
-def getCompanyByDeptId(deptId):
-    companies = companyCollection.find()
+# @app.route('/departmentId/<deptId>', methods=['GET'])
+# def getCompanyByDeptId(deptId):
+#     companies = companyCollection.find()
     
-    for each in companies:
-        for did in each.departments:
-            if did == deptId:
-                return json.loads(json_util.dumps(each))
+#     for each in companies:
+#         for did in each.departments:
+#             if did == deptId:
+#                 return json.loads(json_util.dumps(each))
     
-    return {}
+#     return {}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
