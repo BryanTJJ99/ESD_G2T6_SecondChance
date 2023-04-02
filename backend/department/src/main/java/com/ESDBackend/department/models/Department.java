@@ -23,25 +23,10 @@ public class Department {
     private String postalCode;
     private double totalCarbon;
 
-    // public Department() {
-    // // Default constructor
-    // }
-    // public Department(String departmentName, String country, String postalCode,
-    // double totalCarbon) {
-    // this.departmentName = departmentName;
-    // this.departmentCountry = country;
-    // this.departmentPostalCode = postalCode;
-    // this.totalCarbon = totalCarbon;
-    // this.itemIdArrayList = new ArrayList<String>();
-    // }
 
     public Department() {
 
     }
-
-    // public List<String> getItemsIdArr() {
-    // return itemIdArrayList;
-    // }
 
     public void addItem(String itemID) {
         itemIdArrayList.add(itemID);

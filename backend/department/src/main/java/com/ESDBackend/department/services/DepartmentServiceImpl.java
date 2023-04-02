@@ -1,6 +1,5 @@
 package com.ESDBackend.department.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -137,11 +136,30 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department addDepartment(Department department) {
         try {
             return departmentRepository.save(department);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("ERROR: Cannot add department");
             return null;
         }
     }
+
+    @Override
+    public Department updateDepartment(String departmentId, Department newDepartment) {
+        String departmentToEditID = departmentId;
+        Optional<Department> optionalUpdatedDepartment = departmentRepository.findByDepartmentId(departmentToEditID);
+        if (optionalUpdatedDepartment.isPresent()) {
+            Department updatedDepartment = optionalUpdatedDepartment.get();
+            updatedDepartment.setDepartmentName(newDepartment.getDepartmentName());
+            updatedDepartment.setCompanyId(newDepartment.getCompanyId());
+            updatedDepartment.setEmail(newDepartment.getEmail());
+            updatedDepartment.setItemIdArrayList(newDepartment.getItemIdArrayList());
+            updatedDepartment.setPostalCode(newDepartment.getPostalCode());
+            updatedDepartment.setTotalCarbon(newDepartment.getTotalCarbon());
+            return departmentRepository.save(updatedDepartment);
+        }
+        System.out.println("Error: unable to update department");
+        return null;
+    }
+    
+    
 
 }
