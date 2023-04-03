@@ -99,14 +99,14 @@
                             <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
                                 <p>Item Category</p>
                             </span>
-                            <!-- <input type="text" v-model="newItemCategory" class="form-control" placeholder="Item Category"
-                                aria-label="itemCategory" aria-describedby="basic-addon1"> -->
-                            <select class="form-control" v-model="newItemCategory">
+                            <input type="text" v-model="newItemCategory" class="form-control" placeholder="Item Category"
+                                aria-label="itemCategory" aria-describedby="basic-addon1">
+                            <!-- <select class="form-control" v-model="newItemCategory">
                                 <option value="Furniture">Furniture</option>
                                 <option value="Office Supplies">Office Supplies</option>
                                 <option value="Electronics">Electronics</option>
                                 <option value="Others">Others</option>
-                            </select>
+                            </select> -->
                         </div>
                         <div class="input-group mb-3" style="position:relative">
                             <span class="input-group-text" style="background-color:#c5dad2;" id="newItemForm">
@@ -241,11 +241,15 @@ export default {
             duration: 1300,
         })
 
+
         this.checkuser()
         this.deptId = sessionStorage.getItem("deptId")
         this.companyId = sessionStorage.getItem("companyId")
         this.deptName = sessionStorage.getItem("deptName")
         this.companyName = sessionStorage.getItem("companyName")
+
+        console.log(this.companyId)
+        console.log(this.deptId)
 
         departmentService.getDepartmentById(this.deptId)
         .then(response =>{
@@ -328,25 +332,28 @@ export default {
                 "companyId": this.companyId,
                 "departmentId": this.deptId
                 }
-
-                var carbon_response = await carbonRetrieverService.getCarbonAmt("chair", "furniture")
-                var carbon_amt = carbon_response.data
-                data['carbonEmission'] = carbon_amt;
-                console.log(carbon_amt)
-
                 console.log(data)
-                var item_response = await itemService.createItem(data)
-                console.log(item_response)
-                var itemId = item_response.data.data.item._id.$oid;
-                console.log(itemId)
+                var placeItemRespone = placeItem.placeItem(data)
+                var placeItemResult = placeItemRespone
+                console.log(placeItemResult)
+                // var carbon_response = await carbonRetrieverService.getCarbonAmt("chair", "furniture")
+                // var carbon_amt = carbon_response.data
+                // data['carbonEmission'] = carbon_amt;
+                // console.log(carbon_amt)
 
-                departmentService.addItemToDept(this.deptId, itemId )
-                .then((response) =>{
-                    console.log("ITEM Added to dept" + response)
-                })
-                .catch((error)=>{
-                    console.log("Item not added to dept " + error)
-                })
+                // console.log(data)
+                // var item_response = await itemService.createItem(data)
+                // console.log(item_response)
+                // var itemId = item_response.data.data.item._id.$oid;
+                // console.log(itemId)
+
+                // departmentService.addItemToDept(this.deptId, itemId )
+                // .then((response) =>{
+                //     console.log("ITEM Added to dept" + response)
+                // })
+                // .catch((error)=>{
+                //     console.log("Item not added to dept " + error)
+                // })
 
                 this.depItems.push({
                     "itemName": this.newItemName,
@@ -355,6 +362,7 @@ export default {
                 console.log(this.depItems)
                 this.newItemName = "";
                 this.newItemCategory = "";
+                this.noItems = false;
             }
             catch(error){
                 console.log(error)

@@ -124,7 +124,7 @@ def process_accept_item(accepted_department_id, item_id):
     # edit item
     edited_item_result = invoke_http(
         f'{item_url}/edit/{item_id}',
-        method='PUT',
+        method='POST',
         json=item_data
     )
 

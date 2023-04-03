@@ -63,7 +63,7 @@ table {
                 <small class="pt-3 ps-3 mt-2"><i>Accept or decline your offers here</i></small>
             </div>
             <div class="row pb-4" data-aos="fade-up" style="min-height:50vh">
-                <template v-for="each in offers">
+                <template v-if="!noOffers" v-for="each in offers">
                     <ListingCard :offer="offer" :listingInfo="each"></ListingCard>
                 </template>
 
@@ -108,6 +108,7 @@ import departmentService from "../../services/department/departmentService";
             this.companyName = sessionStorage.getItem("companyName")
 
             console.log(this.deptId)
+            console.log(this.companyId)
             this.getOffers()
             this.leaderBoard()
 
@@ -155,9 +156,10 @@ import departmentService from "../../services/department/departmentService";
                 this.offers = JSON.parse(JSON.stringify(complexOffers.data))
                 console.log(this.offers)
 
-                if (this.offers.length == 0){
+                if (this.offers == "NO OFFERS FOUND" || this.offers=="NO ITEMS FOUND"){
                     this.noOffers = true
                 }
+                console.log(this.noOffers)
             },
 
 

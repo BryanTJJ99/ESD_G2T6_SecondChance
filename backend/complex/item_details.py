@@ -72,7 +72,7 @@ def getDepartmentOffers(deptId):
 
     departmentDetails = invoke_http(f"{department_url}/{deptId}", method="GET")
     departmentDetails = departmentDetails['data']
-
+    
     departmentItems = departmentDetails['itemIdArrayList']
 
     if departmentItems == []:

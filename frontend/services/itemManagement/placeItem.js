@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const API_URL = "http://localhost:3006/place_item";
+const API_URL = "http://localhost:3001/place_item";
 
 class PlaceItem{
 
@@ -11,7 +11,7 @@ class PlaceItem{
             console.log("Place Item Successful")
             return response
         })
-        .get((error) => {
+        .catch((error) => {
             console.log("Place Item Not Successful")
             return error
         })
