@@ -70,6 +70,8 @@ def delete(company_id):
 def getCompanyByCompanyName(company_name):
     company = companyCollection.find_one({"companyName" : company_name})
     company = json.loads(json_util.dumps(company))
+    if company == None:
+        return [-1]
     return company
 
 if __name__ == '__main__':
