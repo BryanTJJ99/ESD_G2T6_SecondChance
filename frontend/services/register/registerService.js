@@ -48,7 +48,6 @@ class registerService{
             return response
         })
         .catch(error => {
-
             console.log(error.message)
 
         })
@@ -64,7 +63,7 @@ class registerService{
             .then(response => {
 
                 // mainId = response.data._id.$oid
-                console.log(response.data)
+                console.log(response)
                 return response.data
             })
             .catch(error => {
@@ -76,7 +75,7 @@ class registerService{
 
             })
 
-        // return response
+        return response
 
     }
 
