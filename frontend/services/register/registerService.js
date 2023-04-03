@@ -64,19 +64,19 @@ class registerService{
             .then(response => {
 
                 // mainId = response.data._id.$oid
-
                 console.log(response.data)
+                return response.data
             })
             .catch(error => {
-
-                this.companyFound = false
 
                 console.log("no account found")
                 console.log(error.message)
 
+                return false
+
             })
 
-        return response
+        // return response
 
     }
 

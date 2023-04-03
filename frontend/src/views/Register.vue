@@ -182,22 +182,20 @@ export default {
             console.log(checkCompany)
             var companyId = ""
 
-            // Company not registered yet
-            if (!checkCompany){
-
-                console.log("No company registered")
-                // var companyResponse = await registerService.addCompany(data1)
-                // var companyDetails = companyResponse
-                // console.log(companyDetails)
-                // companyId = companyDetails.data._id.$oid
-
-            } else {
+            // Company registered yet
+            if (checkCompany){
 
                 console.log("Company already registered")
                 // console.log(checkCompany.data.departments)
                 // data1["departments"] = checkCompany.data.departments
                 // companyId = checkCompany.data["_id"].$oid
 
+            } else {
+                console.log("No company registered")
+                // var companyResponse = await registerService.addCompany(data1)
+                // var companyDetails = companyResponse
+                // console.log(companyDetails)
+                // companyId = companyDetails.data._id.$oid
             }
 
             // console.log(companyId)
