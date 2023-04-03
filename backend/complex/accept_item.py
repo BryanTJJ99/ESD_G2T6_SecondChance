@@ -17,7 +17,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 department_url = environ.get('department_URL') or 'http://localhost:8080/department'
 item_url = environ.get('item_URL') or 'http://localhost:5000'
-slack_url = 'http://localhost:4000'
+slack_url = 'http://10.124.10.142:4000'
 
 @app.route("/accept_item", methods=['GET'])
 @cross_origin()
