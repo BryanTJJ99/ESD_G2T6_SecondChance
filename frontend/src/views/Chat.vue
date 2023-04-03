@@ -37,6 +37,7 @@
           this.checkuser()
 
           var sellerInfo = JSON.parse(sessionStorage.getItem("newChat"))
+          console.log(sellerInfo)
 
           await Talk.ready
           const me = new Talk.User({

@@ -120,6 +120,7 @@ export default {
             .catch(error => {
                 console.log(error.message)
             })
+            location.reload()
         },
 
         // LISTING FUNCTIONS
