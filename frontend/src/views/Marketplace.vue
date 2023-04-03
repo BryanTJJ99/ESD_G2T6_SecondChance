@@ -109,13 +109,8 @@ export default {
             this.getListings()
         },
         getListings() {
-            var all = true
             this.gotListings = true
             this.allListings = []
-
-            if (this.search != ""){
-                all = false
-            }
 
             var url = "http://localhost:3004/"
 
@@ -129,13 +124,16 @@ export default {
                 // View within company only
                 if (!this.outsideCompany){
 
-                    listings = []
+                    temp = []
 
                     for (let each of listings){
+                        console.log(each["companyId"])
                         if (each.companyId == this.companyId){
-                            listings.push(each)
+                            temp.push(each)
                         }
                     }
+
+                    listings = temp
                 }
 
                 // Search for items in the marketplace
