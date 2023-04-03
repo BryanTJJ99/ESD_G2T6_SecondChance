@@ -64,7 +64,7 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase
                             <input type="text" v-model="officeLocation" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
-                            <label>Your Office Location:</label>
+                            <label>Your Office Location (Postal Code):</label>
                             <small class="text-start" style="color:#b00b16;font-style:italic;">{{ errMsg.officeLocation
                             }}</small>
                         </div>
@@ -106,11 +106,13 @@ export default {
             companyDept: '',
             officeLocation: '',
             valid: true,
-            companyId: '',
             deptId: '',
 
             companyDetails: undefined,
-            departmentDetails: undefined
+            departmentDetails: undefined,
+            updateCompany: undefined,
+            updateDepartment: undefined,
+            checkCompany: undefined
         }
     },
     methods: {
@@ -121,40 +123,36 @@ export default {
             if (check) {
                 console.log("no input error")
 
-                // if (this.validateAccount()) {
+                this.add()
 
-                    const auth = getAuth();
-                    createUserWithEmailAndPassword(getAuth(), this.email, this.password)
-                        .then(() => {
-                            
-                            console.log("yay")
+                // const auth = getAuth();
+                // createUserWithEmailAndPassword(getAuth(), this.email, this.password)
+                //     .then(() => {
+                        
+                //         console.log("yay")
 
-                            this.add()
+                //         // this.add()
 
-                        })
-                        .catch((err) => {
-                            console.log("nay")
-                            console.log(err)
+                //     })
+                //     .catch((err) => {
+                //         console.log("nay")
+                //         console.log(err)
 
-                            const errorCode = err.code;
-                            console.log(errorCode)
+                //         const errorCode = err.code;
+                //         console.log(errorCode)
 
-                            if (errorCode == "auth/email-already-in-use") {
-                                this.errMsg['valid'] = "Registration failed. Email entered is already in use."
+                //         if (errorCode == "auth/email-already-in-use") {
+                //             this.errMsg['valid'] = "Registration failed. Email entered is already in use."
 
-                                this.valid = false
+                //             this.valid = false
 
-                            } else if (errorCode == "auth/invalid-email") {
-                                this.errMsg['valid'] = "Registration failed. You have entered an invalid email address."
+                //         } else if (errorCode == "auth/invalid-email") {
+                //             this.errMsg['valid'] = "Registration failed. You have entered an invalid email address."
 
-                                this.valid = false
-                            }
+                //             this.valid = false
+                //         }
 
-                        })
-                // } else {
-                //     console.log("company dept alr registered")
-                //     this.errMsg.valid = "Your company department already has a valid account."
-                // }
+                //     })
 
             } else {
                 console.log("input error")
@@ -169,12 +167,7 @@ export default {
                 companyName: this.companyName,
                 departments: []
             }
-            var companyResponse = await registerService.addCompany(data1)
-            var companyDetails = companyResponse
-            console.log(companyDetails)
 
-            var companyId = companyDetails.data._id.$oid
- 
             var data2 = {
                 departmentName: this.companyDept,
                 postalCode: this.officeLocation,
@@ -184,81 +177,75 @@ export default {
                 totalCarbon: 0,
             }
 
-            var deptResponse = await registerService.addDepartment(data2)
-            var departmentDetails = deptResponse
-            console.log(departmentDetails)
+            var checkResponse = await registerService.checkCompany(this.companyName)
+            var checkCompany = checkResponse
+            console.log(checkCompany)
+            var companyId = ""
 
-            var deptId = departmentDetails.data.departmentId
+            // Company not registered yet
+            if (!checkCompany){
 
-            data1["departments"].push(deptId)
-            data2.companyId = companyId
+                console.log("No company registered")
+                // var companyResponse = await registerService.addCompany(data1)
+                // var companyDetails = companyResponse
+                // console.log(companyDetails)
+                // companyId = companyDetails.data._id.$oid
 
-            // console.log("Update department")
-            // var updateDept = await registerService.updateDepartment(data2, deptId)
-            // console.log(updateDept)
+            } else {
 
-            console.log("Update company")
-            var updateCompany = await registerService.updateCompany(data1, companyId)
-            var updateResponse = updateCompany
-            console.log(updateResponse)
+                console.log("Company already registered")
+                // console.log(checkCompany.data.departments)
+                // data1["departments"] = checkCompany.data.departments
+                // companyId = checkCompany.data["_id"].$oid
+
+            }
+
+            // console.log(companyId)
+
+            // var deptResponse = await registerService.addDepartment(data2)
+            // var departmentDetails = deptResponse
+            // console.log(departmentDetails)
+
+            // var deptId = departmentDetails.data.departmentId
+
+            // data1["departments"].push(deptId)
+
+            // console.log("Update company")
+            // var updateResponse = await registerService.updateCompany(data1, companyId)
+            // var updateCompany = updateResponse
+            // console.log(updateCompany)
             
             console.log("-------------------------------")
 
 
-            this.$router.push('/')
+            // this.$router.push('/')
         },
         // check if company dept is alr registered
-        validateAccount() {
+        // checkCompany() {
 
-            var id1 = ''
-            var id2 = ''
+        //     var mainId = ""
 
-            // CALL COMPANY MS 
-            var url1 = 'http://localhost:5001/companyName'
-            axios.get(url1 + "/" + this.companyName)
-                .then(response => {
+        //     // CALL COMPANY MS 
+        //     var url1 = 'http://localhost:5001/companyName'
+        //     axios.get(url1 + "/" + this.companyName)
+        //         .then(response => {
 
-                    if (response.length == 0) {
-                        this.valid = true // no account registered yet
+        //             this.companyFound = true
+        //             mainId = response.data._id.$oid
 
-                    } else {
-                        // return companyId
-                        id1 = response.data.companyId
-                    }
+        //             console.log(response.data)
+        //         })
+        //         .catch(error => {
 
-                })
-                .catch(error => {
-                    console.log(error.message)
+        //             this.companyFound = false
+        //             console.log("no account found")
+        //             console.log(error.message)
 
-                })
+        //         })
 
-            // CALL DEPARTMENT MS 
-            var url2 = 'http://localhost:8080/department/getCompanyIdByDepartmentNameAndPostalCode'
+        //     return mainId
 
-            axios.get(url2 + "/" + this.departmentName + "/" + this.officeLocation.toString())
-                .then(response => {
-
-                    if (response.length == 0) {
-                        this.valid = true // no account registered yet
-
-                    } else {
-                        // Return companyId
-                        id2 = response.data
-
-                    }
-
-                })
-                .catch(error => {
-                    console.log(error.message)
-                })
-
-            if (id1 != "" && id1 == id2) {
-                this.valid = false
-            }
-
-            return this.valid
-
-        },
+        // },
         // check user inputs
         checkInputs() {
             var check = true
@@ -269,8 +256,8 @@ export default {
             } else {
                 this.errMsg['email'] = ""
             }
-            if (this.password.length < 8) {
-                this.errMsg['password'] = "Please enter a password that is at least 8 characters long."
+            if (this.password.length < 6) {
+                this.errMsg['password'] = "Please enter a password that is at least 7 characters long."
                 check = false
             } else {
                 this.errMsg['password'] = ""

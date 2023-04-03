@@ -39,37 +39,45 @@ class registerService{
         return response
     }
 
-    updateDepartment(dept, deptId){
-        const response = axios
-        .put(DEPT_URL + "/update/" + deptId, dept
-    )
-        .then(response => {
-
-            console.log(response.data)
-            console.log("dept modified successfully")
-        })
-        .catch(error => {
-            console.log(error.message)
-
-        })
-        return response
-
-    }
-
     updateCompany(company, companyId){
         const response = axios
         .put(COMPANY_URL + "/edit/" + companyId, company)
         .then(response => {
 
-            console.log(response.data)
             console.log("company modified successfully")
+            return response
         })
         .catch(error => {
+
             console.log(error.message)
 
         })
         
         return response
+    }
+
+    checkCompany(companyName) {
+
+        // CALL COMPANY MS 
+        const response = axios
+        .get(COMPANY_URL + "/companyName/" + companyName)
+            .then(response => {
+
+                // mainId = response.data._id.$oid
+
+                console.log(response.data)
+            })
+            .catch(error => {
+
+                this.companyFound = false
+
+                console.log("no account found")
+                console.log(error.message)
+
+            })
+
+        return response
+
     }
 
 }
