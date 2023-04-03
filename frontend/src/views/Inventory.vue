@@ -241,11 +241,15 @@ export default {
             duration: 1300,
         })
 
+
         this.checkuser()
         this.deptId = sessionStorage.getItem("deptId")
         this.companyId = sessionStorage.getItem("companyId")
         this.deptName = sessionStorage.getItem("deptName")
         this.companyName = sessionStorage.getItem("companyName")
+
+        console.log(this.companyId)
+        console.log(this.deptId)
 
         departmentService.getDepartmentById(this.deptId)
         .then(response =>{
@@ -358,6 +362,7 @@ export default {
                 console.log(this.depItems)
                 this.newItemName = "";
                 this.newItemCategory = "";
+                this.noItems = false;
             }
             catch(error){
                 console.log(error)

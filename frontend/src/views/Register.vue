@@ -170,7 +170,6 @@ export default {
                 departmentName: this.companyDept,
                 postalCode: this.officeLocation,
                 email: this.email,
-                companyId: companyId,
                 itemIdArrayList: [],
                 totalCarbon: 0,
             }
@@ -183,12 +182,12 @@ export default {
             var companyId = ""
 
             // Company registered yet
-            if (checkCompany){
+            if (checkCompany[0] != -1){
 
                 console.log("Company already registered")
                 console.log(checkCompany["departments"])
                 data1["departments"] = checkCompany["departments"]
-                companyId = checkCompany["_id"].$oid
+                companyId = checkCompany["_id"]['$oid']
 
             } else {
                 console.log("No company registered")
@@ -197,6 +196,8 @@ export default {
                 console.log(companyDetails)
                 companyId = companyDetails.data._id.$oid
             }
+
+            data2['companyId'] = companyId
 
             console.log(companyId)
 
