@@ -125,34 +125,32 @@ export default {
 
                 this.add()
 
-                // const auth = getAuth();
-                // createUserWithEmailAndPassword(getAuth(), this.email, this.password)
-                //     .then(() => {
+                const auth = getAuth();
+                createUserWithEmailAndPassword(getAuth(), this.email, this.password)
+                    .then(() => {
                         
-                //         console.log("yay")
+                        console.log("yay")
 
-                //         // this.add()
+                    })
+                    .catch((err) => {
+                        console.log("nay")
+                        console.log(err)
 
-                //     })
-                //     .catch((err) => {
-                //         console.log("nay")
-                //         console.log(err)
+                        const errorCode = err.code;
+                        console.log(errorCode)
 
-                //         const errorCode = err.code;
-                //         console.log(errorCode)
+                        if (errorCode == "auth/email-already-in-use") {
+                            this.errMsg['valid'] = "Registration failed. Email entered is already in use."
 
-                //         if (errorCode == "auth/email-already-in-use") {
-                //             this.errMsg['valid'] = "Registration failed. Email entered is already in use."
+                            this.valid = false
 
-                //             this.valid = false
+                        } else if (errorCode == "auth/invalid-email") {
+                            this.errMsg['valid'] = "Registration failed. You have entered an invalid email address."
 
-                //         } else if (errorCode == "auth/invalid-email") {
-                //             this.errMsg['valid'] = "Registration failed. You have entered an invalid email address."
+                            this.valid = false
+                        }
 
-                //             this.valid = false
-                //         }
-
-                //     })
+                    })
 
             } else {
                 console.log("input error")
@@ -179,46 +177,46 @@ export default {
 
             var checkResponse = await registerService.checkCompany(this.companyName)
             var checkCompany = checkResponse
-            // console.log(checkCompany)
+            console.log(checkCompany)
             // console.log(typeof checkCompany)
             // console.log(checkCompany[0])
             var companyId = ""
 
             // Company registered yet
-            if (checkCompany[0] != -1 ){
+            if (checkCompany){
 
                 console.log("Company already registered")
-                // console.log(checkCompany.data.departments)
-                // data1["departments"] = checkCompany.data.departments
-                // companyId = checkCompany.data["_id"].$oid
+                console.log(checkCompany["departments"])
+                data1["departments"] = checkCompany["departments"]
+                companyId = checkCompany["_id"].$oid
 
             } else {
                 console.log("No company registered")
-                // var companyResponse = await registerService.addCompany(data1)
-                // var companyDetails = companyResponse
-                // console.log(companyDetails)
-                // companyId = companyDetails.data._id.$oid
+                var companyResponse = await registerService.addCompany(data1)
+                var companyDetails = companyResponse
+                console.log(companyDetails)
+                companyId = companyDetails.data._id.$oid
             }
 
-            // console.log(companyId)
+            console.log(companyId)
 
-            // var deptResponse = await registerService.addDepartment(data2)
-            // var departmentDetails = deptResponse
-            // console.log(departmentDetails)
+            var deptResponse = await registerService.addDepartment(data2)
+            var departmentDetails = deptResponse
+            console.log(departmentDetails)
 
-            // var deptId = departmentDetails.data.departmentId
+            var deptId = departmentDetails.data.departmentId
 
-            // data1["departments"].push(deptId)
+            data1["departments"].push(deptId)
 
-            // console.log("Update company")
-            // var updateResponse = await registerService.updateCompany(data1, companyId)
-            // var updateCompany = updateResponse
-            // console.log(updateCompany)
+            console.log("Update company")
+            var updateResponse = await registerService.updateCompany(data1, companyId)
+            var updateCompany = updateResponse
+            console.log(updateCompany)
             
             console.log("-------------------------------")
 
 
-            // this.$router.push('/')
+            this.$router.push('/')
         },
         // check if company dept is alr registered
         // checkCompany() {
