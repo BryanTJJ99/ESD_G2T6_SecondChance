@@ -179,11 +179,13 @@ export default {
 
             var checkResponse = await registerService.checkCompany(this.companyName)
             var checkCompany = checkResponse
-            console.log(checkCompany)
+            // console.log(checkCompany)
+            // console.log(typeof checkCompany)
+            // console.log(checkCompany[0])
             var companyId = ""
 
             // Company registered yet
-            if (checkCompany){
+            if (checkCompany[0] != -1 ){
 
                 console.log("Company already registered")
                 // console.log(checkCompany.data.departments)
