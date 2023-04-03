@@ -28,11 +28,18 @@
         },
         data(){
           return {
-            deptId: ''
+            deptId: '',
+            deptName: '',
+            companyId: '',
+            companyName: ''
           }
         },
         async mounted() {
           this.deptId = sessionStorage.getItem("deptId")
+          this.deptName = sessionStorage.getItem("deptName")
+          this.companyId = sessionStorage.getItem("companyId")
+          this.companyName = sessionStorage.getItem("companyName")
+
 
           this.checkuser()
 
@@ -43,7 +50,7 @@
           const me = new Talk.User({
             id: this.deptId,
             name: 'Company, Department',
-            email: 'aloysius@test.com',
+            email: 'test@test.com',
           })
                 
           const talkSession = new Talk.Session({

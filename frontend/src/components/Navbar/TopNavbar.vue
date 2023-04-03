@@ -11,7 +11,7 @@
     <nav class="navbar navbar-light d-flex justify-content-between topnav" style="position:sticky;top:0;z-index:4">
         <div class="d-flex align-items-center px-4">
                 <img class="ms-4 me-1" src="../../assets/logo.png" style="height:20px;opacity:50%;">
-                <router-link to="/" class="nav-link text-dark m-0 p-0" >
+                <router-link to="/home" class="nav-link text-dark m-0 p-0" >
                     <h5 class="logo ">SecondChance</h5>
                 </router-link>
         </div>
@@ -37,8 +37,11 @@
         const auth = getAuth()
         signOut(auth).then(() => {
           console.log('Sign out complete')
+          sessionStorage.clear()
           window.location.href = `/`;
         })
+
+
       }
     },
     // props: ["company", "department"],
