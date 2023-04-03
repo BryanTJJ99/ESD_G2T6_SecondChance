@@ -248,7 +248,14 @@ def process_accept_item(accepted_department_id, item_id):
     amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key='department.notify', body=message, properties=pika.BasicProperties(delivery_mode=2))
     
     slack_result = invoke_http(
-        f'{slack_url}',
+        f'{slack_url}/produce',
+        method='POST'
+    )
+
+    print(slack_result)
+
+    slack_result = invoke_http(
+        f'{slack_url}/consume',
         method='GET'
     )
 
