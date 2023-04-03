@@ -171,7 +171,7 @@ export default {
             var updateListing = JSON.parse(JSON.stringify(this.listingInfo))
             delete updateListing["_id"]
 
-            axios.put(url + "/" + this.listingInfo["_id"]["$oid"], updateListing)
+            axios.post(url + "/" + this.listingInfo["_id"]["$oid"], updateListing)
             .then(response => {
 
                 console.log("Offer sent successfully")
